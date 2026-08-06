@@ -21,3 +21,13 @@ Corrected and completed:
 - SAL-BR-034 Delivery Confirmation
 
 The generic placeholder content was replaced with enforceable, scope-specific rules, invariants, and cross-references.
+
+## v0.2.0 Part 20 — Sales Governance and Integrity Rules
+
+Added:
+- SAL-BR-035 Customer Claim Routing
+- SAL-BR-036 Sales SLA and Aging Control
+- SAL-BR-037 Sales Incident Management
+- SAL-BR-038 Sales Recovery and Replay Protection
+- SAL-BR-039 Sales Analytics Integrity
+- SAL-BR-040 Sales Integrity Audit
