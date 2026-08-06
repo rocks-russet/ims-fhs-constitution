@@ -1,9 +1,11 @@
 # Changelog
 
-## v0.2.0 Part 13 — Corrective Finance Rule Consolidation
+## v0.2.0 Part 14
 
-Corrected and completed:
-- FIN-BR-049 through FIN-BR-072
-- Replaced placeholder content with enforceable business rules
-- Narrowed overlapping scopes and added explicit cross-references
-- Preserved existing identifiers and filenames for repository continuity
+Added:
+- FIN-BR-073
+- FIN-BR-074
+- FIN-BR-075
+- FIN-BR-076
+- FIN-BR-077
+- FIN-BR-078
