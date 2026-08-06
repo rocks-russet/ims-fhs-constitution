@@ -1,0 +1,3 @@
+# FIN-BR-061 FINANCIAL CONFIGURATION MANAGEMENT
+
+Business rule placeholder.

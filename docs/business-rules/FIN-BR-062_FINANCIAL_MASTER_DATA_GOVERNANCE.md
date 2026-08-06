@@ -1,0 +1,3 @@
+# FIN-BR-062 FINANCIAL MASTER DATA GOVERNANCE
+
+Business rule placeholder.
