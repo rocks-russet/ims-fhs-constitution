@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.5.0 Financial Business Rules Part 7
+
+Generated: 2026-08-06 10:09 WIB
+
+Added:
+- FIN-BR-037 Financial Event Identity, Idempotency, and Duplicate Prevention
+- FIN-BR-038 Settlement Reconciliation and Cash Position Control
+- FIN-BR-039 Inventory Valuation, Cost Basis, and Impairment
+- FIN-BR-040 Revenue, Cost of Goods Sold, and Margin Recognition
+- FIN-BR-041 Financial Correction, Restatement, and Prior-Period Adjustment
+- FIN-BR-042 Financial Backup, Recovery, and Continuity
+
+
+
 ## v0.5.0 Financial Business Rules Part 6
 
 Generated: 2026-08-06 09:45 WIB
