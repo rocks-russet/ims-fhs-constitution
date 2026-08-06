@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.5.0 Financial Business Rules Part 4
+
+Generated: 2026-08-06 09:37 WIB
+
+Added:
+- FIN-BR-019 Settlement Account and External Cash Custody
+- FIN-BR-020 Payment Receipt Allocation and Unidentified Funds
+- FIN-BR-021 Cash Advance and Accountable Fund
+- FIN-BR-022 Profit Distribution Payout and Retained Rights
+- FIN-BR-023 Financial Exception, Suspense, and Resolution
+- FIN-BR-024 Opening Balance, Migration, and Financial Cutover
+
+
 ## v0.5.0 Financial Business Rules Part 3
 
 Generated: 2026-08-06 09:17 WIB
