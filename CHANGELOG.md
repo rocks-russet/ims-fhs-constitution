@@ -31,3 +31,13 @@ Added:
 - SAL-BR-020 Payment Verification
 - SAL-BR-021 Shipment Exception Handling
 - SAL-BR-022 Order Completion Validation
+
+## v0.2.0 Part 17 — Sales Continuity and Exception Rules
+
+Added:
+- SAL-BR-023 Invoice Revision and Supersession
+- SAL-BR-024 Payment Method Switching
+- SAL-BR-025 Return Authorization
+- SAL-BR-026 Replacement Fulfillment
+- SAL-BR-027 Marketplace Dispute Management
+- SAL-BR-028 Sales Record Archival and Retention
