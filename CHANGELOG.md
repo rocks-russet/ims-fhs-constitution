@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.5.0 Financial Business Rules Part 6
+
+Generated: 2026-08-06 09:45 WIB
+
+Added:
+- FIN-BR-031 Financial Source Documents and Evidence
+- FIN-BR-032 Related-Party Transaction and Conflict of Interest
+- FIN-BR-033 Inter-Wallet Loan and Temporary Funding
+- FIN-BR-034 Shared Cost Allocation and Cost Recovery
+- FIN-BR-035 Contingent Obligation, Guarantee, and Commitment Disclosure
+- FIN-BR-036 Financial Integrity Monitoring and Incident Escalation
+
+
 ## v0.5.0 Financial Business Rules Part 5
 
 Generated: 2026-08-06 09:42 WIB
