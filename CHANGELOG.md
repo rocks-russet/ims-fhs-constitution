@@ -21,3 +21,13 @@ Corrected and completed:
 - FIN-BR-078 Financial Control Self-Assessment
 
 The generic placeholder text was replaced with enforceable, scope-specific rules and invariants.
+
+## v0.2.0 Part 16 — Sales Rule Expansion
+
+Added:
+- SAL-BR-017 Order Amendment
+- SAL-BR-018 Partial Payment
+- SAL-BR-019 Multi-Payment Allocation
+- SAL-BR-020 Payment Verification
+- SAL-BR-021 Shipment Exception Handling
+- SAL-BR-022 Order Completion Validation
