@@ -1,0 +1,3 @@
+# FIN-BR-067 FINANCIAL SETTLEMENT FINALIZATION
+
+Business rule placeholder.

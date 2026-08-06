@@ -1,11 +1,11 @@
 # Changelog
 
-## v0.2.0 Part 11
+## v0.2.0 Part 12
 
 Added:
-- FIN-BR-061
-- FIN-BR-062
-- FIN-BR-063
-- FIN-BR-064
-- FIN-BR-065
-- FIN-BR-066
+- FIN-BR-067
+- FIN-BR-068
+- FIN-BR-069
+- FIN-BR-070
+- FIN-BR-071
+- FIN-BR-072
