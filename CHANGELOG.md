@@ -1,14 +1,14 @@
 # Changelog
 
-## v0.4.0 Sales Business Rules Part 2
-Generated: 2026-08-06 08:28 WIB
+## v0.5.0 Financial Business Rules Part 1
+
+Generated: 2026-08-06 08:40 WIB
 
 Added:
-- SAL-BR-009 Packing Job
-- SAL-BR-010 Shipment
-- SAL-BR-011 Shipping Reimbursement
-- SAL-BR-012 Payment Confirmation
-- SAL-BR-013 Profit Recognition
-- SAL-BR-014 Cancellation & Recovery
-- SAL-BR-015 Marketplace Listing Closure
-- SAL-BR-016 Direct Sales
+
+- FIN-BR-001 Wallet and Financial Rights
+- FIN-BR-002 Financial Ledger
+- FIN-BR-003 Wallet Buckets
+- FIN-BR-004 Financial Posting and Balance Integrity
+- FIN-BR-005 Settlement and Profit Distribution
+- FIN-BR-006 Withdrawal, Reversal, and Reconciliation
