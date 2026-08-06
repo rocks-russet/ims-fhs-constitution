@@ -1,16 +1,23 @@
-# FIN-BR-051 TAX ADJUSTMENT AND CORRECTION
+# FIN-BR-051 — Tax Adjustment and Correction
 
-## Objective
-Define governance for tax adjustment and correction.
+Purpose: Govern corrections to tax-classified amounts after initial recognition.
 
-## Rules
-1. All actions must be auditable.
-2. Financial integrity must be preserved.
-3. No historical ledger mutation; use adjustment entries.
-4. Authorization follows role policy.
-5. Every action is timestamped and attributable.
+Rules:
+- Tax corrections require a reference to the original transaction and source evidence.
+- Corrections must distinguish tax increase, tax decrease, reclassification, and cancellation.
+- The original tax record remains unchanged; correction entries carry their own identity and timestamp.
+- A correction affecting inventory cost must update valuation only through an approved cost adjustment.
+- A correction affecting a completed sale must not silently rewrite recognized revenue or margin.
+- Tax adjustments must identify whether they belong to the current period or require prior-period treatment.
+- Any refundable or recoverable tax must be classified separately from expense.
+- Reports must show gross value, tax component, and net effect consistently.
 
-## Related
-- Wallet
-- Ledger
-- Audit
+Invariants:
+- Tax cannot be adjusted without traceable evidence.
+- Tax corrections cannot create duplicate financial impact.
+- Tax treatment must remain reconcilable to source documents.
+
+Related:
+- FIN-BR-015
+- FIN-BR-026
+- FIN-BR-041
