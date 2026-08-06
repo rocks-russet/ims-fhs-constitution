@@ -31,3 +31,13 @@ Added:
 - CON-BR-010 Default Address Policy
 - CON-BR-011 External Contact Identity
 - CON-BR-012 Contact Privacy, Access, and Audit
+
+## v0.2.0 Part 24 — Contact Completion and Integrity Rules
+
+Added:
+- CON-BR-013 Contact Tag and Classification
+- CON-BR-014 Contact Notes and Communication Preferences
+- CON-BR-015 Contact Transaction Snapshot
+- CON-BR-016 Contact Import and Export
+- CON-BR-017 Contact Data Integrity Audit
+- CON-BR-018 System and Generic Contacts
