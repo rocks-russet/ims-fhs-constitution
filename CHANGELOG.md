@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.5.0 Financial Business Rules Part 5
+
+Generated: 2026-08-06 09:42 WIB
+
+Added:
+- FIN-BR-025 Budget Planning and Spending Control
+- FIN-BR-026 Purchase Commitment, Vendor Payment, and Inventory Cost
+- FIN-BR-027 Deposit, Prepayment, and Deferred Financial Treatment
+- FIN-BR-028 Restricted Funds, Reserves, and Liquidity Protection
+- FIN-BR-029 Accrual, Deferral, and Period Attribution
+- FIN-BR-030 Financial Reference Data, Classification, and Control
+
+
 ## v0.5.0 Financial Business Rules Part 4
 
 Generated: 2026-08-06 09:37 WIB
