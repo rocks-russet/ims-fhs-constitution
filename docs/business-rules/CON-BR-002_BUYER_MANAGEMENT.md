@@ -2,26 +2,31 @@
 
 ## Purpose
 
-Define governance for buyer management within the IMS FHS contact domain.
+Govern buyer-specific contact data used by Sales without duplicating sales-order lifecycle rules.
 
 ## Rules
 
-1. Every contact has one immutable Contact ID.
-2. Contact history is append-only and auditable.
-3. Changes must record actor, timestamp, previous value, and new value.
-4. Contact data must not directly modify sales, inventory, or financial history.
-5. References from Sales, Purchase, and Finance must continue to resolve after updates.
-6. Deactivation is preferred over deletion.
-7. Merge operations preserve all historical references.
-8. Personal/contact information follows authorization rules.
+1. A buyer must be represented by a contact with `roles.buyer = true`.
+2. Buyer creation may occur before checkout or during a governed sales workflow when no matching contact exists.
+3. Buyer identity selection must use `contactId`.
+4. Buyer display name is required before an order can be finalized.
+5. A buyer may have multiple phones and multiple addresses.
+6. Buyer contact updates must not change buyer data already snapshotted on issued invoices or completed orders.
+7. A buyer may be deactivated only when no active workflow requires new use of that contact.
+8. Buyer notes and tags must not be treated as authoritative payment, shipping, or financial evidence.
+9. Buyer reassignment on an existing order must follow Sales amendment and locking rules.
+10. Duplicate buyer creation must be prevented through CON-BR-005.
 
 ## Invariants
 
-- Historical references remain valid.
-- Stable identifiers never change.
-- Contact records remain traceable.
+- One buyer may have many orders.
+- A buyer update does not silently alter historical invoices.
+- Buyer identity is independent from a single phone number or address.
+- Deactivation does not remove prior sales history.
 
 ## Related
 
-- SAL-BR-040
-- FIN-BR-053
+- CON-BR-001
+- CON-BR-004
+- CON-BR-005
+- SAL-BR-017

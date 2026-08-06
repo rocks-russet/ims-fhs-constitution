@@ -2,26 +2,42 @@
 
 ## Purpose
 
-Define governance for contact lifecycle within the IMS FHS contact domain.
+Define the authoritative lifecycle, identity, and governance of contacts used across Purchase, Sales, Inventory, and Finance.
 
 ## Rules
 
-1. Every contact has one immutable Contact ID.
-2. Contact history is append-only and auditable.
-3. Changes must record actor, timestamp, previous value, and new value.
-4. Contact data must not directly modify sales, inventory, or financial history.
-5. References from Sales, Purchase, and Finance must continue to resolve after updates.
-6. Deactivation is preferred over deletion.
-7. Merge operations preserve all historical references.
-8. Personal/contact information follows authorization rules.
+1. Every contact must have one immutable `contactId`.
+2. A contact may hold one or more roles, including `buyer` and `seller`.
+3. Contact status must be one of:
+   - `ACTIVE`;
+   - `INACTIVE`;
+   - `MERGED`; or
+   - `ARCHIVED`.
+4. A contact record may contain:
+   - display name;
+   - phones;
+   - addresses;
+   - role flags;
+   - marketplace or social references;
+   - tags;
+   - notes; and
+   - audit metadata.
+5. Stable identity is represented by `contactId`, not by display name, phone number, address, or marketplace account.
+6. Contact updates must preserve historical references from orders, purchases, invoices, shipments, and financial records.
+7. Contacts referenced by historical transactions must not be hard-deleted.
+8. Deactivation prevents new operational use but does not invalidate prior references.
+9. Reactivation requires authorization and must retain the same `contactId`.
+10. Lifecycle changes must record actor, timestamp, reason, previous status, and new status.
 
 ## Invariants
 
-- Historical references remain valid.
-- Stable identifiers never change.
-- Contact records remain traceable.
+- `contactId` never changes.
+- Historical transactions remain resolvable after contact updates.
+- Contact status changes do not rewrite transaction snapshots.
+- One contact may be both buyer and seller without duplicate identities.
 
 ## Related
 
-- SAL-BR-040
-- FIN-BR-053
+- SAL-BR-002
+- SAL-BR-016
+- PUR-BR

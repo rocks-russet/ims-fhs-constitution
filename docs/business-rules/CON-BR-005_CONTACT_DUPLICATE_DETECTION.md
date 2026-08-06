@@ -2,26 +2,41 @@
 
 ## Purpose
 
-Define governance for contact duplicate detection within the IMS FHS contact domain.
+Prevent unnecessary duplicate contacts while allowing legitimate contacts with similar names or shared details.
 
 ## Rules
 
-1. Every contact has one immutable Contact ID.
-2. Contact history is append-only and auditable.
-3. Changes must record actor, timestamp, previous value, and new value.
-4. Contact data must not directly modify sales, inventory, or financial history.
-5. References from Sales, Purchase, and Finance must continue to resolve after updates.
-6. Deactivation is preferred over deletion.
-7. Merge operations preserve all historical references.
-8. Personal/contact information follows authorization rules.
+1. Duplicate detection must run before contact creation and before merge approval.
+2. Candidate matching may use:
+   - normalized display name;
+   - normalized phone numbers;
+   - marketplace or social profile;
+   - normalized address;
+   - known aliases; and
+   - existing buyer or seller relationships.
+3. Phone-number matches carry stronger weight than display-name-only matches.
+4. Name similarity alone must not automatically merge contacts.
+5. Duplicate detection results must distinguish:
+   - `EXACT_MATCH`;
+   - `LIKELY_DUPLICATE`;
+   - `POSSIBLE_DUPLICATE`; and
+   - `NO_MATCH`.
+6. Exact matches should reuse the existing contact unless evidence shows they are different people or entities.
+7. Likely and possible duplicates require user review.
+8. A reviewer may proceed with separate creation only after recording the reason.
+9. Detection must consider contacts in `ACTIVE`, `INACTIVE`, `MERGED`, and `ARCHIVED` states.
+10. False-positive decisions should remain auditable to improve future matching behavior.
 
 ## Invariants
 
-- Historical references remain valid.
-- Stable identifiers never change.
-- Contact records remain traceable.
+- Duplicate detection never silently merges records.
+- Stable contact identity is not inferred from name alone.
+- A previously merged contact cannot be recreated accidentally without warning.
+- Matching logic must not modify transactional data.
 
 ## Related
 
-- SAL-BR-040
-- FIN-BR-053
+- CON-BR-001
+- CON-BR-002
+- CON-BR-003
+- CON-BR-006
