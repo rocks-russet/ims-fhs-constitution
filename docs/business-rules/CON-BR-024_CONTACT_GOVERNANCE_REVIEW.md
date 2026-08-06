@@ -1,31 +1,25 @@
 # CON-BR-024 — Contact Governance Review
 
+## Feature Origin
+
+Contact Audit and Settings.
+
 ## Purpose
 
-Define governance for contact governance review while preserving stable contact identity and historical transaction references.
+Periodically confirm that Contact behavior remains aligned with the approved IMS FHS v1 feature map.
 
 ## Rules
 
-1. Operations must reference a stable `contactId`.
-2. Every change records actor, timestamp, reason, and affected fields.
-3. Historical Purchase, Sales, Invoice, Shipment, and Financial snapshots remain immutable.
-4. Validation executes before commit.
-5. Authorization is required where policy mandates.
-6. Operations are atomic.
-7. Every mutation is append-only in the audit trail.
-8. Cross-domain references remain valid.
-9. Changes never rewrite historical snapshots.
-10. Failures leave the prior committed state intact.
+1. Review covers identity uniqueness, Buyer/Seller role use, duplicate handling, Merge, analytics sources, privacy, import/export, and cross-module references.
+2. Every CON-BR must map to an approved Contact feature.
+3. Proposed features must not be treated as existing requirements until approved.
+4. Review identifies duplicate, conflicting, generic, unsupported, or obsolete rules.
+5. Findings record owner, severity, action, and status.
+6. Changes require versioned Constitution updates.
+7. Review must specifically confirm that one entity is not split into separate Buyer and Seller Contacts.
+8. Review must confirm Contact analytics reconcile to authoritative Purchase and Sales data.
 
 ## Invariants
 
-- `contactId` never changes.
-- Transaction history remains reproducible.
-- Audit history is immutable.
-- Contact master is the authoritative source.
-
-## Related
-
-- CON-BR-001
-- CON-BR-017
-- CON-BR-018
+- Governance review does not directly mutate Contact data.
+- Unapproved proposals remain outside the v1 baseline.

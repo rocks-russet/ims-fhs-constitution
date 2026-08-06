@@ -1,31 +1,24 @@
 # CON-BR-019 — Contact Role Transition
 
+## Feature Origin
+
+Contact Detail → Role editing.
+
 ## Purpose
 
-Define governance for contact role transition while preserving stable contact identity and historical transaction references.
+Govern adding or removing Buyer and Seller roles on an existing Contact.
 
 ## Rules
 
-1. Operations must reference a stable `contactId`.
-2. Every change records actor, timestamp, reason, and affected fields.
-3. Historical Purchase, Sales, Invoice, Shipment, and Financial snapshots remain immutable.
-4. Validation executes before commit.
-5. Authorization is required where policy mandates.
-6. Operations are atomic.
-7. Every mutation is append-only in the audit trail.
-8. Cross-domain references remain valid.
-9. Changes never rewrite historical snapshots.
-10. Failures leave the prior committed state intact.
+1. Adding a role updates the existing `contactId`.
+2. Role transition must never create a duplicate Contact.
+3. Removing a role prevents future selection in that role but preserves historical transactions.
+4. A Contact may retain both Buyer and Seller roles.
+5. Role changes record actor, timestamp, reason, previous roles, and new roles.
+6. Role removal is blocked when an active workflow still requires that role.
+7. Role reactivation uses the same Contact identity.
 
 ## Invariants
 
-- `contactId` never changes.
-- Transaction history remains reproducible.
-- Audit history is immutable.
-- Contact master is the authoritative source.
-
-## Related
-
-- CON-BR-001
-- CON-BR-017
-- CON-BR-018
+- One entity remains one Contact across all roles.
+- Role history is auditable.

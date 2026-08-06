@@ -1,31 +1,25 @@
 # CON-BR-023 — Contact Retention Policy
 
+## Feature Origin
+
+Archive, Privacy, and Audit.
+
 ## Purpose
 
-Define governance for contact retention policy while preserving stable contact identity and historical transaction references.
+Preserve Contact data for operational and historical needs without retaining unnecessary data indefinitely.
 
 ## Rules
 
-1. Operations must reference a stable `contactId`.
-2. Every change records actor, timestamp, reason, and affected fields.
-3. Historical Purchase, Sales, Invoice, Shipment, and Financial snapshots remain immutable.
-4. Validation executes before commit.
-5. Authorization is required where policy mandates.
-6. Operations are atomic.
-7. Every mutation is append-only in the audit trail.
-8. Cross-domain references remain valid.
-9. Changes never rewrite historical snapshots.
-10. Failures leave the prior committed state intact.
+1. Contact records referenced by active or historical transactions remain retained as required.
+2. Transaction snapshots remain under their transaction-domain retention rules.
+3. Unused Contacts may be archived after review.
+4. Active disputes, audits, investigations, or legal holds suspend disposal.
+5. Disposal requires authorization and an audit record.
+6. Required stable identifiers and transaction references must remain resolvable.
+7. Sensitive data no longer required may be minimized where permitted without breaking historical evidence.
+8. Retention decisions must not alter transaction values or ownership history.
 
 ## Invariants
 
-- `contactId` never changes.
-- Transaction history remains reproducible.
-- Audit history is immutable.
-- Contact master is the authoritative source.
-
-## Related
-
-- CON-BR-001
-- CON-BR-017
-- CON-BR-018
+- Retention cleanup does not orphan transactions.
+- Archival remains distinguishable from disposal.

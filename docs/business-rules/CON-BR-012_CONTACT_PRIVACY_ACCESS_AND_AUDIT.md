@@ -1,34 +1,27 @@
 # CON-BR-012 — Contact Privacy, Access, and Audit
 
+## Feature Origin
+
+Contact Detail → Audit and access control.
+
 ## Purpose
 
-Protect contact information while preserving operational usability, accountability, and traceability.
+Protect Contact data while retaining operational usability.
 
 ## Rules
 
-1. Contact access must follow role-based authorization.
-2. Users may view only the fields required for their operational responsibilities.
-3. Sensitive fields include phone numbers, full addresses, private notes, and external account identifiers.
-4. Contact creation, update, deactivation, merge, archival, and sensitive-field access must be auditable.
-5. Audit records must capture actor, timestamp, action, contact ID, and affected fields.
-6. Credentials, passwords, authentication secrets, or financial access tokens must never be stored in contact records.
-7. Export of contact data requires authorization, declared purpose, scope limitation, and audit logging.
-8. Contact exports must minimize unnecessary personal data.
-9. Unauthorized bulk enumeration or scraping of contacts must be prevented.
-10. Privacy correction requests must update contact master data without rewriting immutable transaction snapshots.
-11. Audit history must not expose secrets that are prohibited from storage.
-12. Contact data disposal, where legally and operationally permitted, must preserve required transaction and audit references.
+1. Contact data access follows role-based authorization.
+2. Sensitive fields include phones, full addresses, internal notes, and external identifiers.
+3. Creation, update, role change, deactivation, merge, archive, import, export, and sensitive access are auditable.
+4. Audit records include actor, timestamp, action, Contact ID, and affected fields.
+5. Passwords, authentication secrets, payment credentials, and tokens must never be stored in Contact records.
+6. Bulk export requires explicit authorization and purpose.
+7. Export minimizes unnecessary personal data.
+8. Unauthorized bulk enumeration is prohibited.
+9. Contact corrections do not rewrite immutable transaction snapshots.
 
 ## Invariants
 
-- Operational access does not imply unrestricted export rights.
-- Contact records never become a credential store.
-- Historical transaction evidence remains intact after contact corrections.
-- Sensitive contact actions remain attributable.
-
-## Related
-
-- CON-BR-001
-- CON-BR-007
-- AUTH-BR
-- FIN-BR-053
+- Operational access does not imply unrestricted export.
+- Contact Manager is not a credential store.
+- Sensitive actions remain attributable.

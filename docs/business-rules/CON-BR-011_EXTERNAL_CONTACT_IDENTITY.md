@@ -1,38 +1,26 @@
-# CON-BR-011 — External Contact Identity
+# CON-BR-011 — Marketplace and External Identity Management
+
+## Feature Origin
+
+Contact Detail → Marketplace.
 
 ## Purpose
 
-Govern marketplace, social-media, platform, and other external identities linked to a contact.
+Manage Facebook, Tokopedia, Shopee, Instagram, and other external Contact identities.
 
 ## Rules
 
-1. External identities must be stored as structured references containing:
-   - provider or platform;
-   - account handle or external ID;
-   - profile URL where applicable;
-   - verification status;
-   - active status; and
-   - audit metadata.
-2. One contact may have multiple external identities.
-3. The same verified external identity must not be actively linked to multiple contacts without explicit review.
-4. Display names from external platforms must not replace the stable IMS `contactId`.
-5. External identity updates must not rewrite historical order, listing, payment, or dispute references.
-6. Unverified external identities may support search but must not be treated as conclusive identity evidence.
-7. A provider account change must preserve the prior value in history.
-8. Merging contacts must deduplicate equivalent external identities.
-9. Access to sensitive external identifiers must follow authorization policy.
-10. Removal from active use must use deactivation rather than destructive deletion when historically referenced.
+1. External identities store provider, handle/external ID, URL where applicable, verification status, active status, and audit metadata.
+2. A Contact may have multiple external identities.
+3. The same verified external identity should not be actively linked to multiple Contacts without review.
+4. External display name does not replace `contactId`.
+5. Identity changes preserve prior values in history.
+6. Deactivation is used instead of destructive deletion when historically referenced.
+7. External identities support search and duplicate detection.
+8. Marketplace identity does not independently prove payment or transaction completion.
 
 ## Invariants
 
-- External provider identity is not the IMS primary key.
-- One verified external account cannot silently resolve to two active contacts.
-- Historical platform references remain reproducible.
-- External identity changes are auditable.
-
-## Related
-
-- CON-BR-005
-- CON-BR-006
-- SAL-BR-015
-- SAL-BR-027
+- External identity is not the IMS primary key.
+- Historical marketplace references remain reproducible.
+- Changes remain auditable.

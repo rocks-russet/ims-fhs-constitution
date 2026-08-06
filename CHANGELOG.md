@@ -61,3 +61,18 @@ Corrected:
 - CON-BR-022
 - CON-BR-023
 - CON-BR-024
+
+## v0.3.0 Contact v1 Refactor
+
+Replaced and aligned:
+- CON-BR-001 through CON-BR-024 against the approved Contact Manager feature map
+- Explicitly established one real-world entity as one Contact
+- Explicitly established Buyer and Seller as roles of the same Contact
+- Removed inferred Contact-to-Contact relationship functionality
+- Added Buyer and Seller operational analytics requirements
+
+Added:
+- CON-BR-025 Buyer Analytics
+- CON-BR-026 Seller Analytics
+- CON-BR-027 Contact Analytics Dashboard
+- CON-BR-028 Contact Settings

@@ -1,31 +1,25 @@
 # CON-BR-020 — Contact Alias Management
 
+## Feature Origin
+
+Contact search and duplicate review.
+
 ## Purpose
 
-Define governance for contact alias management while preserving stable contact identity and historical transaction references.
+Support alternative names without creating duplicate identities.
 
 ## Rules
 
-1. Operations must reference a stable `contactId`.
-2. Every change records actor, timestamp, reason, and affected fields.
-3. Historical Purchase, Sales, Invoice, Shipment, and Financial snapshots remain immutable.
-4. Validation executes before commit.
-5. Authorization is required where policy mandates.
-6. Operations are atomic.
-7. Every mutation is append-only in the audit trail.
-8. Cross-domain references remain valid.
-9. Changes never rewrite historical snapshots.
-10. Failures leave the prior committed state intact.
+1. A Contact may have multiple aliases.
+2. Aliases support search and duplicate detection.
+3. Alias is not a separate Contact.
+4. Alias creation records actor and timestamp.
+5. Duplicate normalized aliases are deduplicated.
+6. A former marketplace name or known nickname may be stored as an alias.
+7. Aliases do not replace the canonical display name unless explicitly promoted.
+8. Merge preserves aliases from both Contacts.
 
 ## Invariants
 
-- `contactId` never changes.
-- Transaction history remains reproducible.
-- Audit history is immutable.
-- Contact master is the authoritative source.
-
-## Related
-
-- CON-BR-001
-- CON-BR-017
-- CON-BR-018
+- Alias never creates a second identity.
+- Search resolves aliases to the same `contactId`.

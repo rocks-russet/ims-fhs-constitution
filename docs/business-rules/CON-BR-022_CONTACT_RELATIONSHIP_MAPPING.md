@@ -1,31 +1,26 @@
-# CON-BR-022 — Contact Relationship Mapping
+# CON-BR-022 — Cross-Module Contact Reference Mapping
+
+## Feature Origin
+
+Contact integration with Purchase and Sales.
 
 ## Purpose
 
-Define governance for contact relationship mapping while preserving stable contact identity and historical transaction references.
+Define how Purchase, Sales, Invoice, and Shipment records reference Contacts. This rule does not create a Contact-to-Contact relationship feature.
 
 ## Rules
 
-1. Operations must reference a stable `contactId`.
-2. Every change records actor, timestamp, reason, and affected fields.
-3. Historical Purchase, Sales, Invoice, Shipment, and Financial snapshots remain immutable.
-4. Validation executes before commit.
-5. Authorization is required where policy mandates.
-6. Operations are atomic.
-7. Every mutation is append-only in the audit trail.
-8. Cross-domain references remain valid.
-9. Changes never rewrite historical snapshots.
-10. Failures leave the prior committed state intact.
+1. Purchase references Seller `contactId`.
+2. Sales references Buyer `contactId`.
+3. Invoice and Shipment retain transaction snapshots plus the source `contactId`.
+4. A Contact performing both roles is referenced through the same `contactId`.
+5. Current navigation may resolve merged Contacts to the survivor.
+6. Historical records preserve their original Contact reference and snapshot.
+7. Contact analytics aggregate by canonical Contact identity while retaining source lineage.
+8. No inferred relationship graph between Contacts is generated.
 
 ## Invariants
 
-- `contactId` never changes.
-- Transaction history remains reproducible.
-- Audit history is immutable.
-- Contact master is the authoritative source.
-
-## Related
-
-- CON-BR-001
-- CON-BR-017
-- CON-BR-018
+- Cross-module references remain resolvable.
+- Buyer/Seller role differences do not create separate Contacts.
+- This rule does not introduce a Relationship menu.

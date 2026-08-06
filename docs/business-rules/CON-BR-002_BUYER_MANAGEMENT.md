@@ -1,32 +1,26 @@
-# CON-BR-002 — Buyer Management
+# CON-BR-002 — Buyer Role and Buyer Profile
+
+## Feature Origin
+
+Contact Detail → Buyer.
 
 ## Purpose
 
-Govern buyer-specific contact data used by Sales without duplicating sales-order lifecycle rules.
+Govern Buyer-role behavior and buyer-facing summary information.
 
 ## Rules
 
-1. A buyer must be represented by a contact with `roles.buyer = true`.
-2. Buyer creation may occur before checkout or during a governed sales workflow when no matching contact exists.
-3. Buyer identity selection must use `contactId`.
-4. Buyer display name is required before an order can be finalized.
-5. A buyer may have multiple phones and multiple addresses.
-6. Buyer contact updates must not change buyer data already snapshotted on issued invoices or completed orders.
-7. A buyer may be deactivated only when no active workflow requires new use of that contact.
-8. Buyer notes and tags must not be treated as authoritative payment, shipping, or financial evidence.
-9. Buyer reassignment on an existing order must follow Sales amendment and locking rules.
-10. Duplicate buyer creation must be prevented through CON-BR-005.
+1. A Contact acts as Buyer when `roles.buyer = true`.
+2. Enabling Buyer role must update the existing Contact.
+3. Buyer identity on Sales records uses `contactId`.
+4. Buyer profile may display total completed spending, completed order count, average completed order value, first purchase, last purchase, cancellation count, and favorite category.
+5. Buyer metrics must derive from authoritative Sales records and must not be manually edited.
+6. Cancelled, test, draft, and invalid orders are excluded unless the metric explicitly states otherwise.
+7. Contact edits must not rewrite Buyer snapshots on historical invoices, orders, or shipments.
+8. Disabling Buyer role prevents new Buyer selection but preserves all historical Sales records.
 
 ## Invariants
 
-- One buyer may have many orders.
-- A buyer update does not silently alter historical invoices.
-- Buyer identity is independent from a single phone number or address.
-- Deactivation does not remove prior sales history.
-
-## Related
-
-- CON-BR-001
-- CON-BR-004
-- CON-BR-005
-- SAL-BR-017
+- Buyer is a role, not a separate Contact.
+- One Buyer profile aggregates all valid Sales records linked to the same `contactId`.
+- Historical Buyer analytics remain reproducible from source transactions.

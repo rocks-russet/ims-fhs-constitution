@@ -1,31 +1,24 @@
 # CON-BR-021 — Contact Verification Status
 
+## Feature Origin
+
+Duplicate Review and Contact Detail.
+
 ## Purpose
 
-Define governance for contact verification status while preserving stable contact identity and historical transaction references.
+Represent confidence in individual Contact fields without implying full identity certification.
 
 ## Rules
 
-1. Operations must reference a stable `contactId`.
-2. Every change records actor, timestamp, reason, and affected fields.
-3. Historical Purchase, Sales, Invoice, Shipment, and Financial snapshots remain immutable.
-4. Validation executes before commit.
-5. Authorization is required where policy mandates.
-6. Operations are atomic.
-7. Every mutation is append-only in the audit trail.
-8. Cross-domain references remain valid.
-9. Changes never rewrite historical snapshots.
-10. Failures leave the prior committed state intact.
+1. Verification may apply to phone, address, or external identity fields.
+2. Status is `UNVERIFIED`, `VERIFIED`, `DISPUTED`, or `EXPIRED` where applicable.
+3. Verification records method, actor, timestamp, and evidence reference.
+4. Verification does not replace transaction-specific validation.
+5. Disputed or expired values remain in history but are not treated as currently verified.
+6. Verification status supports duplicate review and safer selection.
+7. A Contact does not become a different identity when a field loses verification.
 
 ## Invariants
 
-- `contactId` never changes.
-- Transaction history remains reproducible.
-- Audit history is immutable.
-- Contact master is the authoritative source.
-
-## Related
-
-- CON-BR-001
-- CON-BR-017
-- CON-BR-018
+- Verification applies to a field or evidence claim, not to ownership of the `contactId` as an absolute fact.
+- Verification changes are auditable.

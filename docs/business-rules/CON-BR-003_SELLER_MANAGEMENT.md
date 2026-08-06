@@ -1,32 +1,27 @@
-# CON-BR-003 — Seller Management
+# CON-BR-003 — Seller Role and Seller Profile
+
+## Feature Origin
+
+Contact Detail → Seller.
 
 ## Purpose
 
-Govern seller and supplier contacts used by Purchase and acquisition workflows.
+Govern Seller-role behavior and supplier-facing summary information.
 
 ## Rules
 
-1. A seller must be represented by a contact with `roles.seller = true`.
-2. Seller identity selection must use `contactId`.
-3. A seller record may include phones, addresses, marketplace profile, social reference, tags, and notes.
-4. Seller creation must check for duplicates before a new contact is committed.
-5. Historical purchase records must retain the seller identity or seller snapshot applicable at transaction time.
-6. Updating seller contact data must not rewrite completed purchase records.
-7. A seller may also be a buyer under the same contact identity.
-8. A designated generic seller such as `Other Seller` may be used only when the actual seller cannot reasonably be identified.
-9. Use of a generic seller must not prevent later linkage to a real seller through an audited correction.
-10. Deactivated sellers cannot be selected for new purchases but remain visible in historical records.
+1. A Contact acts as Seller when `roles.seller = true`.
+2. Enabling Seller role must update the existing Contact.
+3. Seller identity on Purchase records uses `contactId`.
+4. Seller profile may display total amount purchased from the Seller, purchase count, average purchase value, total inventory units supplied, first supply, last supply, and frequently supplied category.
+5. Seller metrics must derive from authoritative Purchase History and Inventory records.
+6. Cancelled, test, rolled-back, and invalid purchases are excluded unless explicitly stated.
+7. Contact edits must not rewrite Seller snapshots on historical Purchase records.
+8. Disabling Seller role prevents new Seller selection but preserves all historical Purchase records.
+9. `Other Seller` remains a governed generic Contact for purchases where the actual Seller is unknown.
 
 ## Invariants
 
-- Seller identity is stable across purchases.
-- A seller and buyer with the same real-world identity should not require separate contact records.
-- Generic seller use must remain distinguishable from verified seller identity.
-- Seller changes do not alter historical acquisition evidence.
-
-## Related
-
-- CON-BR-001
-- CON-BR-005
-- CON-BR-006
-- PUR-BR
+- Seller is a role, not a separate Contact.
+- Buyer and Seller activity for the same entity remain under one `contactId`.
+- Seller analytics remain traceable to Purchase and Inventory source records.
