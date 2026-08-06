@@ -21,3 +21,13 @@ Corrected and completed:
 - CON-BR-006 Contact Merge
 
 The generic placeholder content was replaced with enforceable, scope-specific contact rules and invariants.
+
+## v0.2.0 Part 23 — Contact Governance Expansion
+
+Added:
+- CON-BR-007 Contact Deactivation and Archival
+- CON-BR-008 Contact Search and Selection
+- CON-BR-009 Phone Number Management
+- CON-BR-010 Default Address Policy
+- CON-BR-011 External Contact Identity
+- CON-BR-012 Contact Privacy, Access, and Audit
