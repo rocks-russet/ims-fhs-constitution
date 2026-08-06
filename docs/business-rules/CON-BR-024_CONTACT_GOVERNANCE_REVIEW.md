@@ -1,27 +1,31 @@
 # CON-BR-024 — Contact Governance Review
 
 ## Purpose
-Govern contact governance review within the Contact domain.
+
+Define governance for contact governance review while preserving stable contact identity and historical transaction references.
 
 ## Rules
-1. Changes must reference a stable `contactId`.
-2. Every change records actor, timestamp, reason, and previous/new values.
-3. Historical Purchase, Sales, Shipment, Invoice, and Financial references remain immutable.
-4. Changes must not silently rewrite transaction snapshots.
-5. Any cross-reference created or removed must remain auditable.
-6. Operations requiring approval must follow the authorization policy.
-7. Validation must execute before commit.
-8. Failures must roll back atomically.
-9. Read models may refresh, but source records remain authoritative.
-10. All actions are append-only in the audit trail.
+
+1. Operations must reference a stable `contactId`.
+2. Every change records actor, timestamp, reason, and affected fields.
+3. Historical Purchase, Sales, Invoice, Shipment, and Financial snapshots remain immutable.
+4. Validation executes before commit.
+5. Authorization is required where policy mandates.
+6. Operations are atomic.
+7. Every mutation is append-only in the audit trail.
+8. Cross-domain references remain valid.
+9. Changes never rewrite historical snapshots.
+10. Failures leave the prior committed state intact.
 
 ## Invariants
+
 - `contactId` never changes.
 - Transaction history remains reproducible.
 - Audit history is immutable.
-- Contact master remains the single source of truth.
+- Contact master is the authoritative source.
 
 ## Related
+
 - CON-BR-001
 - CON-BR-017
 - CON-BR-018
