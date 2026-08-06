@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.5.0 Financial Business Rules Part 8
+
+Generated: 2026-08-06 10:16 WIB
+
+Added:
+- FIN-BR-043 Financial Authority Limits and Approval Thresholds
+- FIN-BR-044 Financial Fraud Prevention and Suspicious Activity Control
+- FIN-BR-045 Payment Instrument and Financial Account Master Control
+- FIN-BR-046 Counterparty Credit and Financial Exposure Control
+- FIN-BR-047 Financial Interface, Import, Export, and Integration Control
+- FIN-BR-048 Financial Governance Change and Policy Exception Control
+
+
+
 ## v0.5.0 Financial Business Rules Part 7
 
 Generated: 2026-08-06 10:09 WIB
