@@ -41,3 +41,13 @@ Added:
 - CON-BR-016 Contact Import and Export
 - CON-BR-017 Contact Data Integrity Audit
 - CON-BR-018 System and Generic Contacts
+
+## v0.2.0 Part 25 — Contact Governance Extension
+
+Added:
+- CON-BR-019 Contact Role Transition
+- CON-BR-020 Contact Alias Management
+- CON-BR-021 Contact Verification Status
+- CON-BR-022 Contact Relationship Mapping
+- CON-BR-023 Contact Retention Policy
+- CON-BR-024 Contact Governance Review
