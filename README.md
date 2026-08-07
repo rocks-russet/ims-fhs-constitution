@@ -39,17 +39,19 @@
 ### External Integration Specification
 - INT
 
+### Infrastructure Blueprint
+- INF
+
 ### Implementation Guide
 - GUIDE
 
 ### Next Engineering Specifications
-- Infrastructure Blueprint
 - Coding Standard
 - UI/UX Specification
 - Screen Catalog + approved HTML mockups
 
 ## Recommended onboarding
 
-Foundation → Business Rules → Architecture → Data Dictionary → Database Blueprint → Internal API Specification → External Integration Specification → Implementation Guide → Source Code
+Foundation → Business Rules → Architecture → Data Dictionary → Database Blueprint → Internal API Specification → External Integration Specification → Infrastructure Blueprint → Implementation Guide → Source Code
 
 The Constitution and approved engineering specifications are the authoritative reference for IMS FHS v2.

@@ -340,3 +340,21 @@ Updated:
 Notes:
 - Provider-specific rate limits, URLs, selectors, and authentication details must be verified at implementation time.
 - Domain engines consume normalized IMS FHS Market/Card services rather than calling external providers directly.
+
+## v0.15.0 — Infrastructure Blueprint v1
+
+Added:
+- INF-001 through INF-014
+- Railway Web/Worker/PostgreSQL/Object Storage topology
+- optional Redis policy
+- queue/worker and scheduler strategy
+- environment isolation
+- CI/CD/deployment
+- secrets/network security
+- observability
+- backup/disaster recovery
+- performance/scaling
+- production readiness checklist
+
+Updated:
+- README reading order now includes Infrastructure Blueprint
