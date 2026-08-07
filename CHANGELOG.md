@@ -321,3 +321,22 @@ Updated:
 
 Boundary:
 - External OPTCG API / PriceCharting / Yuyutei integration is intentionally excluded and will be documented separately.
+
+## v0.14.0 — External Integration Specification v1
+
+Added:
+- INT-001 through INT-008
+- OPTCG Card API integration boundary
+- Bandai official card-source verification
+- PriceCharting EN market adapter
+- Yuyutei JP market adapter
+- provider normalization/matching contract
+- rate-limit/retry/cache/freshness behavior
+- integration security and observability
+
+Updated:
+- README reading order now includes External Integration Specification
+
+Notes:
+- Provider-specific rate limits, URLs, selectors, and authentication details must be verified at implementation time.
+- Domain engines consume normalized IMS FHS Market/Card services rather than calling external providers directly.
