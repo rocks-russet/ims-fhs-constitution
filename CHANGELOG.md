@@ -358,3 +358,10 @@ Added:
 
 Updated:
 - README reading order now includes Infrastructure Blueprint
+
+
+## v0.16.0 — Coding Standard v1
+
+Added:
+- CODE-001 to CODE-016
+- Engineering, backend/frontend, database, transaction, worker, security, validation, performance, testing and release standards.
