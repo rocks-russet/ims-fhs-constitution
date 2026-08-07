@@ -227,3 +227,29 @@ Scope:
 - Interaction locking, visible loading, double-submit prevention, atomic/idempotent commit and safe recovery
 
 Existing SYS-BR detected before generation: 0
+
+## v0.9.0 — Architecture v1 Foundation
+
+Added:
+- ARCH-001 through ARCH-010
+- ADR-001 through ADR-008
+
+Scope:
+- System overview
+- Domain model
+- ER blueprint
+- Database principles
+- Domain Event Dictionary
+- Critical sequence flows
+- Permission matrix blueprint
+- Application repository structure
+- API contract principles
+- Railway deployment architecture
+- PostgreSQL source-of-truth decision
+- Event-driven platform decision
+- Optional Redis accelerator decision
+- Portfolio separation decision
+- Transaction market snapshot decision
+- Actor/owner separation decision
+- Adaptive MFA decision
+- Async non-critical work decision
