@@ -291,3 +291,19 @@ Updated:
 - README.md
 - Reading Order reflects current repository structure
 - Added implementation phases from Foundation to Production
+
+## v0.12.0 — Database Blueprint v1
+
+Added:
+- DB-001 through DB-016
+- PostgreSQL relational blueprint aligned with reviewed IMS FHS Business Rules
+- Contact, Auth, Purchase, Inventory, Product/Card/Market, Sales, Finance schemas
+- Portfolio/Analytics read models
+- Event/Approval/Job/Audit/File schemas
+- Index, constraint, transaction-boundary, migration, archive and backup strategy
+
+Notes:
+- PostgreSQL remains source of truth
+- Redis remains optional acceleration infrastructure only
+- Portfolio/Analytics remain rebuildable derived models
+- Critical commits remain atomic/idempotent
