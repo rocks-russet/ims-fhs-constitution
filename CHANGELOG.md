@@ -150,3 +150,34 @@ Aligned Finance v1 scope:
 
 Repository cleanup required:
 - DELETE old FIN-BR-053 through FIN-BR-078
+
+## v0.6.0 — Inventory v1 Refactor + Market Intelligence
+
+Inventory:
+- Replaced INV-BR-001 through INV-BR-016 with the reviewed Inventory v1 model
+- Added INV-BR-017 through INV-BR-062
+- Added Serialized Card and low-value Bulk Card Lot models
+- Added operator-defined bulk grouping and Bulk -> Serialized extraction
+- Added free-form splittable Product workflow with quantity/cost conservation
+- Simplified physical tracking to Owner + Holder + Storage; no formal custody-transfer workflow
+- Deferred High-Value second-person verification from baseline
+- Added PriceCharting for English and Yuyutei for Japanese card market observations
+- Added Portfolio Engine, personal asset dashboard integration, Inventory Explorer Grid/List views, dynamic columns, sorting, filtering, and type-aware Inventory Detail
+- Added bidirectional Inventory <-> Purchase <-> Contact/Sales navigation
+- Added Packing Supply inventory integration
+
+Purchase:
+- Added PUR-BR-045 Market Snapshot at Purchase
+- Added PUR-BR-046 Purchase Price vs Market Variance
+
+Sales:
+- Added SAL-BR-047 Market Snapshot at Sale
+- Added SAL-BR-048 Sale Price vs Market Variance
+
+Contact:
+- Added CON-BR-029 Seller Price Behaviour Analytics
+- Added CON-BR-030 Buyer Price Behaviour Analytics
+
+Repository cleanup:
+- Delete the old INV-BR-001 through INV-BR-016 files before/after uploading this replacement because the refactor uses new filenames.
+- Delete obsolete duplicate SAL-BR files left from the pre-refactor Sales naming set; keep the current Sales v1 filenames and SAL-BR-047/048.
