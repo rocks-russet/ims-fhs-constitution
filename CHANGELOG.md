@@ -181,3 +181,24 @@ Contact:
 Repository cleanup:
 - Delete the old INV-BR-001 through INV-BR-016 files before/after uploading this replacement because the refactor uses new filenames.
 - Delete obsolete duplicate SAL-BR files left from the pre-refactor Sales naming set; keep the current Sales v1 filenames and SAL-BR-047/048.
+
+## v0.7.0 — Authentication & Authorization v1
+
+Added:
+- AUTH-BR-001 through AUTH-BR-038
+
+Scope:
+- Modern adaptive password hashing (Argon2id preferred)
+- Login/password/reset/account lock
+- Server-side sessions, 8-hour baseline TTL, sliding expiration, single active session
+- Granular roles/permissions and resource-level authorization
+- Actor vs owner separation
+- Read-only access and authenticated bootstrap
+- Personal Wallet + Portfolio dashboard context
+- TOTP enrollment for all users with adaptive risk-based MFA
+- Trusted devices, recovery codes, step-up authentication
+- Rate limiting, CSRF, HTTPS, security headers, secret management
+- Direct-URL/API protection, IDOR/BOLA protection, and filesystem/static exposure protection
+- Auth audit and integrity checks
+
+Existing AUTH-BR detected before generation: 0
