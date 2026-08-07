@@ -123,3 +123,30 @@ Added / formalized:
 
 Final Sales v1 rule range:
 - SAL-BR-001 through SAL-BR-046
+
+## v0.5.0 — Finance v1 Refactor
+
+Replaced:
+- FIN-BR-001 through FIN-BR-052
+
+Removed from Finance v1 core:
+- Generic enterprise finance rules not required by the approved IMS FHS v1 workflow
+- Generic certification/self-assessment/period-close constructs without approved FHS feature origin
+
+Aligned Finance v1 scope:
+- Wallet Engine
+- Financial Event Engine
+- Profit Engine
+- Capital
+- Withdrawal with AK final approval
+- Reimbursement
+- Internal Transfer
+- Wallet History / Financial Timeline
+- Withdrawal / Capital / Transfer / Reimbursement History
+- Financial Snapshot
+- Financial Reference Engine and drill-down
+- Financial Analytics
+- Financial Integrity
+
+Repository cleanup required:
+- DELETE old FIN-BR-053 through FIN-BR-078
