@@ -202,3 +202,28 @@ Scope:
 - Auth audit and integrity checks
 
 Existing AUTH-BR detected before generation: 0
+
+## v0.8.0 — System / Platform v1
+
+Added:
+- SYS-BR-001 through SYS-BR-050
+
+Scope:
+- Configuration and feature flags
+- Central Numbering Engine for PUR / ORD / INV and other governed business documents
+- Reusable Approval Engine
+- Event Engine with domain ownership, retry, and dead-letter handling
+- Background Queue and Scheduler
+- Scheduled OPTCG/card database refresh
+- Scheduled PriceCharting EN and Yuyutei JP refresh
+- Portfolio / analytics / backup / security cleanup jobs
+- Central Audit Engine
+- Notification Engine with pluggable future channels
+- File/Object Storage, Backup/Restore, Migration, Maintenance
+- System and cross-domain integrity / health monitoring
+- User-facing performance objective
+- Non-blocking asynchronous processing
+- Explicit VALIDATING / COMMITTING / SUCCESS / ERROR UI state
+- Interaction locking, visible loading, double-submit prevention, atomic/idempotent commit and safe recovery
+
+Existing SYS-BR detected before generation: 0
