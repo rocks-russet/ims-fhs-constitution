@@ -20,3 +20,5 @@ Reading order:
 
 This is an engineering blueprint, not executable SQL migration yet.
 Business Rules, Architecture Decisions, and Data Dictionary remain authoritative.
+
+17. DB-017 User Preferences Schema

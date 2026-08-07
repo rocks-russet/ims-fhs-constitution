@@ -8,3 +8,6 @@ DS-001 → DS-022
 
 This Design System defines global visual and component rules.
 It does not finalize individual screens. Screen-by-screen decisions are handled later in UI Specification, Screen Catalog, and approved HTML mockups.
+
+Additional specification:
+- DS-023 Theme & Appearance System

@@ -377,3 +377,25 @@ Added:
 
 Updated:
 - README now includes Coding Standard and UI Design System in Reading Order
+
+## v0.18.0 — Theme & User Appearance Preferences
+
+Added:
+- DS-023 Theme & Appearance System
+- DB-017 User Preferences Schema
+- API-016 User Preferences API
+- CODE-017 Theme & Design Token Rules
+
+Locked UI requirements:
+- Light / Dark / System theme
+- per-user preference persistence
+- Comfortable / Compact density
+- Normal / Small Explorer table font
+- semantic design-token implementation
+- Normal / Reduced motion
+- baseline accent presets
+- optional Comfort / Sharp radius preference
+
+Notes:
+- Appearance changes are presentation-only and never alter authorization or business truth.
+- All future approved HTML mockups must be theme-ready.

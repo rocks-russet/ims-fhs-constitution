@@ -2,3 +2,6 @@
 
 Reading order: CODE-001 → CODE-016.
 This standard governs implementation quality across backend, frontend, database and operations.
+
+Additional standard:
+- CODE-017 Theme & Design Token Rules

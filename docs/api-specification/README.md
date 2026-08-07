@@ -21,3 +21,5 @@ This folder specifies the **internal IMS FHS API**.
 External provider contracts belong in the later Integration Specification.
 
 Business Rules, Data Dictionary, Database Blueprint, Architecture, and ADR remain authoritative.
+
+16. API-016 User Preferences API
