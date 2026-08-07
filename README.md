@@ -30,11 +30,24 @@
 ### Data Dictionary
 - DICT
 
+### Database Blueprint
+- DB
+
+### Internal API Specification
+- API
+
 ### Implementation Guide
 - GUIDE
 
+### Next Engineering Specifications
+- External Integration Specification
+- Infrastructure Blueprint
+- Coding Standard
+- UI/UX Specification
+- Screen Catalog + approved HTML mockups
+
 ## Recommended onboarding
 
-Foundation → Business Rules → Architecture → Data Dictionary → Implementation Guide → Source Code
+Foundation → Business Rules → Architecture → Data Dictionary → Database Blueprint → Internal API Specification → Implementation Guide → Source Code
 
-The Constitution is the authoritative specification for IMS FHS v2.
+The Constitution and approved engineering specifications are the authoritative reference for IMS FHS v2.

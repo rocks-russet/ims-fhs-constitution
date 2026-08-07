@@ -307,3 +307,17 @@ Notes:
 - Redis remains optional acceleration infrastructure only
 - Portfolio/Analytics remain rebuildable derived models
 - Critical commits remain atomic/idempotent
+
+## v0.13.0 — Internal API Specification v1
+
+Added:
+- API-001 through API-015
+- Internal IMS FHS API contract across Auth, Contact, Purchase, Inventory, Sales, Finance, Market, Portfolio, System/Admin, Approval, Event/Job, and File domains
+- Standard response/error contract
+- Idempotency, concurrency, pagination, sorting, and filtering rules
+
+Updated:
+- README reading order now includes Database Blueprint and Internal API Specification
+
+Boundary:
+- External OPTCG API / PriceCharting / Yuyutei integration is intentionally excluded and will be documented separately.
