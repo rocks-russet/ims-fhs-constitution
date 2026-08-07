@@ -76,3 +76,18 @@ Added:
 - CON-BR-026 Seller Analytics
 - CON-BR-027 Contact Analytics Dashboard
 - CON-BR-028 Contact Settings
+
+## v0.3.1 — Purchase v1 Complete
+
+Added:
+- PUR-BR-001 through PUR-BR-044
+
+Scope:
+- Purchase session, cart, draft, mixed CARD and PRODUCT items
+- Individual price and quantity
+- Seller, platform, date, currency, notes
+- Per-item owner, multiple-owner cart, ownership snapshots and overrides
+- Shipping-by-quantity, discount-by-value, reserved tax, Final Cost, and rounding
+- Product category and duplicate review dependencies
+- Atomic commit, Inventory expansion, Inventory ID generation, Purchase History, and rollback
+- Purchase History search, filters, detail, analytics, import/export, and settings
