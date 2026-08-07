@@ -253,3 +253,31 @@ Scope:
 - Actor/owner separation decision
 - Adaptive MFA decision
 - Async non-critical work decision
+
+## v0.10.0 — Data Dictionary & Implementation Guide v1
+
+Added Data Dictionary:
+- DICT-001 Inventory
+- DICT-002 Purchase
+- DICT-003 Sales
+- DICT-004 Finance
+- DICT-005 Contact
+- DICT-006 Authentication
+- DICT-007 System / Platform
+- DICT-008 Market
+- DICT-009 Portfolio
+- DICT-010 Analytics
+
+Added Implementation Guide:
+- GUIDE-001 Engineering Principles
+- GUIDE-002 Transaction & Commit
+- GUIDE-003 Performance & Responsiveness
+- GUIDE-004 Security
+- GUIDE-005 Database & Migration
+- GUIDE-006 Testing Strategy
+- GUIDE-007 Release & Rollback
+- GUIDE-008 Observability & Operations
+
+Purpose:
+- establish shared data contracts before Railway implementation
+- establish implementation, performance, security, testing, migration, release, and operational discipline
