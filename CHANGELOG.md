@@ -91,3 +91,35 @@ Scope:
 - Product category and duplicate review dependencies
 - Atomic commit, Inventory expansion, Inventory ID generation, Purchase History, and rollback
 - Purchase History search, filters, detail, analytics, import/export, and settings
+
+## v0.4.0 — Sales v1 Refactor
+
+Replaced:
+- SAL-BR-001 through SAL-BR-040
+
+Removed from Sales v1 core:
+- Sales Approval Override
+- Customer Claim Routing
+- Sales SLA / Aging
+- Sales Incident Management
+- Replay Protection
+
+Added / formalized:
+- Buyer Selection and Buyer Snapshot
+- Invoice V1 content including auction/claim/direct reference and itemized pricing
+- Admin-controlled Payment Option Visibility
+- Invoice V2 payment-path behavior
+- Direct ↔ Marketplace ↔ Marketplace Split switching with superseded invoices
+- Marketplace Calculator and versioned marketplace fee profile usage
+- Invoice Template versioning
+- Supplies Template / adaptive recommendation
+- Actual Supplies Consumption
+- Packing Completion
+- Explicit Profit Distribution and Wallet Posting at COMPLETED
+- Sales History Search / Filter / Detail
+- Customer Analytics and Marketplace Analytics
+- Sales Transaction Snapshot
+- Sales Integrity Audit
+
+Final Sales v1 rule range:
+- SAL-BR-001 through SAL-BR-046
