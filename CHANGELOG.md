@@ -365,3 +365,15 @@ Updated:
 Added:
 - CODE-001 to CODE-016
 - Engineering, backend/frontend, database, transaction, worker, security, validation, performance, testing and release standards.
+
+## v0.17.0 — UI Design System v1
+
+Added:
+- DS-001 through DS-022
+- Hybrid GitHub / Stripe / Linear visual direction
+- typography, color, spacing, layout, buttons, forms, search/filter, cards, tables, grid view
+- status, navigation, modal/drawer, loading/commit states, empty/error/success
+- charts, icons, motion, responsive/accessibility and user UI preferences
+
+Updated:
+- README now includes Coding Standard and UI Design System in Reading Order
