@@ -1,20 +1,40 @@
 # IMS FHS Constitution
 
-Version: 0.1.0 Foundation
+## Reading Order
 
-This repository is the official business constitution for IMS FHS v2.
-
-Purpose:
-- Define business rules before implementation.
-- Keep architecture and implementation aligned.
-- Serve as the single source of truth.
-
-Reading order:
-
+### Foundation
 1. docs/00_CANON.md
 2. docs/01_PROJECT_VISION.md
 3. docs/02_CORE_PRINCIPLES.md
 4. docs/03_DOCUMENT_GOVERNANCE.md
 5. docs/04_DOMAIN_DICTIONARY.md
-6. Business Rules (future)
-7. Architecture (future)
+6. docs/05_GLOSSARY.md
+7. docs/06_NAMING_CONVENTION.md
+8. docs/07_DOCUMENT_STRUCTURE.md
+9. docs/08_VERSIONING_POLICY.md
+10. docs/09_RELEASE_POLICY.md
+
+### Business Rules
+- CON
+- AUTH
+- PUR
+- INV
+- SAL
+- FIN
+- SYS
+
+### Architecture
+- ARCH
+- ADR
+
+### Data Dictionary
+- DICT
+
+### Implementation Guide
+- GUIDE
+
+## Recommended onboarding
+
+Foundation → Business Rules → Architecture → Data Dictionary → Implementation Guide → Source Code
+
+The Constitution is the authoritative specification for IMS FHS v2.

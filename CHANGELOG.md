@@ -281,3 +281,13 @@ Added Implementation Guide:
 Purpose:
 - establish shared data contracts before Railway implementation
 - establish implementation, performance, security, testing, migration, release, and operational discipline
+
+## v0.11.0 — Repository Navigation & Implementation Roadmap
+
+Added:
+- docs/IMPLEMENTATION_ROADMAP.md
+
+Updated:
+- README.md
+- Reading Order reflects current repository structure
+- Added implementation phases from Foundation to Production
