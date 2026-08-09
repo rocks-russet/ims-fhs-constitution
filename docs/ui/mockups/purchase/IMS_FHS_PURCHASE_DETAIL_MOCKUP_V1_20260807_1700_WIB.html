@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>IMS FHS — Purchase Detail Mockup v1</title>
+<style>
+:root{
+  --bg-canvas:#f6f7f9;
+  --bg-surface:#ffffff;
+  --bg-subtle:#f9fafb;
+  --bg-raised:#ffffff;
+  --text-primary:#16181d;
+  --text-secondary:#344054;
+  --text-muted:#667085;
+  --border-default:#e4e7ec;
+  --accent:#2563eb;
+  --accent-subtle:#eff6ff;
+  --success:#14804a;
+  --success-bg:#ecfdf3;
+  --warning:#b54708;
+  --warning-bg:#fffaeb;
+  --danger:#c4320a;
+  --danger-bg:#fff4ed;
+  --violet:#6941c6;
+  --violet-bg:#f4f3ff;
+  --shadow:0 8px 24px rgba(16,24,40,.10);
+}
+html[data-theme="dark"]{
+  --bg-canvas:#0d1117;
+  --bg-surface:#161b22;
+  --bg-subtle:#0f141a;
+  --bg-raised:#1b222c;
+  --text-primary:#f0f3f6;
+  --text-secondary:#c9d1d9;
+  --text-muted:#8b949e;
+  --border-default:#30363d;
+  --accent:#58a6ff;
+  --accent-subtle:#0d2a45;
+  --success:#3fb950;
+  --success-bg:#12261a;
+  --warning:#d29922;
+  --warning-bg:#2a210f;
+  --danger:#f85149;
+  --danger-bg:#2c1618;
+  --violet:#a371f7;
+  --violet-bg:#211a35;
+  --shadow:0 10px 28px rgba(0,0,0,.34);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg-canvas);color:var(--text-primary)}
+button,input,select{font:inherit}
+.shell{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+.sidebar{background:#101318;color:#d0d5dd;padding:18px 14px;position:sticky;top:0;height:100vh}
+.brand{font-size:14px;font-weight:800;letter-spacing:.08em;padding:8px 10px 18px;color:#fff}
+.nav a{display:flex;padding:10px 11px;border-radius:9px;color:#aeb5c0;text-decoration:none;font-size:14px;margin:3px 0}
+.nav a.active,.nav a:hover{background:#1b2028;color:#fff}
+.main{min-width:0}
+.topbar{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;border-bottom:1px solid var(--border-default);background:color-mix(in srgb,var(--bg-surface) 92%, transparent);position:sticky;top:0;z-index:40;backdrop-filter:blur(10px)}
+.user{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary)}
+.avatar{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#111827;color:#fff;font-weight:800}
+.theme-toggle{border:1px solid var(--border-default);background:var(--bg-surface);color:var(--text-primary);border-radius:9px;padding:7px 10px;font-size:12px;font-weight:700;cursor:pointer}
+.page{padding:22px 28px 36px}
+.breadcrumb{font-size:12px;color:var(--text-muted);margin-bottom:12px}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:14px}
+.eyebrow{font-size:12px;color:var(--text-muted);margin-bottom:4px}
+.titleline{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+h1{font-size:24px;margin:0;letter-spacing:-.02em}
+.sub{font-size:12px;color:var(--text-muted);margin-top:4px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--border-default);background:var(--bg-surface);color:var(--text-primary);border-radius:9px;padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer}
+.btn:hover{background:var(--bg-subtle)}
+.btn.primary{background:var(--text-primary);color:var(--bg-surface);border-color:var(--text-primary)}
+.badge{display:inline-flex;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:800}
+.received{background:var(--violet-bg);color:var(--violet)}
+.summary{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.metric{background:var(--bg-surface);border:1px solid var(--border-default);border-radius:12px;padding:13px}
+.metric .k{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted)}
+.metric .v{font-size:18px;font-weight:850;margin-top:4px}
+.metric .s{font-size:10px;color:var(--text-muted);margin-top:3px}
+.gain{color:var(--success)}.loss{color:var(--danger)}
+.stepper-card{background:var(--bg-surface);border:1px solid var(--border-default);border-radius:14px;padding:18px;margin-bottom:16px}
+.stepper-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.stepper-title h2{font-size:15px;margin:0}
+.stepper{display:flex;align-items:flex-start}
+.step{display:flex;flex-direction:column;align-items:center;min-width:130px;cursor:pointer}
+.circle{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:800}
+.circle.done{background:var(--success);color:#fff}
+.circle.active{background:var(--accent);color:#fff;box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 18%, transparent)}
+.circle.todo{background:var(--border-default);color:var(--text-muted)}
+.step-label{font-size:11px;font-weight:800;margin-top:9px;text-align:center}
+.step-time{font-size:10px;color:var(--text-muted);margin-top:3px;text-align:center}
+.line{height:3px;background:var(--border-default);flex:1;margin-top:17px}
+.line.done{background:var(--success)}
+.current-card{margin-top:18px;border-top:1px solid var(--border-default);padding-top:16px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
+.current-card h3{font-size:13px;margin:0 0 6px}
+.validation{display:flex;gap:8px;flex-wrap:wrap}
+.check{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border-default);background:var(--bg-subtle);border-radius:999px;padding:6px 9px;font-size:10px;color:var(--text-secondary)}
+.check.ok{background:var(--success-bg);color:var(--success)}
+.check.warn{background:var(--warning-bg);color:var(--warning)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--border-default);margin-bottom:16px;position:sticky;top:58px;background:var(--bg-canvas);z-index:30}
+.tab{border:0;background:transparent;padding:11px 13px 10px;color:var(--text-muted);font-weight:700;font-size:12px;border-bottom:2px solid transparent;cursor:pointer}
+.tab.active{color:var(--text-primary);border-bottom-color:var(--text-primary)}
+.panel{background:var(--bg-surface);border:1px solid var(--border-default);border-radius:14px;padding:18px;min-height:540px}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.panel-head h2{font-size:17px;margin:0}.panel-head p{font-size:11px;color:var(--text-muted);margin:4px 0 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.section{border:1px solid var(--border-default);border-radius:12px;padding:14px;background:var(--bg-surface)}
+.section h3{font-size:13px;margin:0 0 10px}
+.kv{display:grid;grid-template-columns:175px 1fr;border-top:1px solid var(--border-default)}
+.kv div{padding:9px 7px;border-bottom:1px solid var(--border-default);font-size:12px}
+.kv .k{color:var(--text-muted)}
+.link{color:var(--accent);font-weight:750;cursor:pointer;text-decoration:none}.link:hover{text-decoration:underline}
+.items{display:grid;gap:9px}
+.item{border:1px solid var(--border-default);border-radius:10px;padding:10px;display:grid;grid-template-columns:1.5fr .7fr .7fr .7fr;gap:12px;align-items:center}
+.item-title{font-weight:800;font-size:12px}.item-meta{font-size:10px;color:var(--text-muted);margin-top:3px}
+.amount{font-weight:800;font-size:12px;font-variant-numeric:tabular-nums;text-align:right}
+.alloc-head{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted)}
+.timeline{display:grid}
+.trow{display:grid;grid-template-columns:24px 130px 1fr;gap:10px;padding-bottom:18px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--text-primary);margin-top:4px;position:relative}
+.dot:after{content:"";position:absolute;width:1px;height:38px;background:var(--border-default);left:4px;top:10px}
+.trow:last-child .dot:after{display:none}
+.date{font-size:10px;color:var(--text-muted)}.event{font-size:12px}
+.hidden{display:none}
+.popover{position:fixed;z-index:120;width:320px;background:var(--bg-raised);border:1px solid var(--border-default);border-radius:12px;box-shadow:var(--shadow);padding:13px;display:none}
+.popover.show{display:block}.popover h4{margin:0 0 8px;font-size:13px}.popover .kv{grid-template-columns:115px 1fr}
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.34);z-index:90;display:none}.overlay.show{display:block}
+.drawer{position:fixed;right:0;top:0;bottom:0;width:min(440px,94vw);background:var(--bg-surface);border-left:1px solid var(--border-default);box-shadow:-15px 0 40px rgba(16,24,40,.16);z-index:100;transform:translateX(102%);transition:.2s ease;padding:20px;overflow:auto}
+.drawer.open{transform:translateX(0)}
+@media(max-width:1150px){.summary{grid-template-columns:repeat(3,1fr)}.step{min-width:100px}}
+@media(max-width:800px){.shell{display:block}.sidebar{display:none}.page{padding:14px}.summary{grid-template-columns:1fr 1fr}.stepper{overflow:auto}.grid2{grid-template-columns:1fr}.head{flex-direction:column}.item{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">IMS FHS</div>
+    <nav class="nav">
+      <a href="#">Dashboard</a><a class="active" href="#">Purchase</a><a href="#">Inventory</a><a href="#">Sales</a><a href="#">Finance</a><a href="#">Contacts</a><a href="#">Approvals</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div style="font-size:13px;color:var(--text-muted)">Purchase Detail</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="theme-toggle" id="themeToggle">Dark Mode</button>
+        <div class="user"><div class="avatar">AK</div>Albert · SUPER_ADMIN</div>
+      </div>
+    </div>
+
+    <div class="page">
+      <div class="breadcrumb">Purchase / <span class="mono">PUR-20260809-000024</span></div>
+
+      <div class="head">
+        <div>
+          <div class="eyebrow">Purchase Document</div>
+          <div class="titleline">
+            <h1 class="mono">PUR-20260809-000024</h1>
+            <span class="badge received">RECEIVED</span>
+          </div>
+          <div class="sub">Seller: <a class="link" id="sellerLink">CardHub Jakarta</a> · Facebook · Purchased 09 Aug 2026</div>
+        </div>
+        <div class="actions">
+          <button class="btn">Edit Receiving</button>
+          <button class="btn">More ▾</button>
+          <button class="btn primary" id="commitBtn">Commit Purchase</button>
+        </div>
+      </div>
+
+      <div class="summary">
+        <div class="metric"><div class="k">Items</div><div class="v">4</div><div class="s">Mixed Card + Product</div></div>
+        <div class="metric"><div class="k">Total Qty</div><div class="v">8</div><div class="s">All received</div></div>
+        <div class="metric"><div class="k">Final Purchase Cost</div><div class="v">Rp6.240.000</div><div class="s">After shared allocation</div></div>
+        <div class="metric"><div class="k">Market Snapshot</div><div class="v gain">-5.1%</div><div class="s">Below market at purchase</div></div>
+        <div class="metric"><div class="k">Owner Mix</div><div class="v">FHS / AK</div><div class="s">Per-item ownership</div></div>
+      </div>
+
+      <section class="stepper-card">
+        <div class="stepper-title">
+          <h2>Purchase Progress</h2>
+          <div class="sub">Lifecycle supports direct purchases, PO/jastip, and partial receiving.</div>
+        </div>
+
+        <div class="stepper">
+          <div class="step" data-step="draft">
+            <div class="circle done">✓</div>
+            <div class="step-label">DRAFT</div>
+            <div class="step-time">07 Aug · 18:12</div>
+          </div>
+          <div class="line done"></div>
+          <div class="step" data-step="ordered">
+            <div class="circle done">✓</div>
+            <div class="step-label">ORDERED</div>
+            <div class="step-time">07 Aug · 18:25</div>
+          </div>
+          <div class="line done"></div>
+          <div class="step" data-step="partial">
+            <div class="circle done">✓</div>
+            <div class="step-label">PARTIALLY RECEIVED</div>
+            <div class="step-time">08 Aug · 15:10</div>
+          </div>
+          <div class="line done"></div>
+          <div class="step" data-step="received">
+            <div class="circle active">●</div>
+            <div class="step-label">RECEIVED</div>
+            <div class="step-time">09 Aug · 13:42</div>
+          </div>
+          <div class="line"></div>
+          <div class="step" data-step="committed">
+            <div class="circle todo">5</div>
+            <div class="step-label">COMMITTED</div>
+            <div class="step-time">Pending</div>
+          </div>
+        </div>
+
+        <div class="current-card">
+          <div>
+            <h3>Current Step · RECEIVED</h3>
+            <div class="validation">
+              <span class="check ok">✓ Seller valid</span>
+              <span class="check ok">✓ 8 / 8 qty received</span>
+              <span class="check ok">✓ Owner assigned per item</span>
+              <span class="check ok">✓ Market snapshot captured</span>
+              <span class="check ok">✓ Cost allocation reconciled</span>
+            </div>
+          </div>
+          <button class="btn primary" id="stepCommitBtn">Commit Purchase</button>
+        </div>
+      </section>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="summarytab">Summary</button>
+        <button class="tab" data-tab="items">Items</button>
+        <button class="tab" data-tab="allocation">Cost Allocation</button>
+        <button class="tab" data-tab="receiving">Receiving</button>
+        <button class="tab" data-tab="market">Market Snapshot</button>
+        <button class="tab" data-tab="timeline">Timeline</button>
+        <button class="tab" data-tab="audit">Audit</button>
+      </div>
+
+      <section class="panel">
+        <div id="summarytab" class="pane">
+          <div class="panel-head"><div><h2>Purchase Summary</h2><p>Seller, source, shared costs, and purchase ownership context.</p></div></div>
+          <div class="grid2">
+            <div class="section">
+              <h3>Purchase Information</h3>
+              <div class="kv">
+                <div class="k">Seller</div><div><a class="link" id="sellerLink2">CardHub Jakarta</a></div>
+                <div class="k">Platform</div><div>Facebook</div>
+                <div class="k">Purchase Date</div><div>09 Aug 2026</div>
+                <div class="k">Created By</div><div>AK</div>
+                <div class="k">Notes</div><div>PO + ready-stock bundle from same seller.</div>
+              </div>
+            </div>
+            <div class="section">
+              <h3>Commercial Summary</h3>
+              <div class="kv">
+                <div class="k">Item Subtotal</div><div>Rp6.300.000</div>
+                <div class="k">Shipping</div><div>Rp120.000</div>
+                <div class="k">Discount</div><div>-Rp180.000</div>
+                <div class="k">Tax</div><div>Rp0</div>
+                <div class="k">Final Purchase Cost</div><div><b>Rp6.240.000</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="items" class="pane hidden">
+          <div class="panel-head"><div><h2>Purchase Items</h2><p>Mixed Card/Product items with per-item owner and generated inventory preview.</p></div></div>
+          <div class="items">
+            <div class="item"><div><div class="item-title">Monkey.D.Luffy OP05-119</div><div class="item-meta">CARD · JP · SEC · Qty 1 · Owner FHS</div></div><div><div class="alloc-head">Unit Buy</div><div class="amount">Rp4.800.000</div></div><div><div class="alloc-head">Final Cost</div><div class="amount">Rp4.765.714</div></div><div><a class="link">Preview INV</a></div></div>
+            <div class="item"><div><div class="item-title">Boa Hancock OP07-051</div><div class="item-meta">CARD · EN · SR · Qty 2 · Owner AK</div></div><div><div class="alloc-head">Unit Buy</div><div class="amount">Rp420.000</div></div><div><div class="alloc-head">Final Cost</div><div class="amount">Rp413.571</div></div><div><a class="link">Preview 2 INV</a></div></div>
+            <div class="item"><div><div class="item-title">Official Sleeve Gear 5</div><div class="item-meta">PRODUCT · 70 Pack · Qty 3 · Owner FHS</div></div><div><div class="alloc-head">Unit Buy</div><div class="amount">Rp140.000</div></div><div><div class="alloc-head">Final Cost</div><div class="amount">Rp145.714</div></div><div><a class="link">Preview Product INV</a></div></div>
+            <div class="item"><div><div class="item-title">Bulk RED OP11</div><div class="item-meta">BULK CARD LOT · Qty 2 lots · Owner AK</div></div><div><div class="alloc-head">Unit Buy</div><div class="amount">Rp120.000</div></div><div><div class="alloc-head">Final Cost</div><div class="amount">Rp123.572</div></div><div><a class="link">Preview 2 Lots</a></div></div>
+          </div>
+        </div>
+
+        <div id="allocation" class="pane hidden">
+          <div class="panel-head"><div><h2>Cost Allocation</h2><p>Transparent allocation of shared Shipping, Discount, and Tax into Final Cost.</p></div></div>
+          <div class="grid2">
+            <div class="section">
+              <h3>Allocation Policy</h3>
+              <div class="kv">
+                <div class="k">Discount</div><div>Weighted by item value</div>
+                <div class="k">Shipping</div><div>Equal per quantity</div>
+                <div class="k">Tax</div><div>Prepared · current Rp0</div>
+                <div class="k">Override</div><div>Available to authorized operator with reason</div>
+              </div>
+            </div>
+            <div class="section">
+              <h3>Shared Cost Reconciliation</h3>
+              <div class="kv">
+                <div class="k">Shipping Input</div><div>Rp120.000</div>
+                <div class="k">Allocated Shipping</div><div class="gain">Rp120.000 ✓</div>
+                <div class="k">Discount Input</div><div>Rp180.000</div>
+                <div class="k">Allocated Discount</div><div class="gain">Rp180.000 ✓</div>
+              </div>
+            </div>
+          </div>
+          <div class="section" style="margin-top:14px">
+            <h3>Per Item Allocation</h3>
+            <div class="items">
+              <div class="item"><div><div class="item-title">Luffy OP05-119 · Qty 1</div><div class="item-meta">Owner FHS</div></div><div><div class="alloc-head">Discount</div><div class="amount">-Rp137.143</div></div><div><div class="alloc-head">Shipping</div><div class="amount">+Rp15.000</div></div><div><div class="alloc-head">Final</div><div class="amount">Rp4.677.857</div></div></div>
+              <div class="item"><div><div class="item-title">Boa Hancock · Qty 2</div><div class="item-meta">Owner AK</div></div><div><div class="alloc-head">Discount</div><div class="amount">-Rp24.000</div></div><div><div class="alloc-head">Shipping</div><div class="amount">+Rp30.000</div></div><div><div class="alloc-head">Final</div><div class="amount">Rp846.000</div></div></div>
+              <div class="item"><div><div class="item-title">Sleeve Gear 5 · Qty 3</div><div class="item-meta">Owner FHS</div></div><div><div class="alloc-head">Discount</div><div class="amount">-Rp12.000</div></div><div><div class="alloc-head">Shipping</div><div class="amount">+Rp45.000</div></div><div><div class="alloc-head">Final</div><div class="amount">Rp453.000</div></div></div>
+              <div class="item"><div><div class="item-title">Bulk RED OP11 · Qty 2</div><div class="item-meta">Owner AK</div></div><div><div class="alloc-head">Discount</div><div class="amount">-Rp6.857</div></div><div><div class="alloc-head">Shipping</div><div class="amount">+Rp30.000</div></div><div><div class="alloc-head">Final</div><div class="amount">Rp263.143</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="receiving" class="pane hidden">
+          <div class="panel-head"><div><h2>Receiving</h2><p>Useful for PO, jastip, marketplace shipping, and partial delivery.</p></div></div>
+          <div class="grid2">
+            <div class="section">
+              <h3>Receiving Summary</h3>
+              <div class="kv">
+                <div class="k">Expected Qty</div><div>8</div>
+                <div class="k">Received Qty</div><div class="gain">8</div>
+                <div class="k">Outstanding</div><div>0</div>
+                <div class="k">Receiving Status</div><div>RECEIVED</div>
+              </div>
+            </div>
+            <div class="section">
+              <h3>Receiving Events</h3>
+              <div class="kv">
+                <div class="k">08 Aug · 15:10</div><div>5 / 8 qty received · AH</div>
+                <div class="k">09 Aug · 13:42</div><div>3 / 8 remaining qty received · AK</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="market" class="pane hidden">
+          <div class="panel-head"><div><h2>Market Snapshot</h2><p>Market observations frozen at purchase time for seller analytics and valuation context.</p></div></div>
+          <div class="grid2">
+            <div class="section">
+              <h3>Purchase Market Quality</h3>
+              <div class="kv">
+                <div class="k">Snapshot Basket Market</div><div>Rp6.575.000</div>
+                <div class="k">Purchase Cost Basis</div><div>Rp6.240.000</div>
+                <div class="k">Variance</div><div class="gain"><b>-5.1% below market</b></div>
+                <div class="k">Provider Mix</div><div>Yuyutei JP + PriceCharting EN</div>
+              </div>
+            </div>
+            <div class="section">
+              <h3>Seller Historical Context</h3>
+              <div class="kv">
+                <div class="k">Seller</div><div><a class="link">CardHub Jakarta</a></div>
+                <div class="k">Historical Purchases</div><div>42</div>
+                <div class="k">Average Buy vs Market</div><div class="gain">-4.8%</div>
+                <div class="k">Below Market Share</div><div>61%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="timeline" class="pane hidden">
+          <div class="panel-head"><div><h2>Timeline</h2><p>Human-readable acquisition lifecycle.</p></div></div>
+          <div class="timeline">
+            <div class="trow"><div class="dot"></div><div class="date">07 Aug · 18:12</div><div class="event"><b>Draft Created</b><br/>Purchase Cart started by AK.</div></div>
+            <div class="trow"><div class="dot"></div><div class="date">07 Aug · 18:25</div><div class="event"><b>Marked Ordered</b><br/>PO/jastip transaction confirmed with seller.</div></div>
+            <div class="trow"><div class="dot"></div><div class="date">08 Aug · 15:10</div><div class="event"><b>Partially Received</b><br/>5 of 8 expected qty received.</div></div>
+            <div class="trow"><div class="dot"></div><div class="date">09 Aug · 13:42</div><div class="event"><b>Received</b><br/>Remaining 3 qty received and verified.</div></div>
+          </div>
+        </div>
+
+        <div id="audit" class="pane hidden">
+          <div class="panel-head"><div><h2>Audit</h2><p>Technical mutation trail for authorized users.</p></div></div>
+          <div class="kv">
+            <div class="k">07 Aug · 18:12</div><div>AK · PurchaseCreated · DRAFT</div>
+            <div class="k">07 Aug · 18:25</div><div>AK · PurchaseOrdered · success</div>
+            <div class="k">08 Aug · 15:10</div><div>AH · PurchasePartiallyReceived · 5 qty</div>
+            <div class="k">09 Aug · 13:42</div><div>AK · PurchaseReceived · remaining 3 qty</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<div class="popover" id="popover">
+  <h4 id="popTitle"></h4>
+  <div class="kv">
+    <div class="k">Time</div><div id="popTime"></div>
+    <div class="k">Actor</div><div id="popActor"></div>
+    <div class="k">Detail</div><div id="popDetail"></div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer">
+  <button class="btn" id="closeDrawer" style="float:right">Close</button>
+  <div class="eyebrow">Seller Contact Preview</div>
+  <h2 style="margin:8px 0 2px">CardHub Jakarta</h2>
+  <div class="sub">Seller · 42 historical purchases</div>
+  <div class="section" style="margin-top:16px">
+    <div class="kv">
+      <div class="k">Total Bought</div><div>Rp82.4m</div>
+      <div class="k">Avg vs Market</div><div class="gain">-4.8%</div>
+      <div class="k">Below Market Share</div><div>61%</div>
+      <div class="k">Last Purchase</div><div>09 Aug 2026</div>
+    </div>
+  </div>
+  <button class="btn primary" style="width:100%;margin-top:16px">Open Seller Detail</button>
+</aside>
+
+<script>
+const tabs=[...document.querySelectorAll('.tab')],panes=[...document.querySelectorAll('.pane')];
+tabs.forEach(t=>t.onclick=()=>{
+  tabs.forEach(x=>x.classList.remove('active'));t.classList.add('active');
+  panes.forEach(p=>p.classList.add('hidden'));document.getElementById(t.dataset.tab).classList.remove('hidden');
+});
+
+const stepData={
+ draft:{title:'DRAFT',time:'07 Aug 2026 · 18:12',actor:'AK',detail:'Editable Purchase Cart created.'},
+ ordered:{title:'ORDERED',time:'07 Aug 2026 · 18:25',actor:'AK',detail:'Purchase locked as a real order/PO awaiting goods.'},
+ partial:{title:'PARTIALLY RECEIVED',time:'08 Aug 2026 · 15:10',actor:'AH',detail:'5 of 8 expected quantity received.'},
+ received:{title:'RECEIVED',time:'09 Aug 2026 · 13:42',actor:'AK',detail:'All expected quantity received and verified.'}
+};
+const pop=document.getElementById('popover');
+document.querySelectorAll('.step').forEach(step=>step.onclick=e=>{
+  const d=stepData[step.dataset.step]; if(!d)return;
+  popTitle.textContent=d.title;popTime.textContent=d.time;popActor.textContent=d.actor;popDetail.textContent=d.detail;
+  const r=step.getBoundingClientRect();pop.style.left=Math.min(r.left,window.innerWidth-340)+'px';pop.style.top=(r.bottom+8)+'px';pop.classList.add('show');e.stopPropagation();
+});
+document.addEventListener('click',()=>pop.classList.remove('show'));
+
+function commit(){
+  alert('Mockup interaction: Commit Purchase.\nProduction: VALIDATING → COMMITTING → creates authoritative Purchase snapshot + generated Inventory records atomically.');
+}
+commitBtn.onclick=commit;stepCommitBtn.onclick=commit;
+
+const overlay=document.getElementById('overlay'),drawer=document.getElementById('drawer');
+function openSeller(){drawer.classList.add('open');overlay.classList.add('show')}
+function closeSeller(){drawer.classList.remove('open');overlay.classList.remove('show')}
+sellerLink.onclick=openSeller;sellerLink2.onclick=openSeller;closeDrawer.onclick=closeSeller;overlay.onclick=closeSeller;
+
+themeToggle.onclick=()=>{
+  const html=document.documentElement;
+  const dark=html.dataset.theme==='dark';
+  html.dataset.theme=dark?'light':'dark';
+  themeToggle.textContent=dark?'Dark Mode':'Light Mode';
+};
+</script>
+</body>
+</html>

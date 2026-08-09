@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IMS FHS — Inventory Detail Mockup</title>
+<style>
+:root{
+  --bg:#f6f7f9; --surface:#fff; --surface2:#f9fafb; --text:#16181d; --muted:#667085;
+  --line:#e4e7ec; --blue:#2563eb; --blue2:#eff6ff; --green:#14804a; --greenbg:#ecfdf3;
+  --red:#c4320a; --redbg:#fff4ed; --amber:#b54708; --amberbg:#fffaeb; --shadow:0 8px 24px rgba(16,24,40,.08);
+  --radius:14px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+button,input{font:inherit}
+.shell{min-height:100vh;display:grid;grid-template-columns:230px 1fr}
+.sidebar{background:#101318;color:#e5e7eb;padding:18px 14px;position:sticky;top:0;height:100vh}
+.brand{font-weight:800;letter-spacing:.06em;font-size:14px;padding:8px 10px 18px}
+.nav a{display:flex;align-items:center;gap:10px;color:#aeb5c0;text-decoration:none;padding:10px 11px;border-radius:9px;margin:3px 0;font-size:14px}
+.nav a.active,.nav a:hover{background:#1b2028;color:white}
+.main{min-width:0}
+.topbar{height:58px;background:rgba(255,255,255,.92);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 26px;position:sticky;top:0;z-index:30;backdrop-filter:blur(10px)}
+.breadcrumb{font-size:13px;color:var(--muted)}
+.user{display:flex;align-items:center;gap:9px;font-size:13px;color:#344054}
+.avatar{width:30px;height:30px;border-radius:50%;background:#111827;color:white;display:grid;place-items:center;font-weight:700}
+.page{padding:22px 28px 36px}
+.head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:14px}
+.eyebrow{font-size:12px;color:var(--muted);margin-bottom:4px}
+.titleline{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+h1{font-size:24px;margin:0;font-weight:760;letter-spacing:-.02em}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.badge{display:inline-flex;align-items:center;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:700}
+.badge.green{color:var(--green);background:var(--greenbg)}
+.actions{display:flex;gap:8px}
+.btn{border:1px solid var(--line);background:white;border-radius:9px;padding:8px 12px;font-weight:650;font-size:13px;cursor:pointer}
+.btn:hover{background:#f8fafc}
+.btn.primary{background:#111827;color:#fff;border-color:#111827}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:16px;position:sticky;top:58px;background:var(--bg);z-index:20;padding-top:2px}
+.tab{border:0;background:transparent;padding:11px 13px 10px;color:#667085;font-weight:650;font-size:13px;border-bottom:2px solid transparent;cursor:pointer}
+.tab.active{color:#111827;border-bottom-color:#111827}
+.workspace{display:grid;grid-template-columns:340px minmax(0,1fr);gap:18px}
+.asset{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:0 1px 2px rgba(16,24,40,.03);position:sticky;top:112px;align-self:start}
+.card-art{aspect-ratio:5/7;border-radius:13px;background:
+radial-gradient(circle at 68% 25%,rgba(255,255,255,.22),transparent 26%),
+linear-gradient(150deg,#0f172a 0%,#1d4ed8 40%,#dbeafe 100%);
+position:relative;overflow:hidden;border:5px solid #111827;box-shadow:var(--shadow);cursor:zoom-in}
+.card-art:before{content:"OP01-016";position:absolute;top:16px;left:16px;color:#fff;font-size:13px;font-weight:800;letter-spacing:.05em}
+.card-art:after{content:"NAMI";position:absolute;left:20px;right:20px;bottom:26px;color:#fff;font-size:36px;font-weight:900;letter-spacing:.05em;text-shadow:0 2px 12px rgba(0,0,0,.35)}
+.art-note{position:absolute;left:20px;right:20px;top:50%;transform:translateY(-50%);color:#eaf2ff;font-size:12px;line-height:1.5;text-align:center;padding:0 10px}
+.asset-meta{padding-top:16px}
+.asset-name{font-size:19px;font-weight:800}
+.subline{color:var(--muted);font-size:12px;margin-top:4px}
+.market-mini{margin-top:14px;padding:12px;border-radius:11px;background:#f8fafc;border:1px solid var(--line);display:grid;grid-template-columns:1fr auto;gap:6px 10px}
+.market-mini .label{color:var(--muted);font-size:11px}
+.market-mini .value{font-size:18px;font-weight:800}
+.gain{color:var(--green);font-weight:750}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.quick div{background:#fbfcfd;border:1px solid var(--line);border-radius:10px;padding:9px}
+.quick span{display:block;font-size:10px;color:var(--muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em}
+.quick b{font-size:12px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;min-height:630px;box-shadow:0 1px 2px rgba(16,24,40,.03)}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.panel-head h2{margin:0;font-size:18px}
+.panel-head p{margin:4px 0 0;color:var(--muted);font-size:12px}
+.info-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.info-card{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:12px;min-height:78px}
+.info-card .k{font-size:10px;text-transform:uppercase;color:var(--muted);letter-spacing:.05em}
+.info-card .v{font-weight:800;font-size:18px;margin-top:6px}
+.section{margin-top:18px;border-top:1px solid var(--line);padding-top:16px}
+.section h3{font-size:13px;margin:0 0 10px}
+.kv{display:grid;grid-template-columns:190px 1fr;border-top:1px solid var(--line)}
+.kv div{padding:10px 8px;border-bottom:1px solid var(--line);font-size:13px}
+.kv .k{color:var(--muted)}
+.link{color:var(--blue);font-weight:700;cursor:pointer;text-decoration:none}
+.link:hover{text-decoration:underline}
+.finance-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.metric{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fbfcfd}
+.metric .label{font-size:11px;color:var(--muted)}
+.metric .num{font-size:23px;font-weight:850;margin-top:5px}
+.timeline{display:grid;gap:0}
+.trow{display:grid;grid-template-columns:26px 110px 1fr;gap:10px;position:relative;padding-bottom:18px}
+.dot{width:10px;height:10px;background:#111827;border-radius:50%;margin-top:5px;position:relative}
+.dot:after{content:"";position:absolute;width:1px;background:#d0d5dd;left:4px;top:10px;height:36px}
+.trow:last-child .dot:after{display:none}
+.date{font-size:11px;color:var(--muted)}
+.ev{font-size:13px}
+.hidden{display:none}
+.drawer{position:fixed;right:0;top:0;bottom:0;width:min(440px,92vw);background:#fff;border-left:1px solid var(--line);box-shadow:-14px 0 40px rgba(16,24,40,.14);z-index:80;transform:translateX(102%);transition:.2s ease;padding:20px}
+.drawer.open{transform:translateX(0)}
+.drawer h3{margin:8px 0 3px}
+.drawer .close{position:absolute;right:16px;top:16px}
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.35);z-index:70;display:none}
+.overlay.show{display:block}
+.zoom{position:fixed;inset:0;background:rgba(4,7,12,.92);z-index:100;display:none;place-items:center;padding:28px}
+.zoom.show{display:grid}
+.zoom-card{width:min(480px,86vw);aspect-ratio:5/7;border-radius:16px;background:linear-gradient(150deg,#0f172a,#1d4ed8 45%,#dbeafe);border:7px solid white;position:relative;box-shadow:0 20px 70px rgba(0,0,0,.6)}
+.zoom-card:after{content:"NAMI";position:absolute;bottom:32px;left:24px;color:#fff;font-size:44px;font-weight:900}
+@media(max-width:980px){.shell{grid-template-columns:76px 1fr}.brand{font-size:0}.brand:after{content:"IMS";font-size:13px}.nav a span{display:none}.workspace{grid-template-columns:270px 1fr}.info-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.shell{display:block}.sidebar{display:none}.page{padding:16px}.workspace{grid-template-columns:1fr}.asset{position:static}.tabs{overflow:auto;top:58px}.finance-hero{grid-template-columns:1fr}.head{flex-direction:column}.actions{width:100%}.panel{min-height:500px}}
+
+.copy-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding:10px 12px;border:1px solid var(--line);background:#f8fafc;border-radius:11px}
+.copy-nav .counter{font-size:12px;color:var(--muted);font-weight:700}
+.copy-nav .navbtn{border:1px solid var(--line);background:white;border-radius:8px;padding:7px 10px;font-size:12px;font-weight:700;cursor:pointer}
+.copy-nav .navbtn:hover{background:#f1f5f9}
+.copies-table{width:100%;border-collapse:separate;border-spacing:0;margin-top:10px;font-size:12px}
+.copies-table th{position:sticky;top:0;text-align:left;color:var(--muted);font-weight:700;background:#f8fafc;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:9px 10px}
+.copies-table td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.copies-table tr:hover td{background:#fafcff}
+.copies-table tr.current td{background:#eff6ff}
+.current-pill{display:inline-flex;align-items:center;border-radius:999px;padding:3px 7px;font-size:10px;font-weight:800;color:#1d4ed8;background:#dbeafe;margin-left:6px}
+.copy-status{display:inline-flex;align-items:center;border-radius:999px;padding:3px 7px;font-size:10px;font-weight:750;background:#f2f4f7;color:#344054}
+.copy-status.available{background:var(--greenbg);color:var(--green)}
+.copy-status.listed{background:#eef4ff;color:#3538cd}
+.copy-status.reserved{background:var(--amberbg);color:var(--amber)}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px;margin-top:10px}
+
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">IMS FHS</div>
+    <nav class="nav">
+      <a href="#"><span>Dashboard</span></a>
+      <a href="#"><span>Purchase</span></a>
+      <a class="active" href="#"><span>Inventory</span></a>
+      <a href="#"><span>Sales</span></a>
+      <a href="#"><span>Finance</span></a>
+      <a href="#"><span>Contacts</span></a>
+      <a href="#"><span>Approvals</span></a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="breadcrumb">Inventory / <span class="mono">INV-000001245</span></div>
+      <div class="user"><div class="avatar">AK</div> Albert · SUPER_ADMIN</div>
+    </div>
+
+    <div class="page">
+      <div class="head">
+        <div>
+          <div class="eyebrow">Inventory Detail</div>
+          <div class="titleline">
+            <h1 class="mono">INV-000001245</h1>
+            <span class="badge green">AVAILABLE</span>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn">Edit</button>
+          <button class="btn">History</button>
+          <button class="btn primary">Reserve</button>
+        </div>
+      </div>
+
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-tab="summary">Summary</button>
+        <button class="tab" data-tab="finance">Finance</button>
+        <button class="tab" data-tab="purchase">Purchase</button>
+        <button class="tab" data-tab="sales">Sales</button>
+        <button class="tab" data-tab="portfolio">Portfolio</button>
+        <button class="tab" data-tab="timeline">Timeline</button>
+        <button class="tab" data-tab="audit">Audit</button>
+      </div>
+
+      <div class="workspace">
+        <aside class="asset">
+          <div class="card-art" id="cardArt">
+            <div class="art-note">Mockup placeholder only.<br/>Production uses actual card image from approved source.</div>
+          </div>
+          <div class="asset-meta">
+            <div class="asset-name">Nami</div>
+            <div class="subline">OP01-016 · English · Rare · Red</div>
+            <div class="market-mini">
+              <div>
+                <div class="label">Current Market · PriceCharting</div>
+                <div class="value">Rp2.350.000</div>
+              </div>
+              <div class="gain">+38.2%</div>
+            </div>
+            <div class="quick">
+              <div><span>Owner</span><b>AK</b></div>
+              <div><span>Holder</span><b>AH</b></div>
+              <div><span>Storage</span><b>Box A-12</b></div>
+              <div><span>Language</span><b>English</b></div>
+            </div>
+          </div>
+        </aside>
+
+        <section class="panel">
+          <div id="summary" class="tabpane">
+            <div class="panel-head"><div><h2>Card Summary</h2><p>Card identity and operational metadata.</p></div></div>
+            <div class="info-grid">
+              <div class="info-card"><div class="k">Power</div><div class="v">3,000</div></div>
+              <div class="info-card"><div class="k">Counter</div><div class="v">+2,000</div></div>
+              <div class="info-card"><div class="k">Color</div><div class="v">Red</div></div>
+              <div class="info-card"><div class="k">Type</div><div class="v">Character</div></div>
+            </div>
+            <div class="section">
+              <h3>Card Information</h3>
+              <div class="kv">
+                <div class="k">Card Number</div><div>OP01-016</div>
+                <div class="k">Set</div><div>OP01</div>
+                <div class="k">Rarity</div><div>Rare</div>
+                <div class="k">Attribute</div><div>Special</div>
+                <div class="k">Ability</div><div>Example ability text for interaction/layout review. Production content comes from Card DB.</div>
+                <div class="k">Condition</div><div>Near Mint</div>
+                <div class="k">Variant</div><div>Standard</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="finance" class="tabpane hidden">
+            <div class="panel-head"><div><h2>Finance</h2><p>Cost basis, market valuation, and ownership economics.</p></div></div>
+            <div class="finance-hero">
+              <div class="metric"><div class="label">Final Cost</div><div class="num">Rp1.700.000</div></div>
+              <div class="metric"><div class="label">Current Market</div><div class="num">Rp2.350.000</div></div>
+              <div class="metric"><div class="label">Unrealized Gain</div><div class="num gain">+Rp650.000</div></div>
+            </div>
+            <div class="section">
+              <div class="kv">
+                <div class="k">Buy Price</div><div>Rp1.650.000</div>
+                <div class="k">Allocated Shipping</div><div>Rp70.000</div>
+                <div class="k">Allocated Discount</div><div>-Rp20.000</div>
+                <div class="k">Allocated Tax</div><div>Rp0</div>
+                <div class="k">Final Cost</div><div><b>Rp1.700.000</b></div>
+                <div class="k">Market Provider</div><div>PriceCharting · observed 07 Aug 2026</div>
+                <div class="k">Capital Distribution</div><div>AK 100%</div>
+                <div class="k">Profit Distribution</div><div>AK 90% · AH 10%</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="purchase" class="tabpane hidden">
+            <div class="panel-head"><div><h2>Purchase Origin</h2><p>Where this inventory came from and what was bought together.</p></div></div>
+            <div class="kv">
+              <div class="k">Purchase ID</div><div><a class="link" id="purchaseLink">PUR-20260809-000023</a></div>
+              <div class="k">Seller</div><div><a class="link" id="sellerLink">Rudi TCG</a></div>
+              <div class="k">Platform</div><div>Tokopedia</div>
+              <div class="k">Purchase Date</div><div>09 Aug 2026</div>
+              <div class="k">Market at Purchase</div><div>Rp1.850.000 · PriceCharting</div>
+              <div class="k">Bought vs Market</div><div class="gain">-8.1% below market</div>
+              <div class="k">Purchase Context</div><div>8 items purchased together · <a class="link">View all items</a></div>
+            </div>
+          </div>
+
+          <div id="sales" class="tabpane hidden">
+            <div class="panel-head"><div><h2>Sales</h2><p>Sale history and commercial context.</p></div></div>
+            <div class="section"><div style="padding:34px;text-align:center;color:var(--muted);background:#fafafa;border:1px dashed var(--line);border-radius:12px">No sales recorded. This inventory is currently AVAILABLE.</div></div>
+          </div>
+
+          <div id="portfolio" class="tabpane hidden">
+            <div class="panel-head"><div><h2>Portfolio Position</h2><p>How this copy sits inside AK's holdings.</p></div></div>
+            <div class="finance-hero">
+              <div class="metric"><div class="label">Owned Copies</div><div class="num">7</div></div>
+              <div class="metric"><div class="label">Average Cost</div><div class="num">Rp1.620.000</div></div>
+              <div class="metric"><div class="label">Position Value</div><div class="num">Rp16.450.000</div></div>
+            </div>
+
+            <div class="section">
+              <div class="kv">
+                <div class="k">Portfolio Owner</div><div>AK</div>
+                <div class="k">Market Provider</div><div>PriceCharting (EN)</div>
+                <div class="k">Position Unrealized</div><div class="gain">+Rp5.110.000</div>
+                <div class="k">This Copy Cost</div><div>Rp1.700.000</div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="panel-head" style="margin-bottom:4px">
+                <div>
+                  <h2 style="font-size:15px">Copies in this Position</h2>
+                  <p>Same card, language, variant, and portfolio grouping. Click another Inventory ID to jump directly to that copy.</p>
+                </div>
+              </div>
+
+              <div class="copy-nav">
+                <button class="navbtn" id="prevCopy">← Previous Copy</button>
+                <div class="counter"><b>1 / 7</b> · Current: <span class="mono">INV-000001245</span></div>
+                <button class="navbtn" id="nextCopy">Next Copy →</button>
+              </div>
+
+              <div class="table-wrap">
+                <table class="copies-table">
+                  <thead>
+                    <tr>
+                      <th>Inventory</th>
+                      <th>Cost</th>
+                      <th>Holder</th>
+                      <th>Storage</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="current">
+                      <td><span class="mono">INV-000001245</span><span class="current-pill">CURRENT</span></td>
+                      <td>Rp1.700.000</td>
+                      <td>AH</td>
+                      <td>Box A-12</td>
+                      <td><span class="copy-status available">AVAILABLE</span></td>
+                    </tr>
+                    <tr>
+                      <td><a class="link copy-link mono" data-inv="INV-000001388">INV-000001388</a></td>
+                      <td>Rp1.550.000</td>
+                      <td>AK</td>
+                      <td>Cabinet 2</td>
+                      <td><span class="copy-status available">AVAILABLE</span></td>
+                    </tr>
+                    <tr>
+                      <td><a class="link copy-link mono" data-inv="INV-000001421">INV-000001421</a></td>
+                      <td>Rp1.620.000</td>
+                      <td>AH</td>
+                      <td>Box B-01</td>
+                      <td><span class="copy-status listed">LISTED</span></td>
+                    </tr>
+                    <tr>
+                      <td><a class="link copy-link mono" data-inv="INV-000001622">INV-000001622</a></td>
+                      <td>Rp1.580.000</td>
+                      <td>AK</td>
+                      <td>Cabinet 1</td>
+                      <td><span class="copy-status reserved">RESERVED</span></td>
+                    </tr>
+                    <tr>
+                      <td><a class="link copy-link mono" data-inv="INV-000001744">INV-000001744</a></td>
+                      <td>Rp1.610.000</td>
+                      <td>AH</td>
+                      <td>Box A-04</td>
+                      <td><span class="copy-status available">AVAILABLE</span></td>
+                    </tr>
+                    <tr>
+                      <td><a class="link copy-link mono" data-inv="INV-000001801">INV-000001801</a></td>
+                      <td>Rp1.640.000</td>
+                      <td>AK</td>
+                      <td>Cabinet 3</td>
+                      <td><span class="copy-status available">AVAILABLE</span></td>
+                    </tr>
+                    <tr>
+                      <td><a class="link copy-link mono" data-inv="INV-000001903">INV-000001903</a></td>
+                      <td>Rp1.640.000</td>
+                      <td>AH</td>
+                      <td>Box C-02</td>
+                      <td><span class="copy-status available">AVAILABLE</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div id="timeline" class="tabpane hidden">
+            <div class="panel-head"><div><h2>Timeline</h2><p>Human-readable inventory lifecycle.</p></div></div>
+            <div class="timeline">
+              <div class="trow"><div class="dot"></div><div class="date">09 Aug 2026</div><div class="ev"><b>Inventory Created</b><br/>Generated from <a class="link">PUR-20260809-000023</a>.</div></div>
+              <div class="trow"><div class="dot"></div><div class="date">09 Aug 2026</div><div class="ev"><b>Stored</b><br/>Holder AH · Box A-12.</div></div>
+              <div class="trow"><div class="dot"></div><div class="date">Today</div><div class="ev"><b>Market Refreshed</b><br/>PriceCharting Rp2.350.000.</div></div>
+            </div>
+          </div>
+
+          <div id="audit" class="tabpane hidden">
+            <div class="panel-head"><div><h2>Audit</h2><p>Technical change trail for authorized users.</p></div></div>
+            <div class="kv">
+              <div class="k">2026-08-09 14:15</div><div>AK · InventoryCreated · source PUR-20260809-000023</div>
+              <div class="k">2026-08-09 14:16</div><div>AK · HolderSet · null → AH</div>
+              <div class="k">2026-08-09 14:16</div><div>AK · StorageSet · null → Box A-12</div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer">
+  <button class="btn close" id="drawerClose">Close</button>
+  <div class="eyebrow">Contact Preview</div>
+  <h3>Rudi TCG</h3>
+  <div class="subline">Seller · Contact CT-000023</div>
+  <div class="section">
+    <div class="finance-hero" style="grid-template-columns:1fr 1fr">
+      <div class="metric"><div class="label">Total Bought</div><div class="num">Rp38.5m</div></div>
+      <div class="metric"><div class="label">Avg vs Market</div><div class="num gain">-12.4%</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="kv" style="grid-template-columns:150px 1fr">
+      <div class="k">Purchases</div><div>124</div>
+      <div class="k">Below Market</div><div>78%</div>
+      <div class="k">Near Market</div><div>15%</div>
+      <div class="k">Above Market</div><div>7%</div>
+    </div>
+  </div>
+</aside>
+
+<div class="zoom" id="zoom">
+  <div class="zoom-card" id="zoomCard"></div>
+</div>
+
+<script>
+const tabs=[...document.querySelectorAll('.tab')];
+const panes=[...document.querySelectorAll('.tabpane')];
+tabs.forEach(t=>t.addEventListener('click',()=>{
+  tabs.forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  panes.forEach(p=>p.classList.add('hidden'));
+  document.getElementById(t.dataset.tab).classList.remove('hidden');
+}));
+
+const drawer=document.getElementById('drawer'), overlay=document.getElementById('overlay');
+function openDrawer(){drawer.classList.add('open');overlay.classList.add('show')}
+function closeDrawer(){drawer.classList.remove('open');overlay.classList.remove('show')}
+document.getElementById('sellerLink').addEventListener('click',openDrawer);
+document.getElementById('drawerClose').addEventListener('click',closeDrawer);
+overlay.addEventListener('click',closeDrawer);
+
+document.getElementById('purchaseLink').addEventListener('click',()=>{
+  alert('Mockup interaction: this will navigate to Purchase Detail PUR-20260809-000023.');
+});
+
+const zoom=document.getElementById('zoom');
+document.getElementById('cardArt').addEventListener('click',()=>zoom.classList.add('show'));
+zoom.addEventListener('click',()=>zoom.classList.remove('show'));
+
+document.querySelectorAll('.copy-link').forEach(el=>{
+  el.addEventListener('click',()=>{
+    alert('Mockup interaction: navigate to Inventory Detail ' + el.dataset.inv + ' and keep Portfolio context.');
+  });
+});
+document.getElementById('prevCopy').addEventListener('click',()=>{
+  alert('Mockup interaction: previous copy in this portfolio position.');
+});
+document.getElementById('nextCopy').addEventListener('click',()=>{
+  alert('Mockup interaction: next copy → INV-000001388.');
+});
+
+</script>
+</body>
+</html>

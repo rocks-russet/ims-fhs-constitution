@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IMS FHS — Wallet Detail Mockup v1</title>
+<style>
+:root{--bg:#f6f7f9;--s:#fff;--sub:#f9fafb;--t:#16181d;--t2:#344054;--m:#667085;--b:#e4e7ec;--a:#2563eb;--g:#14804a;--gb:#ecfdf3;--r:#c4320a;--rb:#fff4ed;--w:#b54708;--wb:#fffaeb;--v:#6941c6;--vb:#f4f3ff;--shadow:0 8px 24px rgba(16,24,40,.10)}
+html[data-theme=dark]{--bg:#0d1117;--s:#161b22;--sub:#0f141a;--t:#f0f3f6;--t2:#c9d1d9;--m:#8b949e;--b:#30363d;--a:#58a6ff;--g:#3fb950;--gb:#12261a;--r:#f85149;--rb:#2c1618;--w:#d29922;--wb:#2a210f;--v:#a371f7;--vb:#211a35;--shadow:0 10px 28px rgba(0,0,0,.34)}
+*{box-sizing:border-box}body{margin:0;font:13px Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--t)}button,input,select{font:inherit}
+.shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh}.side{background:#101318;padding:20px 14px;color:#aaa;position:sticky;top:0;height:100vh}.brand{color:#fff;font-weight:900;padding:0 10px 18px}.nav a{display:block;padding:10px;border-radius:8px;color:#aeb5c0;text-decoration:none}.nav a.on,.nav a:hover{background:#1b2028;color:#fff}
+.main{min-width:0}.top{height:58px;background:var(--s);border-bottom:1px solid var(--b);display:flex;justify-content:space-between;align-items:center;padding:0 25px;position:sticky;top:0;z-index:30}.page{padding:24px 28px}.muted{color:var(--m);font-size:11px}.head{display:flex;justify-content:space-between;gap:16px;margin:12px 0 15px}.title{display:flex;align-items:center;gap:9px}h1{margin:0;font-size:25px}.actions{display:flex;gap:8px}.btn{border:1px solid var(--b);background:var(--s);color:var(--t);padding:8px 11px;border-radius:8px;font-size:12px;font-weight:750;cursor:pointer}.btn:hover{background:var(--sub)}.btn.primary{background:var(--t);color:var(--s);border-color:var(--t)}
+.badge{font-size:9px;font-weight:850;padding:5px 8px;border-radius:99px;background:var(--gb);color:var(--g)}
+.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-bottom:15px}.metric{background:var(--s);border:1px solid var(--b);border-radius:11px;padding:12px}.metric small{color:var(--m);font-size:9px;text-transform:uppercase}.metric b{display:block;font-size:18px;margin-top:4px}.good{color:var(--g)}.bad{color:var(--r)}.warn{color:var(--w)}
+.tabs{display:flex;overflow:auto;border-bottom:1px solid var(--b);margin:16px 0;position:sticky;top:58px;background:var(--bg);z-index:20}.tab{border:0;border-radius:0;background:transparent;color:var(--m);border-bottom:2px solid transparent;white-space:nowrap;padding:10px 12px;font-size:11px}.tab.on{color:var(--t);border-bottom-color:var(--t)}
+.panel{background:var(--s);border:1px solid var(--b);border-radius:13px;padding:18px;min-height:520px}.ph h2{margin:0}.ph p{margin:4px 0 0;color:var(--m);font-size:11px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:15px}.box{border:1px solid var(--b);border-radius:11px;padding:13px;background:var(--s)}.box h3{margin:0 0 10px;font-size:12px}.kv{display:grid;grid-template-columns:160px 1fr;border-top:1px solid var(--b)}.kv div{padding:8px;border-bottom:1px solid var(--b);font-size:11px}.kv div:nth-child(odd){color:var(--m)}.link{color:var(--a);font-weight:750;cursor:pointer}
+.tablewrap{overflow:auto;border:1px solid var(--b);border-radius:9px;margin-top:14px}.tbl{width:100%;border-collapse:collapse;min-width:900px}.tbl th,.tbl td{padding:9px;border-bottom:1px solid var(--b);text-align:left;font-size:11px}.tbl th{background:var(--sub);color:var(--m)}.right{text-align:right!important}.pill{display:inline-flex;padding:4px 7px;border-radius:99px;font-size:9px;font-weight:850}.profit{background:var(--gb);color:var(--g)}.withdraw{background:var(--rb);color:var(--r)}.reimb{background:var(--wb);color:var(--w)}.transfer{background:#eff6ff;color:var(--a)}.capital{background:var(--vb);color:var(--v)}
+.timeline{display:grid;margin-top:14px}.tr{display:grid;grid-template-columns:22px 120px 1fr;gap:9px;padding-bottom:18px}.dot{width:9px;height:9px;background:var(--t);border-radius:50%;margin-top:3px;position:relative}.dot:after{content:"";position:absolute;left:4px;top:9px;height:38px;width:1px;background:var(--b)}.tr:last-child .dot:after{display:none}.date{font-size:10px;color:var(--m)}.event{font-size:11px}
+.hidden{display:none}@media(max-width:1100px){.metrics{grid-template-columns:repeat(3,1fr)}}@media(max-width:720px){.shell{display:block}.side{display:none}.page{padding:14px}.metrics{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}.head{flex-direction:column}}
+</style></head>
+<body>
+<div class="shell">
+<aside class="side"><div class="brand">IMS FHS</div><div class="nav"><a>Dashboard</a><a>Purchase</a><a>Inventory</a><a>Sales</a><a class="on">Finance</a><a>Contacts</a><a>Approvals</a></div></aside>
+<main class="main">
+<div class="top"><span class="muted">Wallet Detail</span><div style="display:flex;gap:10px;align-items:center"><button class="btn" id="theme">Dark Mode</button><span class="muted">AK · SUPER_ADMIN</span></div></div>
+<div class="page">
+<div class="muted">Finance / Wallet / AK</div>
+<div class="head"><div><div class="title"><h1>AK Wallet</h1><span class="badge">ACTIVE</span></div><div class="muted">Personal wallet · full detail visibility granted</div></div><div class="actions"><button class="btn">Export History</button><button class="btn">Internal Transfer</button><button class="btn primary">Request Withdrawal</button></div></div>
+
+<div class="metrics">
+<div class="metric"><small>Current Balance</small><b>Rp12.480.000</b></div>
+<div class="metric"><small>Available Balance</small><b class="good">Rp10.230.000</b></div>
+<div class="metric"><small>Pending Withdrawal</small><b class="warn">Rp2.250.000</b></div>
+<div class="metric"><small>This Month In</small><b class="good">+Rp6.840.000</b></div>
+<div class="metric"><small>This Month Out</small><b class="bad">-Rp3.210.000</b></div>
+</div>
+
+<div class="tabs">
+<button class="tab on" data-tab="summary">Summary</button>
+<button class="tab" data-tab="history">History</button>
+<button class="tab" data-tab="withdrawals">Withdrawals</button>
+<button class="tab" data-tab="relations">Related Transactions</button>
+<button class="tab" data-tab="timeline">Timeline</button>
+<button class="tab" data-tab="audit">Audit</button>
+</div>
+
+<section class="panel">
+<div id="summary" class="pane">
+<div class="ph"><h2>Wallet Summary</h2><p>Current monetary position and posting composition.</p></div>
+<div class="grid2">
+<div class="box"><h3>Balance Composition</h3><div class="kv">
+<div>Profit Realized</div><div>Rp8.220.000</div>
+<div>Capital Movements</div><div>Rp3.500.000</div>
+<div>Reimbursements</div><div>Rp760.000</div>
+<div>Pending Withdrawal</div><div class="warn">Rp2.250.000</div>
+</div></div>
+<div class="box"><h3>Access & Controls</h3><div class="kv">
+<div>Owner</div><div>AK</div>
+<div>Visibility</div><div>SELF + SUPER_ADMIN</div>
+<div>Can Withdraw</div><div>Yes</div>
+<div>Approval Authority</div><div>AK</div>
+</div></div>
+</div>
+</div>
+
+<div id="history" class="pane hidden">
+<div class="ph"><h2>Wallet History</h2><p>Immutable financial postings. Source relations are clickable.</p></div>
+<div class="tablewrap"><table class="tbl"><tr><th>Date</th><th>Posting ID</th><th>Type</th><th>Relation</th><th>Description</th><th class="right">Amount</th><th class="right">Balance After</th></tr>
+<tr><td>09 Aug · 07:31</td><td class="link">WPOST-000201</td><td><span class="pill profit">PROFIT</span></td><td class="link">ORD-20260808-000119</td><td>Realized profit from completed order</td><td class="right good">+Rp420.000</td><td class="right">Rp12.480.000</td></tr>
+<tr><td>08 Aug · 18:42</td><td class="link">WD-20260808-000011</td><td><span class="pill withdraw">WITHDRAWAL</span></td><td class="link">WD-20260808-000011</td><td>Withdrawal request awaiting approval</td><td class="right bad">-Rp2.250.000</td><td class="right">Rp12.060.000</td></tr>
+<tr><td>07 Aug · 21:58</td><td class="link">WPOST-000195</td><td><span class="pill profit">PROFIT</span></td><td class="link">ORD-20260807-000099</td><td>AK profit distribution</td><td class="right good">+Rp870.000</td><td class="right">Rp14.310.000</td></tr>
+<tr><td>07 Aug · 19:11</td><td class="link">WPOST-000191</td><td><span class="pill reimb">REIMBURSEMENT</span></td><td class="link">ORD-20260807-000088</td><td>Shipping reimbursement</td><td class="right good">+Rp45.000</td><td class="right">Rp13.440.000</td></tr>
+</table></div>
+</div>
+
+<div id="withdrawals" class="pane hidden">
+<div class="ph"><h2>Withdrawals</h2><p>Requests, approvals, reversals, and payout state.</p></div>
+<div class="tablewrap"><table class="tbl"><tr><th>Withdrawal ID</th><th>Requested</th><th>Requester</th><th class="right">Amount</th><th>Approver</th><th>Status</th></tr>
+<tr><td class="link">WD-20260808-000011</td><td>08 Aug · 18:42</td><td>AH</td><td class="right">Rp2.250.000</td><td>AK</td><td><span class="pill reimb">PENDING_APPROVAL</span></td></tr>
+<tr><td class="link">WD-20260729-000006</td><td>29 Jul · 15:10</td><td>AK</td><td class="right">Rp1.500.000</td><td>AK</td><td><span class="pill profit">COMPLETED</span></td></tr>
+</table></div>
+</div>
+
+<div id="relations" class="pane hidden">
+<div class="ph"><h2>Related Transactions</h2><p>Business records responsible for wallet movements.</p></div>
+<div class="grid2">
+<div class="box"><h3>Sales Orders</h3><div class="kv"><div class="link">ORD-20260808-000119</div><div>+Rp420.000 profit</div><div class="link">ORD-20260807-000099</div><div>+Rp870.000 profit</div></div></div>
+<div class="box"><h3>Other Relations</h3><div class="kv"><div class="link">ORD-20260807-000088</div><div>+Rp45.000 reimbursement</div><div class="link">WD-20260808-000011</div><div>-Rp2.250.000 pending withdrawal</div></div></div>
+</div>
+</div>
+
+<div id="timeline" class="pane hidden">
+<div class="ph"><h2>Timeline</h2><p>Human-readable wallet activity.</p></div>
+<div class="timeline">
+<div class="tr"><div class="dot"></div><div class="date">09 Aug · 07:31</div><div class="event"><b>Profit posted</b><br><span class="link">ORD-20260808-000119</span> completed.</div></div>
+<div class="tr"><div class="dot"></div><div class="date">08 Aug · 18:42</div><div class="event"><b>Withdrawal requested</b><br>Rp2.250.000 awaiting AK approval.</div></div>
+<div class="tr"><div class="dot"></div><div class="date">07 Aug · 19:11</div><div class="event"><b>Shipping reimbursement posted</b><br>Related to ORD-20260807-000088.</div></div>
+</div>
+</div>
+
+<div id="audit" class="pane hidden">
+<div class="ph"><h2>Audit</h2><p>Technical posting and authorization trail.</p></div>
+<div class="kv">
+<div>09 Aug · 07:31</div><div>SYSTEM · WalletPostingCreated · WPOST-000201</div>
+<div>08 Aug · 18:42</div><div>AH · WithdrawalRequested · WD-20260808-000011</div>
+<div>07 Aug · 19:11</div><div>SYSTEM · HandlerReimbursementPosted · WPOST-000191</div>
+</div>
+</div>
+</section>
+</div></main></div>
+
+<script>
+const tabs=[...document.querySelectorAll('.tab')],panes=[...document.querySelectorAll('.pane')];
+tabs.forEach(t=>t.onclick=()=>{tabs.forEach(x=>x.classList.remove('on'));t.classList.add('on');panes.forEach(p=>p.classList.add('hidden'));document.getElementById(t.dataset.tab).classList.remove('hidden')});
+theme.onclick=()=>{const h=document.documentElement,d=h.dataset.theme==='dark';h.dataset.theme=d?'light':'dark';theme.textContent=d?'Dark Mode':'Light Mode'};
+</script></body></html>

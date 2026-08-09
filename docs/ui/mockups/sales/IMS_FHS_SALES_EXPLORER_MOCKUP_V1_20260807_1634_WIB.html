@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>IMS FHS — Sales Explorer Mockup v1</title>
+<style>
+:root{
+  --bg:#f6f7f9;--surface:#fff;--text:#16181d;--muted:#667085;--line:#e4e7ec;
+  --blue:#2563eb;--bluebg:#eff6ff;--green:#14804a;--greenbg:#ecfdf3;--amber:#b54708;--amberbg:#fffaeb;
+  --red:#c4320a;--redbg:#fff4ed;--violet:#6941c6;--violetbg:#f4f3ff;--cyan:#0e7090;--cyanbg:#ecfdff;
+  --radius:12px;--shadow:0 8px 24px rgba(16,24,40,.10)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+button,input,select{font:inherit}
+.shell{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+.sidebar{background:#101318;color:#d0d5dd;padding:18px 14px;position:sticky;top:0;height:100vh}
+.brand{font-size:14px;font-weight:800;letter-spacing:.08em;padding:8px 10px 18px;color:#fff}
+.nav a{display:flex;padding:10px 11px;border-radius:9px;color:#aeb5c0;text-decoration:none;font-size:14px;margin:3px 0}
+.nav a.active,.nav a:hover{background:#1b2028;color:#fff}
+.main{min-width:0}
+.topbar{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.92);position:sticky;top:0;z-index:40;backdrop-filter:blur(10px)}
+.avatar{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#111827;color:#fff;font-weight:800}
+.user{display:flex;align-items:center;gap:8px;font-size:13px;color:#344054}
+.page{padding:22px 28px}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:14px}
+.eyebrow{font-size:12px;color:var(--muted);margin-bottom:4px}
+h1{font-size:24px;margin:0;letter-spacing:-.02em}
+.sub{font-size:12px;color:var(--muted);margin-top:4px}
+.actions{display:flex;gap:8px}
+.btn{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer}
+.btn:hover{background:#f8fafc}.btn.primary{background:#111827;color:#fff;border-color:#111827}
+.summary{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:14px}
+.metric{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px;cursor:pointer}
+.metric:hover{box-shadow:var(--shadow)}
+.metric .k{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.metric .v{font-size:19px;font-weight:850;margin-top:4px}
+.metric .s{font-size:10px;color:var(--muted);margin-top:3px}
+.gain{color:var(--green)} .loss{color:var(--red)}
+.queue{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.qbtn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 11px;font-size:12px;font-weight:750;cursor:pointer}
+.qbtn:hover,.qbtn.active{background:#111827;color:#fff;border-color:#111827}
+.qbtn .count{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#eef2f6;color:#344054;font-size:10px;margin-left:5px}
+.qbtn.active .count{background:#fff;color:#111827}
+.toolbar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;position:sticky;top:68px;z-index:30;box-shadow:0 1px 2px rgba(16,24,40,.03)}
+.search{display:flex;align-items:center;gap:8px;min-width:340px;flex:1;background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:8px 10px}
+.search input{border:0;outline:0;background:transparent;width:100%}
+.dropdown{position:relative}.menu{display:none;position:absolute;right:0;top:42px;width:270px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:12px;z-index:70}.menu.open{display:block}
+.menu h4{font-size:12px;margin:0 0 8px}.menu label{display:flex;align-items:center;gap:8px;padding:6px 4px;font-size:12px}.menu .sep{height:1px;background:var(--line);margin:8px 0}
+.active-filter-count{display:none;min-width:18px;height:18px;padding:0 5px;align-items:center;justify-content:center;background:#111827;color:#fff;border-radius:999px;font-size:10px;margin-left:4px}.active-filter-count.show{display:inline-flex}
+.active-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.filter-chip{display:inline-flex;align-items:center;gap:6px;background:#eef4ff;color:#3538cd;border:1px solid #d9e2ff;border-radius:999px;padding:6px 9px;font-size:11px;font-weight:700}.filter-chip button{border:0;background:transparent;cursor:pointer;color:inherit;padding:0}
+.table-card{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}.table-wrap{overflow:auto;max-height:630px}
+.tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;min-width:1320px}
+.tbl th{position:sticky;top:0;z-index:2;background:#f8fafc;color:#667085;text-align:left;font-weight:750;border-bottom:1px solid var(--line);padding:10px;white-space:nowrap;cursor:pointer}
+.tbl th .sortmark{font-size:10px;margin-left:4px;color:#111827}
+.tbl td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.tbl tr:hover td{background:#fafcff}
+.tbl .money{text-align:right;font-variant-numeric:tabular-nums}.tbl th.money{text-align:right}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.link{color:var(--blue);font-weight:750;cursor:pointer;text-decoration:none}.link:hover{text-decoration:underline}
+.buyer{display:grid;gap:2px}.buyer-top{display:flex;align-items:center;gap:7px}.buyer-name{font-weight:800}.buyer-meta{font-size:10px;color:var(--muted)}.buyer-score{font-size:10px;color:var(--green);background:var(--greenbg);padding:3px 6px;border-radius:999px;font-weight:800}
+.item-stack{display:grid;gap:2px}.item-stack span{font-size:11px}.item-stack .more{color:var(--muted)}
+.status{display:inline-flex;border-radius:999px;padding:4px 7px;font-size:10px;font-weight:800}
+.waiting_payment{background:var(--amberbg);color:var(--amber)}.paid{background:var(--bluebg);color:#1d4ed8}.packing{background:var(--violetbg);color:var(--violet)}.shipped{background:var(--cyanbg);color:var(--cyan)}.completed{background:var(--greenbg);color:var(--green)}.cancelled{background:var(--redbg);color:var(--red)}
+.payment{display:grid;gap:2px}.payment b{font-size:11px}.payment span{font-size:10px;color:var(--muted)}
+.shipping{display:grid;gap:2px}.shipping b{font-size:11px}.shipping span{font-size:10px;color:var(--muted)}
+.quick{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 8px;font-size:11px;font-weight:750;cursor:pointer}.quick:hover{background:#f8fafc}
+.quick.primary{background:#111827;color:#fff;border-color:#111827}
+.sla{font-size:10px;color:var(--muted);margin-top:4px}
+.footer{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;color:var(--muted);font-size:12px}.pager{display:flex;gap:6px}.pager button{border:1px solid var(--line);background:#fff;border-radius:7px;padding:6px 9px;cursor:pointer}
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.32);z-index:90;display:none}.overlay.show{display:block}
+.filter-drawer{position:fixed;right:0;top:0;bottom:0;width:min(510px,95vw);background:#fff;border-left:1px solid var(--line);box-shadow:-15px 0 40px rgba(16,24,40,.16);z-index:100;transform:translateX(102%);transition:.2s ease;display:flex;flex-direction:column}.filter-drawer.open{transform:translateX(0)}
+.drawer-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start}.drawer-head h2{margin:2px 0 3px;font-size:18px}.drawer-body{padding:18px 20px;overflow:auto;flex:1}.drawer-foot{padding:14px 20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:8px}
+.filter-section{margin-bottom:20px}.filter-section h3{font-size:12px;margin:0 0 9px;text-transform:uppercase;letter-spacing:.05em;color:#475467}.checkgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.checkitem{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:9px;padding:9px 10px;font-size:12px;background:#fff}
+.form-label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px}.select,.input{width:100%;border:1px solid var(--line);border-radius:9px;background:#fff;padding:9px;outline:none}.range-row{display:grid;grid-template-columns:1fr 18px 1fr;gap:8px;align-items:center}.hint{font-size:11px;color:var(--muted);margin-top:6px}
+.preview-drawer{position:fixed;right:0;top:0;bottom:0;width:min(480px,94vw);background:#fff;border-left:1px solid var(--line);box-shadow:-15px 0 40px rgba(16,24,40,.14);z-index:110;transform:translateX(102%);transition:.2s ease;padding:20px;overflow:auto}.preview-drawer.open{transform:translateX(0)}
+.preview-drawer h2{margin:7px 0 2px}.preview-drawer .kv{display:grid;grid-template-columns:155px 1fr;border-top:1px solid var(--line);margin-top:16px}.preview-drawer .kv div{padding:9px;border-bottom:1px solid var(--line);font-size:12px}.preview-drawer .kv .k{color:var(--muted)}
+.preview-items{display:grid;gap:8px;margin-top:12px}.preview-item{border:1px solid var(--line);border-radius:9px;padding:9px}.preview-item b{font-size:12px}.preview-item div{font-size:10px;color:var(--muted);margin-top:3px}
+.hidden-col{display:none}
+@media(max-width:1150px){.summary{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:980px){.shell{grid-template-columns:76px 1fr}.brand{font-size:0}.brand:after{content:"IMS";font-size:13px}.nav a{justify-content:center;font-size:0}.nav a:before{content:"•";font-size:18px}}
+@media(max-width:700px){.shell{display:block}.sidebar{display:none}.page{padding:14px}.summary{grid-template-columns:1fr 1fr}.toolbar{top:58px}.search{min-width:100%}.page-head{flex-direction:column}.actions{width:100%}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">IMS FHS</div>
+    <nav class="nav">
+      <a href="#">Dashboard</a><a href="#">Purchase</a><a href="#">Inventory</a><a class="active" href="#">Sales</a><a href="#">Finance</a><a href="#">Contacts</a><a href="#">Approvals</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div style="font-size:13px;color:var(--muted)">Sales</div>
+      <div class="user"><div class="avatar">AK</div>Albert · SUPER_ADMIN</div>
+    </div>
+
+    <div class="page">
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">Sales Explorer</div>
+          <h1>Sales</h1>
+          <div class="sub">Operational order queue, buyer context, payment, shipping, and realized profit.</div>
+        </div>
+        <div class="actions"><button class="btn">Export</button><button class="btn primary">+ New Sales Session</button></div>
+      </div>
+
+      <div class="summary">
+        <div class="metric" data-summary="TODAY"><div class="k">Today's Revenue</div><div class="v">Rp8.45m</div><div class="s">7 completed/active orders</div></div>
+        <div class="metric" data-summary="TODAY"><div class="k">Today's Profit</div><div class="v gain">Rp1.72m</div><div class="s">20.4% blended</div></div>
+        <div class="metric" data-queue="WAITING_PAYMENT"><div class="k">Waiting Payment</div><div class="v">3</div><div class="s">Oldest 4h 18m</div></div>
+        <div class="metric" data-queue="PAID"><div class="k">Need Packing</div><div class="v">2</div><div class="s">1 priority</div></div>
+        <div class="metric" data-queue="PACKING"><div class="k">Ready Shipment</div><div class="v">2</div><div class="s">Packing complete</div></div>
+        <div class="metric" data-queue="COMPLETED"><div class="k">Completed Today</div><div class="v">4</div><div class="s">Realized to wallet</div></div>
+      </div>
+
+      <div class="queue">
+        <button class="qbtn active" data-q="ALL">All Orders <span class="count">9</span></button>
+        <button class="qbtn" data-q="WAITING_PAYMENT">Waiting Payment <span class="count">3</span></button>
+        <button class="qbtn" data-q="PAID">Need Packing <span class="count">2</span></button>
+        <button class="qbtn" data-q="PACKING">Need Shipment <span class="count">2</span></button>
+        <button class="qbtn" data-q="SHIPPED">Need Completion <span class="count">1</span></button>
+      </div>
+
+      <div class="toolbar">
+        <div class="search">⌕ <input id="search" placeholder="Search order, buyer, card, invoice, tracking number..."/></div>
+        <button class="btn" id="filterBtn">Advanced Filter <span class="active-filter-count" id="filterCount">0</span></button>
+        <div class="dropdown">
+          <button class="btn" id="columnsBtn">Columns ▾</button>
+          <div class="menu" id="columnsMenu">
+            <h4>Visible columns</h4>
+            <label><input type="checkbox" data-col="platform" checked/> Platform</label>
+            <label><input type="checkbox" data-col="paymentcol" checked/> Payment</label>
+            <label><input type="checkbox" data-col="shippingcol" checked/> Shipping</label>
+            <label><input type="checkbox" data-col="profitcol" checked/> Profit</label>
+            <label><input type="checkbox" data-col="slacol" checked/> SLA</label>
+            <div class="sep"></div>
+            <small style="color:var(--muted)">Sorting is directly on table headers.</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="active-filters" id="activeFilters"></div>
+
+      <div class="table-card">
+        <div class="table-wrap">
+          <table class="tbl" id="salesTable">
+            <thead>
+              <tr>
+                <th data-sort="order">Order<span class="sortmark"></span></th>
+                <th data-sort="buyer">Buyer<span class="sortmark"></span></th>
+                <th>Items</th>
+                <th class="money" data-sort="revenue">Revenue<span class="sortmark"></span></th>
+                <th class="money profitcol" data-sort="profit">Profit<span class="sortmark"></span></th>
+                <th class="platform">Platform</th>
+                <th class="paymentcol">Payment</th>
+                <th class="shippingcol">Shipping</th>
+                <th class="slacol" data-sort="age">SLA<span class="sortmark"></span></th>
+                <th data-sort="status">Status<span class="sortmark"></span></th>
+                <th>Quick Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="footer"><span id="resultCount"></span><div class="pager"><button>←</button><button>1</button><button>2</button><button>3</button><button>→</button></div></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="filter-drawer" id="filterDrawer">
+  <div class="drawer-head">
+    <div><div class="eyebrow">Sales Explorer</div><h2>Advanced Filter</h2><div class="sub">Operational and financial filters for Sales Orders.</div></div>
+    <button class="btn" id="closeFilter">Close</button>
+  </div>
+
+  <div class="drawer-body">
+    <div class="filter-section">
+      <h3>Order</h3>
+      <label class="form-label">Order ID</label>
+      <input class="input" id="orderFilter" placeholder="ORD-20260807-000001"/>
+
+      <label class="form-label" style="margin-top:10px">Status</label>
+      <div class="checkgrid">
+        <label class="checkitem"><input type="checkbox" name="status" value="WAITING_PAYMENT"/> Waiting Payment</label>
+        <label class="checkitem"><input type="checkbox" name="status" value="PAID"/> Paid</label>
+        <label class="checkitem"><input type="checkbox" name="status" value="PACKING"/> Packing</label>
+        <label class="checkitem"><input type="checkbox" name="status" value="SHIPPED"/> Shipped</label>
+        <label class="checkitem"><input type="checkbox" name="status" value="COMPLETED"/> Completed</label>
+        <label class="checkitem"><input type="checkbox" name="status" value="CANCELLED"/> Cancelled</label>
+      </div>
+
+      <label class="form-label" style="margin-top:10px">Platform</label>
+      <select class="select" id="platformFilter">
+        <option value="">All Platforms</option>
+        <option>Facebook</option><option>Tokopedia</option><option>Offline</option>
+      </select>
+
+      <label class="form-label" style="margin-top:10px">Payment Method</label>
+      <select class="select" id="paymentFilter">
+        <option value="">All Payment Methods</option>
+        <option>DIRECT</option><option>MARKETPLACE</option><option>MARKETPLACE_SPLIT</option>
+      </select>
+    </div>
+
+    <div class="filter-section">
+      <h3>Buyer</h3>
+      <label class="form-label">Buyer</label>
+      <select class="select" id="buyerFilter">
+        <option value="">All Buyers</option>
+        <option>Budi Pratama</option><option>Adit TCG</option><option>Rudi Collector</option><option>Kevin OP</option><option>Dimas</option>
+      </select>
+    </div>
+
+    <div class="filter-section">
+      <h3>Financial</h3>
+      <label class="form-label">Revenue Range</label>
+      <div class="range-row"><input class="input" id="revenueMin" type="number" placeholder="Min Rp"/><div style="text-align:center;color:var(--muted)">–</div><input class="input" id="revenueMax" type="number" placeholder="Max Rp"/></div>
+
+      <label class="form-label" style="margin-top:10px">Profit Range</label>
+      <div class="range-row"><input class="input" id="profitMin" type="number" placeholder="Min Rp"/><div style="text-align:center;color:var(--muted)">–</div><input class="input" id="profitMax" type="number" placeholder="Max Rp"/></div>
+    </div>
+
+    <div class="filter-section">
+      <h3>Shipping</h3>
+      <label class="form-label">Handler</label>
+      <select class="select" id="handlerFilter">
+        <option value="">All Handlers</option><option>AK</option><option>AH</option><option>RCS</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="drawer-foot">
+    <button class="btn" id="resetFilters">Reset All</button>
+    <button class="btn primary" id="applyFilters">Apply Filter</button>
+  </div>
+</aside>
+
+<aside class="preview-drawer" id="previewDrawer">
+  <button class="btn" id="closePreview" style="float:right">Close</button>
+  <div class="eyebrow">Order Preview</div>
+  <h2 class="mono" id="pOrder">ORD-20260807-000123</h2>
+  <div class="sub" id="pStatus">WAITING_PAYMENT</div>
+
+  <div class="kv">
+    <div class="k">Buyer</div><div><a class="link" id="pBuyer">Budi Pratama</a></div>
+    <div class="k">Platform</div><div id="pPlatform">Facebook</div>
+    <div class="k">Revenue</div><div id="pRevenue">Rp1.850.000</div>
+    <div class="k">Profit</div><div id="pProfit">Rp420.000</div>
+    <div class="k">Payment</div><div id="pPayment">DIRECT</div>
+    <div class="k">Shipping</div><div id="pShipping">JNE · AH</div>
+    <div class="k">Invoice</div><div><a class="link" id="pInvoice">INV-V2-000123</a></div>
+  </div>
+
+  <div style="margin-top:16px"><b style="font-size:12px">Items</b></div>
+  <div class="preview-items" id="pItems"></div>
+  <button class="btn primary" style="width:100%;margin-top:16px" id="openDetail">Open Sales Detail</button>
+</aside>
+
+<script>
+const orders=[
+{order:'ORD-20260807-000123',buyer:'Budi Pratama',buyerOrders:14,buyerMarket:6.2,items:['Nami OP01-016','Zoro OP01-025','+2 more'],revenue:1850000,profit:420000,platform:'Facebook',payment:'DIRECT',shipping:'JNE',handler:'AH',tracking:'',invoice:'INV-V2-000123',status:'WAITING_PAYMENT',age:258},
+{order:'ORD-20260807-000124',buyer:'Adit TCG',buyerOrders:21,buyerMarket:-8.3,items:['Boa Hancock OP07-051','Official Sleeve Gear 5'],revenue:920000,profit:180000,platform:'Tokopedia',payment:'MARKETPLACE',shipping:'J&T',handler:'AK',tracking:'',invoice:'INV-V2-000124',status:'WAITING_PAYMENT',age:96},
+{order:'ORD-20260807-000125',buyer:'Kevin OP',buyerOrders:7,buyerMarket:2.1,items:['Monkey.D.Luffy OP05-119'],revenue:6500000,profit:1420000,platform:'Facebook',payment:'MARKETPLACE_SPLIT',shipping:'JNE',handler:'AH',tracking:'',invoice:'INV-V2-000125',status:'WAITING_PAYMENT',age:47},
+{order:'ORD-20260807-000118',buyer:'Rudi Collector',buyerOrders:9,buyerMarket:-12.1,items:['Nami OP01-016','Nami OP01-016'],revenue:4600000,profit:1140000,platform:'Facebook',payment:'DIRECT',shipping:'JNE',handler:'AH',tracking:'',invoice:'INV-V2-000118',status:'PAID',age:210},
+{order:'ORD-20260807-000119',buyer:'Dimas',buyerOrders:5,buyerMarket:4.4,items:['Gear 5 Official Playmat','Official Sleeve Gear 5'],revenue:980000,profit:245000,platform:'Offline',payment:'DIRECT',shipping:'Pickup',handler:'AK',tracking:'',invoice:'INV-V2-000119',status:'PAID',age:143},
+{order:'ORD-20260806-000112',buyer:'Adit TCG',buyerOrders:21,buyerMarket:-8.3,items:['Sanji OP06-119','Zoro OP01-025','+1 more'],revenue:1860000,profit:355000,platform:'Facebook',payment:'DIRECT',shipping:'J&T',handler:'AH',tracking:'',invoice:'INV-V2-000112',status:'PACKING',age:620},
+{order:'ORD-20260806-000113',buyer:'Budi Pratama',buyerOrders:14,buyerMarket:6.2,items:['Official Sleeve Gear 5','Deckbox Official Nami'],revenue:725000,profit:165000,platform:'Tokopedia',payment:'MARKETPLACE',shipping:'JNE',handler:'AK',tracking:'',invoice:'INV-V2-000113',status:'PACKING',age:590},
+{order:'ORD-20260806-000104',buyer:'Kevin OP',buyerOrders:7,buyerMarket:2.1,items:['Boa Hancock OP07-051'],revenue:515000,profit:93000,platform:'Facebook',payment:'DIRECT',shipping:'JNE',handler:'AH',tracking:'JNE123456789',invoice:'INV-V2-000104',status:'SHIPPED',age:1280},
+{order:'ORD-20260805-000099',buyer:'Dimas',buyerOrders:5,buyerMarket:4.4,items:['Bulk RED OP11'],revenue:390000,profit:145000,platform:'Offline',payment:'DIRECT',shipping:'Pickup',handler:'AK',tracking:'-',invoice:'INV-V2-000099',status:'COMPLETED',age:2200}
+];
+
+let query='',queue='ALL',sortKey='',sortAsc=true;
+let filters={order:'',statuses:[],platform:'',payment:'',buyer:'',revenueMin:null,revenueMax:null,profitMin:null,profitMax:null,handler:''};
+
+const rupiah=n=>'Rp'+n.toLocaleString('id-ID');
+const margin=r=>r.revenue?((r.profit/r.revenue)*100):0;
+function badge(s){return `<span class="status ${s.toLowerCase()}">${s}</span>`}
+function actionFor(s){
+ if(s==='WAITING_PAYMENT')return['Confirm Payment','confirm'];
+ if(s==='PAID')return['Start Packing','packing'];
+ if(s==='PACKING')return['Mark Shipped','ship'];
+ if(s==='SHIPPED')return['Mark Completed','complete'];
+ return ['Open','open'];
+}
+function filtered(){
+ let a=orders.filter(r=>{
+   const text=`${r.order} ${r.buyer} ${r.items.join(' ')} ${r.invoice} ${r.tracking} ${r.platform}`.toLowerCase();
+   if(!text.includes(query))return false;
+   if(queue!=='ALL'&&r.status!==queue)return false;
+   if(filters.order&&!r.order.toLowerCase().includes(filters.order.toLowerCase()))return false;
+   if(filters.statuses.length&&!filters.statuses.includes(r.status))return false;
+   if(filters.platform&&r.platform!==filters.platform)return false;
+   if(filters.payment&&r.payment!==filters.payment)return false;
+   if(filters.buyer&&r.buyer!==filters.buyer)return false;
+   if(filters.revenueMin!=null&&r.revenue<filters.revenueMin)return false;
+   if(filters.revenueMax!=null&&r.revenue>filters.revenueMax)return false;
+   if(filters.profitMin!=null&&r.profit<filters.profitMin)return false;
+   if(filters.profitMax!=null&&r.profit>filters.profitMax)return false;
+   if(filters.handler&&r.handler!==filters.handler)return false;
+   return true;
+ });
+ if(sortKey)a=[...a].sort((x,y)=>{
+   let A=x[sortKey],B=y[sortKey];if(typeof A==='string'){A=A.toLowerCase();B=B.toLowerCase()}
+   return (A>B?1:A<B?-1:0)*(sortAsc?1:-1);
+ });
+ return a;
+}
+function render(){
+ const data=filtered(),tb=document.querySelector('#salesTable tbody');
+ tb.innerHTML=data.map(r=>{
+   const [alabel,acode]=actionFor(r.status),m=margin(r);
+   const sla=r.status==='COMPLETED'?'Done':r.age<120?`${r.age} min`:`${Math.floor(r.age/60)}h ${r.age%60}m`;
+   return `<tr>
+     <td><a class="link mono open" data-id="${r.order}">${r.order}</a></td>
+     <td><div class="buyer"><div class="buyer-top"><span class="buyer-name">${r.buyer}</span><span class="buyer-score">${r.buyerMarket>0?'+':''}${r.buyerMarket}% vs mkt</span></div><div class="buyer-meta">${r.buyerOrders} completed orders</div></div></td>
+     <td><div class="item-stack">${r.items.map(x=>`<span class="${x.startsWith('+')?'more':''}">${x}</span>`).join('')}</div></td>
+     <td class="money">${rupiah(r.revenue)}</td>
+     <td class="money profitcol"><b class="${r.profit>=0?'gain':'loss'}">${rupiah(r.profit)}</b><div style="font-size:10px;color:var(--muted)">${m.toFixed(1)}%</div></td>
+     <td class="platform">${r.platform}</td>
+     <td class="paymentcol"><div class="payment"><b>${r.payment}</b><span>${r.status==='WAITING_PAYMENT'?'Awaiting confirmation':'Recorded'}</span></div></td>
+     <td class="shippingcol"><div class="shipping"><b>${r.shipping}</b><span>Handler ${r.handler}${r.tracking?` · ${r.tracking}`:''}</span></div></td>
+     <td class="slacol"><b>${sla}</b><div class="sla">${r.status}</div></td>
+     <td>${badge(r.status)}</td>
+     <td><button class="quick ${acode==='confirm'?'primary':''}" data-action="${acode}" data-id="${r.order}">${alabel}</button></td>
+   </tr>`;
+ }).join('');
+ resultCount.textContent=`${data.length} sales orders`;
+ document.querySelectorAll('.open').forEach(el=>el.onclick=()=>openPreview(el.dataset.id));
+ document.querySelectorAll('[data-action]').forEach(el=>el.onclick=()=>quickAction(el.dataset.action,el.dataset.id));
+ applyColumns();updateSortMarks();renderActiveFilters();
+}
+function updateSortMarks(){
+ document.querySelectorAll('th[data-sort]').forEach(th=>{
+   const mark=th.querySelector('.sortmark');if(mark)mark.textContent=th.dataset.sort===sortKey?(sortAsc?'▲':'▼'):'↕';
+ });
+}
+document.querySelectorAll('th[data-sort]').forEach(th=>th.onclick=()=>{
+ const key=th.dataset.sort;if(sortKey===key)sortAsc=!sortAsc;else{sortKey=key;sortAsc=true}render();
+});
+search.oninput=e=>{query=e.target.value.toLowerCase();render()};
+
+document.querySelectorAll('.qbtn').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('.qbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');queue=b.dataset.q;render();
+});
+document.querySelectorAll('[data-queue]').forEach(m=>m.onclick=()=>{
+ const q=m.dataset.queue;document.querySelectorAll('.qbtn').forEach(x=>x.classList.toggle('active',x.dataset.q===q));queue=q;render();
+});
+
+columnsBtn.onclick=()=>columnsMenu.classList.toggle('open');
+document.addEventListener('click',e=>{if(!e.target.closest('.dropdown'))columnsMenu.classList.remove('open')});
+document.querySelectorAll('#columnsMenu input').forEach(c=>c.onchange=applyColumns);
+function applyColumns(){document.querySelectorAll('#columnsMenu input').forEach(c=>document.querySelectorAll('.'+c.dataset.col).forEach(el=>el.classList.toggle('hidden-col',!c.checked)))}
+
+function n(el){return el.value===''?null:Number(el.value)}
+filterBtn.onclick=()=>{syncFilter();filterDrawer.classList.add('open');overlay.classList.add('show')};
+closeFilter.onclick=closeAll;closePreview.onclick=closeAll;overlay.onclick=closeAll;
+function closeAll(){filterDrawer.classList.remove('open');previewDrawer.classList.remove('open');overlay.classList.remove('show')}
+function syncFilter(){
+ orderFilter.value=filters.order;
+ document.querySelectorAll('input[name=status]').forEach(x=>x.checked=filters.statuses.includes(x.value));
+ platformFilter.value=filters.platform;paymentFilter.value=filters.payment;buyerFilter.value=filters.buyer;
+ revenueMin.value=filters.revenueMin??'';revenueMax.value=filters.revenueMax??'';
+ profitMin.value=filters.profitMin??'';profitMax.value=filters.profitMax??'';
+ handlerFilter.value=filters.handler;
+}
+applyFilters.onclick=()=>{
+ filters.order=orderFilter.value.trim();
+ filters.statuses=[...document.querySelectorAll('input[name=status]:checked')].map(x=>x.value);
+ filters.platform=platformFilter.value;filters.payment=paymentFilter.value;filters.buyer=buyerFilter.value;
+ filters.revenueMin=n(revenueMin);filters.revenueMax=n(revenueMax);filters.profitMin=n(profitMin);filters.profitMax=n(profitMax);
+ filters.handler=handlerFilter.value;queue='ALL';document.querySelectorAll('.qbtn').forEach(x=>x.classList.toggle('active',x.dataset.q==='ALL'));closeAll();render();
+};
+resetFilters.onclick=()=>{filters={order:'',statuses:[],platform:'',payment:'',buyer:'',revenueMin:null,revenueMax:null,profitMin:null,profitMax:null,handler:''};syncFilter();render()};
+
+function renderActiveFilters(){
+ const p=[];
+ if(queue!=='ALL')p.push(['queue','Queue: '+queue]);
+ if(filters.order)p.push(['order','Order: '+filters.order]);
+ filters.statuses.forEach(v=>p.push(['status:'+v,'Status: '+v]));
+ if(filters.platform)p.push(['platform','Platform: '+filters.platform]);
+ if(filters.payment)p.push(['payment','Payment: '+filters.payment]);
+ if(filters.buyer)p.push(['buyer','Buyer: '+filters.buyer]);
+ if(filters.revenueMin!=null||filters.revenueMax!=null)p.push(['revenue',`Revenue: ${filters.revenueMin==null?'0':rupiah(filters.revenueMin)} – ${filters.revenueMax==null?'∞':rupiah(filters.revenueMax)}`]);
+ if(filters.profitMin!=null||filters.profitMax!=null)p.push(['profit',`Profit: ${filters.profitMin==null?'0':rupiah(filters.profitMin)} – ${filters.profitMax==null?'∞':rupiah(filters.profitMax)}`]);
+ if(filters.handler)p.push(['handler','Handler: '+filters.handler]);
+ activeFilters.innerHTML=p.map(([k,l])=>`<span class="filter-chip">${l}<button data-key="${k}">×</button></span>`).join('');
+ filterCount.textContent=p.filter(x=>x[0]!=='queue').length;filterCount.classList.toggle('show',Number(filterCount.textContent)>0);
+ document.querySelectorAll('[data-key]').forEach(b=>b.onclick=()=>{
+   const k=b.dataset.key;if(k==='queue'){queue='ALL';document.querySelectorAll('.qbtn').forEach(x=>x.classList.toggle('active',x.dataset.q==='ALL'))}
+   else if(k==='order')filters.order='';
+   else if(k.startsWith('status:'))filters.statuses=filters.statuses.filter(x=>x!==k.split(':')[1]);
+   else if(k==='platform')filters.platform='';
+   else if(k==='payment')filters.payment='';
+   else if(k==='buyer')filters.buyer='';
+   else if(k==='revenue'){filters.revenueMin=null;filters.revenueMax=null}
+   else if(k==='profit'){filters.profitMin=null;filters.profitMax=null}
+   else if(k==='handler')filters.handler='';
+   render();
+ });
+}
+function openPreview(id){
+ const r=orders.find(x=>x.order===id);if(!r)return;
+ pOrder.textContent=r.order;pStatus.textContent=r.status;pBuyer.textContent=r.buyer;pPlatform.textContent=r.platform;
+ pRevenue.textContent=rupiah(r.revenue);pProfit.textContent=rupiah(r.profit)+' ('+margin(r).toFixed(1)+'%)';
+ pPayment.textContent=r.payment;pShipping.textContent=`${r.shipping} · Handler ${r.handler}`;pInvoice.textContent=r.invoice;
+ pItems.innerHTML=r.items.filter(x=>!x.startsWith('+')).map(x=>`<div class="preview-item"><b>${x}</b><div>Production: click to open related Inventory Detail.</div></div>`).join('');
+ previewDrawer.classList.add('open');overlay.classList.add('show');
+ openDetail.onclick=()=>alert('Mockup interaction: open Sales Detail '+r.order);
+ pBuyer.onclick=()=>alert('Mockup interaction: open Buyer Contact '+r.buyer);
+ pInvoice.onclick=()=>alert('Mockup interaction: open Invoice '+r.invoice);
+}
+function quickAction(action,id){
+ const labels={confirm:'Confirm Payment',packing:'Start Packing',ship:'Mark Shipped',complete:'Mark Completed',open:'Open Order'};
+ alert(`Mockup action: ${labels[action]} for ${id}.\nProduction will open confirmation / required form, then VALIDATING → COMMITTING with UI lock.`);
+}
+render();
+</script>
+</body>
+</html>

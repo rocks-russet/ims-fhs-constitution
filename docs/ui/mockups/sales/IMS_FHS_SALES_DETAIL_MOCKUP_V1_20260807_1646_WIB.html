@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>IMS FHS — Sales Detail Mockup v1</title>
+<style>
+:root{
+  --bg:#f6f7f9;--surface:#fff;--surface2:#f9fafb;--text:#16181d;--muted:#667085;--line:#e4e7ec;
+  --blue:#2563eb;--bluebg:#eff6ff;--green:#14804a;--greenbg:#ecfdf3;--amber:#b54708;--amberbg:#fffaeb;
+  --red:#c4320a;--redbg:#fff4ed;--violet:#6941c6;--violetbg:#f4f3ff;--cyan:#0e7090;--cyanbg:#ecfdff;
+  --radius:12px;--shadow:0 8px 24px rgba(16,24,40,.10)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+button{font:inherit}
+.shell{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+.sidebar{background:#101318;color:#d0d5dd;padding:18px 14px;position:sticky;top:0;height:100vh}
+.brand{font-size:14px;font-weight:800;letter-spacing:.08em;padding:8px 10px 18px;color:#fff}
+.nav a{display:flex;padding:10px 11px;border-radius:9px;color:#aeb5c0;text-decoration:none;font-size:14px;margin:3px 0}
+.nav a.active,.nav a:hover{background:#1b2028;color:#fff}
+.main{min-width:0}
+.topbar{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.92);position:sticky;top:0;z-index:40;backdrop-filter:blur(10px)}
+.avatar{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#111827;color:#fff;font-weight:800}
+.user{display:flex;align-items:center;gap:8px;font-size:13px;color:#344054}
+.page{padding:22px 28px 36px}
+.breadcrumb{font-size:12px;color:var(--muted);margin-bottom:12px}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:14px}
+.eyebrow{font-size:12px;color:var(--muted);margin-bottom:4px}
+.titleline{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+h1{font-size:24px;margin:0;letter-spacing:-.02em}
+.sub{font-size:12px;color:var(--muted);margin-top:4px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer}
+.btn:hover{background:#f8fafc}.btn.primary{background:#111827;color:#fff;border-color:#111827}
+.badge{display:inline-flex;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:800}
+.packing{background:var(--violetbg);color:var(--violet)}
+.summary{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.metric{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px}
+.metric .k{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.metric .v{font-size:18px;font-weight:850;margin-top:4px}
+.metric .s{font-size:10px;color:var(--muted);margin-top:3px}
+.gain{color:var(--green)}.loss{color:var(--red)}
+/* Enterprise stepper */
+.stepper-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}
+.stepper-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.stepper-title h2{font-size:15px;margin:0}
+.stepper{display:flex;align-items:flex-start}
+.step{display:flex;flex-direction:column;align-items:center;min-width:130px;cursor:pointer;position:relative}
+.circle{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:800;transition:.18s ease}
+.circle.done{background:var(--green);color:#fff}
+.circle.active{background:var(--blue);color:#fff;box-shadow:0 0 0 5px rgba(37,99,235,.14)}
+.circle.todo{background:#e5e7eb;color:#667085}
+.step-label{font-size:11px;font-weight:800;margin-top:9px;text-align:center}
+.step-time{font-size:10px;color:var(--muted);margin-top:3px;text-align:center}
+.line{height:3px;background:#d1d5db;flex:1;margin-top:17px}
+.line.done{background:var(--green)}
+.current-card{margin-top:18px;border-top:1px solid var(--line);padding-top:16px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
+.current-card h3{font-size:13px;margin:0 0 6px}
+.validation{display:flex;gap:8px;flex-wrap:wrap}
+.check{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:#f8fafc;border-radius:999px;padding:6px 9px;font-size:10px;color:#344054}
+.check.ok{background:var(--greenbg);color:var(--green);border-color:#c7eed8}
+.check.warn{background:var(--amberbg);color:var(--amber);border-color:#f4dfae}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:16px;position:sticky;top:58px;background:var(--bg);z-index:30}
+.tab{border:0;background:transparent;padding:11px 13px 10px;color:#667085;font-weight:700;font-size:12px;border-bottom:2px solid transparent;cursor:pointer}
+.tab.active{color:#111827;border-bottom-color:#111827}
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;min-height:520px}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.panel-head h2{font-size:17px;margin:0}.panel-head p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.section{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff}
+.section h3{font-size:13px;margin:0 0 10px}
+.kv{display:grid;grid-template-columns:165px 1fr;border-top:1px solid var(--line)}
+.kv div{padding:9px 7px;border-bottom:1px solid var(--line);font-size:12px}
+.kv .k{color:var(--muted)}
+.link{color:var(--blue);font-weight:750;cursor:pointer;text-decoration:none}.link:hover{text-decoration:underline}
+.items{display:grid;gap:8px}.item{border:1px solid var(--line);border-radius:10px;padding:10px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+.item-title{font-weight:800;font-size:12px}.item-meta{font-size:10px;color:var(--muted);margin-top:3px}
+.amount{font-weight:800;font-size:12px;font-variant-numeric:tabular-nums}
+.timeline{display:grid}.trow{display:grid;grid-template-columns:24px 125px 1fr;gap:10px;padding-bottom:18px}.dot{width:10px;height:10px;border-radius:50%;background:#111827;margin-top:4px;position:relative}.dot:after{content:"";position:absolute;width:1px;height:38px;background:#d0d5dd;left:4px;top:10px}.trow:last-child .dot:after{display:none}.date{font-size:10px;color:var(--muted)}.event{font-size:12px}
+.hidden{display:none}
+.popover{position:fixed;z-index:120;width:310px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:13px;display:none}
+.popover.show{display:block}.popover h4{margin:0 0 8px;font-size:13px}.popover .kv{grid-template-columns:115px 1fr}
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.34);z-index:90;display:none}.overlay.show{display:block}
+.drawer{position:fixed;right:0;top:0;bottom:0;width:min(440px,94vw);background:#fff;border-left:1px solid var(--line);box-shadow:-15px 0 40px rgba(16,24,40,.16);z-index:100;transform:translateX(102%);transition:.2s ease;padding:20px;overflow:auto}
+.drawer.open{transform:translateX(0)}
+@media(max-width:1150px){.summary{grid-template-columns:repeat(3,1fr)}.step{min-width:100px}}
+@media(max-width:800px){.shell{display:block}.sidebar{display:none}.page{padding:14px}.summary{grid-template-columns:1fr 1fr}.stepper{overflow:auto}.grid2{grid-template-columns:1fr}.head{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">IMS FHS</div>
+    <nav class="nav">
+      <a href="#">Dashboard</a><a href="#">Purchase</a><a href="#">Inventory</a><a class="active" href="#">Sales</a><a href="#">Finance</a><a href="#">Contacts</a><a href="#">Approvals</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div style="font-size:13px;color:var(--muted)">Sales Detail</div>
+      <div class="user"><div class="avatar">AK</div>Albert · SUPER_ADMIN</div>
+    </div>
+
+    <div class="page">
+      <div class="breadcrumb">Sales / <span class="mono">ORD-20260807-000112</span></div>
+
+      <div class="head">
+        <div>
+          <div class="eyebrow">Sales Order</div>
+          <div class="titleline">
+            <h1 class="mono">ORD-20260807-000112</h1>
+            <span class="badge packing">PACKING</span>
+          </div>
+          <div class="sub">Buyer: <a class="link" id="buyerLink">Adit TCG</a> · Facebook · Direct / Marketplace-switch eligible</div>
+        </div>
+        <div class="actions">
+          <button class="btn">Generate Invoice</button>
+          <button class="btn">More ▾</button>
+          <button class="btn primary" id="primaryTop">Mark Shipped</button>
+        </div>
+      </div>
+
+      <div class="summary">
+        <div class="metric"><div class="k">Revenue</div><div class="v">Rp1.860.000</div><div class="s">Agreed order value</div></div>
+        <div class="metric"><div class="k">Profit</div><div class="v gain">Rp355.000</div><div class="s">19.1% margin</div></div>
+        <div class="metric"><div class="k">Buyer Market</div><div class="v">-8.3%</div><div class="s">Historic buyer behavior</div></div>
+        <div class="metric"><div class="k">Items</div><div class="v">3</div><div class="s">2 cards + 1 product</div></div>
+        <div class="metric"><div class="k">Current SLA</div><div class="v">10h 20m</div><div class="s">Packing in progress</div></div>
+      </div>
+
+      <section class="stepper-card">
+        <div class="stepper-title">
+          <h2>Sales Progress</h2>
+          <div class="sub">Click a completed/current step to inspect its event details.</div>
+        </div>
+
+        <div class="stepper">
+          <div class="step" data-step="waiting">
+            <div class="circle done">✓</div>
+            <div class="step-label">WAITING PAYMENT</div>
+            <div class="step-time">06 Aug · 10:14</div>
+          </div>
+          <div class="line done"></div>
+          <div class="step" data-step="paid">
+            <div class="circle done">✓</div>
+            <div class="step-label">PAID</div>
+            <div class="step-time">06 Aug · 10:51</div>
+          </div>
+          <div class="line done"></div>
+          <div class="step" data-step="packing">
+            <div class="circle active">●</div>
+            <div class="step-label">PACKING</div>
+            <div class="step-time">In progress · 11:05</div>
+          </div>
+          <div class="line"></div>
+          <div class="step" data-step="shipped">
+            <div class="circle todo">4</div>
+            <div class="step-label">SHIPPED</div>
+            <div class="step-time">Pending</div>
+          </div>
+          <div class="line"></div>
+          <div class="step" data-step="completed">
+            <div class="circle todo">5</div>
+            <div class="step-label">COMPLETED</div>
+            <div class="step-time">Pending</div>
+          </div>
+        </div>
+
+        <div class="current-card">
+          <div>
+            <h3>Current Step · PACKING</h3>
+            <div class="validation">
+              <span class="check ok">✓ Payment confirmed</span>
+              <span class="check ok">✓ Invoice V2 active</span>
+              <span class="check ok">✓ Handler AH</span>
+              <span class="check ok">✓ Supplies confirmed</span>
+              <span class="check warn">! Tracking number pending</span>
+            </div>
+          </div>
+          <button class="btn primary" id="stepAction">Mark Shipped</button>
+        </div>
+      </section>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="summarytab">Summary</button>
+        <button class="tab" data-tab="items">Items</button>
+        <button class="tab" data-tab="payment">Payment</button>
+        <button class="tab" data-tab="packingtab">Packing</button>
+        <button class="tab" data-tab="shipment">Shipment</button>
+        <button class="tab" data-tab="finance">Finance</button>
+        <button class="tab" data-tab="timeline">Timeline</button>
+        <button class="tab" data-tab="audit">Audit</button>
+      </div>
+
+      <section class="panel">
+        <div id="summarytab" class="pane">
+          <div class="panel-head"><div><h2>Order Summary</h2><p>Operational overview and commercial context.</p></div></div>
+          <div class="grid2">
+            <div class="section">
+              <h3>Buyer & Source</h3>
+              <div class="kv">
+                <div class="k">Buyer</div><div><a class="link" id="buyerLink2">Adit TCG</a></div>
+                <div class="k">Sales Source</div><div>Facebook Claim Sale</div>
+                <div class="k">Source URL</div><div><a class="link">Open claim-sale link</a></div>
+                <div class="k">Payment Path</div><div>DIRECT <span style="color:var(--muted)">· switchable before completion</span></div>
+                <div class="k">Invoice</div><div><a class="link">INV-V2-000112</a></div>
+              </div>
+            </div>
+            <div class="section">
+              <h3>Commercial</h3>
+              <div class="kv">
+                <div class="k">Item Subtotal</div><div>Rp1.760.000</div>
+                <div class="k">Discount</div><div>-Rp0</div>
+                <div class="k">Additional Charge</div><div>Rp0</div>
+                <div class="k">Buyer Shipping</div><div>Rp100.000</div>
+                <div class="k">Grand Total</div><div><b>Rp1.860.000</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="items" class="pane hidden">
+          <div class="panel-head"><div><h2>Items</h2><p>Inventory sold in this order.</p></div></div>
+          <div class="items">
+            <div class="item"><div><div class="item-title"><a class="link">INV-000001903 · Sanji OP06-119</a></div><div class="item-meta">JP · SEC · Owner AH</div></div><div class="amount">Rp1.050.000</div></div>
+            <div class="item"><div><div class="item-title"><a class="link">INV-000002010 · Zoro OP01-025</a></div><div class="item-meta">EN · SR · Owner AK</div></div><div class="amount">Rp330.000</div></div>
+            <div class="item"><div><div class="item-title"><a class="link">INV-000002122 · Official Sleeve Gear 5</a></div><div class="item-meta">Product · Owner FHS</div></div><div class="amount">Rp380.000</div></div>
+          </div>
+        </div>
+
+        <div id="payment" class="pane hidden">
+          <div class="panel-head"><div><h2>Payment</h2><p>Payment path, confirmation, and switching eligibility.</p></div></div>
+          <div class="grid2">
+            <div class="section"><h3>Current Payment</h3><div class="kv">
+              <div class="k">Method</div><div>DIRECT</div>
+              <div class="k">Account</div><div>BCA · AK</div>
+              <div class="k">Amount</div><div>Rp1.860.000</div>
+              <div class="k">Confirmed</div><div>06 Aug 2026 · 10:51</div>
+              <div class="k">Confirmed By</div><div>AK</div>
+            </div></div>
+            <div class="section"><h3>Payment Method Control</h3>
+              <p class="sub">Order may switch to Marketplace while eligible. Existing Invoice V2 is superseded and a new path-specific V2 is generated.</p>
+              <button class="btn" id="switchPayment">Switch Payment Method</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="packingtab" class="pane hidden">
+          <div class="panel-head"><div><h2>Packing</h2><p>Operator, supply usage, and packing completion data.</p></div></div>
+          <div class="grid2">
+            <div class="section"><h3>Packing Job</h3><div class="kv">
+              <div class="k">Operator</div><div>AH</div>
+              <div class="k">Started</div><div>06 Aug · 11:05</div>
+              <div class="k">Status</div><div>IN PROGRESS</div>
+              <div class="k">Supply Template</div><div>Learned suggestion · 3-item mixed order</div>
+            </div></div>
+            <div class="section"><h3>Actual Supplies</h3><div class="kv">
+              <div class="k">Toploader</div><div>2</div>
+              <div class="k">Sleeve</div><div>3</div>
+              <div class="k">Bubble Wrap</div><div>1</div>
+              <div class="k">Mailer Box</div><div>1</div>
+            </div></div>
+          </div>
+        </div>
+
+        <div id="shipment" class="pane hidden">
+          <div class="panel-head"><div><h2>Shipment</h2><p>Courier, handler, tracking, and shipping economics.</p></div></div>
+          <div class="grid2">
+            <div class="section"><h3>Shipping</h3><div class="kv">
+              <div class="k">Handler</div><div>AH</div>
+              <div class="k">Courier</div><div>J&T</div>
+              <div class="k">Tracking</div><div><span style="color:var(--amber);font-weight:700">Pending</span></div>
+              <div class="k">Buyer Address</div><div>Jakarta Selatan · saved contact address snapshot</div>
+            </div></div>
+            <div class="section"><h3>Shipping Financial</h3><div class="kv">
+              <div class="k">Buyer Charged</div><div>Rp100.000</div>
+              <div class="k">Actual Shipping</div><div>Pending</div>
+              <div class="k">Surplus / Deficit</div><div>Calculated at realization</div>
+            </div></div>
+          </div>
+        </div>
+
+        <div id="finance" class="pane hidden">
+          <div class="panel-head"><div><h2>Finance</h2><p>Profit, distributions, and wallet posting preview.</p></div></div>
+          <div class="grid2">
+            <div class="section"><h3>Profit</h3><div class="kv">
+              <div class="k">Revenue</div><div>Rp1.860.000</div>
+              <div class="k">Cost Basis</div><div>Rp1.505.000</div>
+              <div class="k">Current Profit</div><div class="gain"><b>Rp355.000</b></div>
+              <div class="k">Margin</div><div>19.1%</div>
+            </div></div>
+            <div class="section"><h3>Distribution Preview</h3><div class="kv">
+              <div class="k">AK</div><div>derived by item ownership/profit rules</div>
+              <div class="k">AH</div><div>derived by item ownership/profit rules</div>
+              <div class="k">FHS</div><div>derived by item ownership/profit rules</div>
+              <div class="k">Wallet Posting</div><div>Not realized until COMPLETED</div>
+            </div></div>
+          </div>
+        </div>
+
+        <div id="timeline" class="pane hidden">
+          <div class="panel-head"><div><h2>Timeline</h2><p>Human-readable Sales lifecycle and significant actions.</p></div></div>
+          <div class="timeline">
+            <div class="trow"><div class="dot"></div><div class="date">06 Aug · 10:14</div><div class="event"><b>Order Created</b><br/>Claim carts merged into this order.</div></div>
+            <div class="trow"><div class="dot"></div><div class="date">06 Aug · 10:18</div><div class="event"><b>Invoice V1 Generated</b><br/>Direct + Marketplace payment choices displayed.</div></div>
+            <div class="trow"><div class="dot"></div><div class="date">06 Aug · 10:33</div><div class="event"><b>Invoice V2 · DIRECT</b><br/>Buyer chose direct payment.</div></div>
+            <div class="trow"><div class="dot"></div><div class="date">06 Aug · 10:51</div><div class="event"><b>Payment Confirmed</b><br/>BCA · confirmed by AK.</div></div>
+            <div class="trow"><div class="dot"></div><div class="date">06 Aug · 11:05</div><div class="event"><b>Packing Started</b><br/>Assigned to AH.</div></div>
+          </div>
+        </div>
+
+        <div id="audit" class="pane hidden">
+          <div class="panel-head"><div><h2>Audit</h2><p>Technical mutation trail for authorized users.</p></div></div>
+          <div class="kv">
+            <div class="k">10:14</div><div>AK · OrderCreated · success</div>
+            <div class="k">10:18</div><div>AK · InvoiceGenerated · V1</div>
+            <div class="k">10:33</div><div>AK · PaymentMethodChanged · DIRECT</div>
+            <div class="k">10:51</div><div>AK · PaymentConfirmed · Rp1.860.000</div>
+            <div class="k">11:05</div><div>AH · PackingStarted</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<div class="popover" id="popover">
+  <h4 id="popTitle">PAID</h4>
+  <div class="kv">
+    <div class="k">Time</div><div id="popTime"></div>
+    <div class="k">Actor</div><div id="popActor"></div>
+    <div class="k">Detail</div><div id="popDetail"></div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer">
+  <button class="btn" id="closeDrawer" style="float:right">Close</button>
+  <div class="eyebrow">Buyer Contact Preview</div>
+  <h2 style="margin:8px 0 2px">Adit TCG</h2>
+  <div class="sub">Buyer · 21 completed orders</div>
+  <div class="section" style="margin-top:16px">
+    <div class="kv">
+      <div class="k">Lifetime Spend</div><div>Rp34.8m</div>
+      <div class="k">Avg vs Market</div><div>-8.3%</div>
+      <div class="k">Avg Order</div><div>Rp1.65m</div>
+      <div class="k">Last Purchase</div><div>Today</div>
+    </div>
+  </div>
+  <button class="btn primary" style="width:100%;margin-top:16px">Open Contact Detail</button>
+</aside>
+
+<script>
+const tabs=[...document.querySelectorAll('.tab')];
+const panes=[...document.querySelectorAll('.pane')];
+tabs.forEach(t=>t.onclick=()=>{
+  tabs.forEach(x=>x.classList.remove('active'));t.classList.add('active');
+  panes.forEach(p=>p.classList.add('hidden'));document.getElementById(t.dataset.tab).classList.remove('hidden');
+});
+
+const stepData={
+ waiting:{title:'WAITING PAYMENT',time:'06 Aug 2026 · 10:14',actor:'AK',detail:'Order created and awaiting buyer payment.'},
+ paid:{title:'PAID',time:'06 Aug 2026 · 10:51',actor:'AK',detail:'Rp1.860.000 confirmed via BCA.'},
+ packing:{title:'PACKING',time:'06 Aug 2026 · 11:05',actor:'AH',detail:'Packing started. Actual supplies are being recorded.'}
+};
+const pop=document.getElementById('popover');
+document.querySelectorAll('.step').forEach(step=>step.onclick=e=>{
+  const d=stepData[step.dataset.step]; if(!d)return;
+  popTitle.textContent=d.title;popTime.textContent=d.time;popActor.textContent=d.actor;popDetail.textContent=d.detail;
+  const r=step.getBoundingClientRect();
+  pop.style.left=Math.min(r.left,window.innerWidth-330)+'px';
+  pop.style.top=(r.bottom+8)+'px';
+  pop.classList.add('show');
+  e.stopPropagation();
+});
+document.addEventListener('click',()=>pop.classList.remove('show'));
+
+function action(){
+  alert('Mockup interaction: Mark Shipped.\nProduction: open required shipment form, validate tracking/courier/handler, then VALIDATING → COMMITTING → SHIPPED.');
+}
+stepAction.onclick=action;primaryTop.onclick=action;
+switchPayment.onclick=()=>alert('Mockup interaction: switch DIRECT → MARKETPLACE or MARKETPLACE_SPLIT while eligible. Existing Invoice V2 becomes superseded.');
+
+const overlay=document.getElementById('overlay'),drawer=document.getElementById('drawer');
+function openBuyer(){drawer.classList.add('open');overlay.classList.add('show')}
+function closeBuyer(){drawer.classList.remove('open');overlay.classList.remove('show')}
+buyerLink.onclick=openBuyer;buyerLink2.onclick=openBuyer;closeDrawer.onclick=closeBuyer;overlay.onclick=closeBuyer;
+</script>
+</body>
+</html>

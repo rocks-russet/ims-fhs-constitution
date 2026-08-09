@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IMS FHS — Settings Mockup v1</title>
+<style>
+:root{--bg:#f5f6f8;--s:#fff;--sub:#f8fafc;--t:#15171b;--m:#667085;--b:#e4e7ec;--a:#2563eb;--g:#14804a;--gb:#ecfdf3;--r:#c4320a;--rb:#fff4ed;--w:#b54708;--wb:#fffaeb;--v:#6941c6;--vb:#f4f3ff}
+html[data-theme=dark]{--bg:#0d1117;--s:#161b22;--sub:#0f141a;--t:#f0f3f6;--m:#8b949e;--b:#30363d;--a:#58a6ff;--g:#3fb950;--gb:#12261a;--r:#f85149;--rb:#2c1618;--w:#d29922;--wb:#2a210f;--v:#a371f7;--vb:#211a35}
+*{box-sizing:border-box}body{margin:0;font:13px Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--t)}button,input,select{font:inherit}.shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh}.side{background:#101318;padding:20px 14px;color:#aeb5c0}.brand{color:#fff;font-weight:900;padding:0 10px 18px}.nav a{display:block;padding:10px;border-radius:8px;color:#aeb5c0;text-decoration:none}.nav a.on,.nav a:hover{background:#1b2028;color:#fff}.main{min-width:0}.top{height:58px;background:var(--s);border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;padding:0 25px;position:sticky;top:0;z-index:20}.page{padding:24px 28px;max-width:1250px}.muted{color:var(--m);font-size:11px}.head{display:flex;justify-content:space-between;align-items:end;margin-bottom:15px}h1{margin:3px 0 2px;font-size:25px}.btn{border:1px solid var(--b);background:var(--s);color:var(--t);padding:8px 11px;border-radius:8px;font-size:11px;font-weight:750;cursor:pointer}.btn.primary{background:var(--t);color:var(--s)}.layout{display:grid;grid-template-columns:230px 1fr;gap:14px}.menu{background:var(--s);border:1px solid var(--b);border-radius:12px;padding:8px;height:max-content;position:sticky;top:74px}.menu button{width:100%;text-align:left;border:0;background:transparent;color:var(--m);padding:10px;border-radius:8px;font-weight:750;cursor:pointer}.menu button.on{background:var(--sub);color:var(--t)}.panel{background:var(--s);border:1px solid var(--b);border-radius:12px;padding:18px;min-height:580px}.panel h2{margin:0 0 4px;font-size:17px}.section{border-top:1px solid var(--b);padding-top:16px;margin-top:16px}.section:first-of-type{border-top:0;padding-top:0}.section h3{font-size:12px;margin:0 0 10px}.row{display:grid;grid-template-columns:220px 1fr;gap:18px;padding:11px 0;border-bottom:1px solid var(--b)}.row:last-child{border-bottom:0}.label b{display:block;font-size:11px}.label small{display:block;color:var(--m);font-size:10px;margin-top:3px;line-height:1.4}.control{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.input,.select{border:1px solid var(--b);background:var(--s);color:var(--t);border-radius:8px;padding:8px 10px;min-width:220px}.choices{display:flex;gap:8px;flex-wrap:wrap}.choice{border:1px solid var(--b);background:var(--s);border-radius:9px;padding:9px 11px;cursor:pointer}.choice.on{border-color:var(--a);box-shadow:0 0 0 2px color-mix(in srgb,var(--a) 16%,transparent)}.swatch{width:13px;height:13px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:-2px}.blue{background:#2563eb}.emerald{background:#10b981}.orange{background:#f97316}.status{display:inline-flex;padding:4px 7px;border-radius:99px;font-size:9px;font-weight:850}.ok{background:var(--gb);color:var(--g)}.warn{background:var(--wb);color:var(--w)}.danger{background:var(--rb);color:var(--r)}.session{border:1px solid var(--b);border-radius:10px;padding:11px;margin-top:8px;display:grid;grid-template-columns:1fr auto;gap:10px}.session b{font-size:11px}.session small{display:block;color:var(--m);font-size:9px;margin-top:3px}.preview{border:1px solid var(--b);background:var(--sub);border-radius:10px;padding:12px;margin-top:10px}.preview .demo{display:grid;grid-template-columns:1fr 1fr;gap:8px}.demo-card{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:10px}.hidden{display:none}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.menu{position:static;display:flex;overflow:auto}.menu button{width:auto;white-space:nowrap}.row{grid-template-columns:1fr}.page{padding:14px}.shell{display:block}.side{display:none}}
+</style></head>
+<body>
+<div class="shell">
+<aside class="side"><div class="brand">IMS FHS</div><nav class="nav"><a>Dashboard</a><a>Purchase</a><a>Inventory</a><a>Sales</a><a>Finance</a><a>Contacts</a><a>Approvals</a><a>Reports</a><a>Administration</a><a class="on">Settings</a></nav></aside>
+<main class="main">
+<div class="top"><span class="muted">Settings</span><span class="muted">AK · SUPER_ADMIN</span></div>
+<div class="page">
+<div class="head"><div><div class="muted">Account / Preferences</div><h1>Settings</h1><div class="muted">Your personal IMS FHS experience, security, and active sessions.</div></div><button class="btn primary">Save Changes</button></div>
+<div class="layout">
+<aside class="menu"><button class="on" data-tab="profile">Profile</button><button data-tab="appearance">Appearance</button><button data-tab="security">Security</button><button data-tab="sessions">Sessions</button></aside>
+
+<section class="panel">
+<div id="profile" class="pane">
+<h2>Profile</h2><div class="muted">Personal account settings. Role and authorization are managed separately by Administration.</div>
+<div class="section">
+<div class="row"><div class="label"><b>Display Name</b><small>Name shown across audit events and operator activity.</small></div><div class="control"><input class="input" value="Albert Kurniawan"></div></div>
+<div class="row"><div class="label"><b>User Code</b><small>Stable internal identity. Not editable here.</small></div><div class="control"><input class="input" value="AK" disabled></div></div>
+<div class="row"><div class="label"><b>Email</b><small>Used for account/security communication.</small></div><div class="control"><input class="input" value="albert@example.com"></div></div>
+<div class="row"><div class="label"><b>Role</b><small>Authorization comes from server-side role/permission policy.</small></div><div class="control"><span class="status ok">SUPER_ADMIN</span></div></div>
+</div>
+</div>
+
+<div id="appearance" class="pane hidden">
+<h2>Appearance</h2><div class="muted">Saved per user and applied immediately without reloading the application.</div>
+<div class="section">
+<div class="row"><div class="label"><b>Theme</b><small>Use Light, Dark, or follow your operating system.</small></div><div class="choices" id="themes"><button class="choice on" data-v="light">Light</button><button class="choice" data-v="dark">Dark</button><button class="choice" data-v="system">System</button></div></div>
+<div class="row"><div class="label"><b>Density</b><small>Controls spacing in tables, forms, and toolbars.</small></div><div class="choices"><button class="choice on">Comfortable</button><button class="choice">Compact</button></div></div>
+<div class="row"><div class="label"><b>Table Font Size</b><small>Useful for high-density Explorer screens.</small></div><div class="choices"><button class="choice on">Normal</button><button class="choice">Small</button></div></div>
+<div class="row"><div class="label"><b>Accent Color</b><small>Changes interactive emphasis only; semantic success/warning/danger colors remain fixed.</small></div><div class="choices"><button class="choice on"><span class="swatch blue"></span>Blue</button><button class="choice"><span class="swatch emerald"></span>Emerald</button><button class="choice"><span class="swatch orange"></span>Orange</button></div></div>
+<div class="row"><div class="label"><b>Motion</b><small>Reduced motion removes non-essential animation.</small></div><div class="choices"><button class="choice on">Normal</button><button class="choice">Reduced</button></div></div>
+</div>
+<div class="preview"><div class="muted">Live Preview</div><div class="demo" style="margin-top:8px"><div class="demo-card"><b>Inventory Card</b><div class="muted">INV-000001245 · AVAILABLE</div></div><div class="demo-card"><b class="good">+Rp420.000</b><div class="muted">Realized profit</div></div></div></div>
+</div>
+
+<div id="security" class="pane hidden">
+<h2>Security</h2><div class="muted">Account authentication and step-up security controls.</div>
+<div class="section">
+<div class="row"><div class="label"><b>Password</b><small>Change your own password. Password values are never displayed back by IMS.</small></div><div class="control"><button class="btn">Change Password</button><span class="status ok">ACTIVE</span></div></div>
+<div class="row"><div class="label"><b>Authenticator 2FA</b><small>TOTP authenticator app. Used for stronger verification and risk-based step-up challenges.</small></div><div class="control"><span class="status ok">ENABLED</span><button class="btn">Manage 2FA</button></div></div>
+<div class="row"><div class="label"><b>Recovery Codes</b><small>Single-use recovery codes for loss of authenticator access.</small></div><div class="control"><button class="btn">Regenerate Codes</button></div></div>
+<div class="row"><div class="label"><b>Suspicious Sign-in Protection</b><small>New or suspicious browser/location can require step-up verification even when a session would otherwise be valid.</small></div><div class="control"><span class="status ok">ENFORCED</span></div></div>
+</div>
+</div>
+
+<div id="sessions" class="pane hidden">
+<h2>Sessions</h2><div class="muted">Review where your account is currently signed in.</div>
+<div class="section">
+<div class="session"><div><b>Microsoft Edge · Windows 11</b><small>Jakarta, Indonesia · Current session · Last active now</small></div><span class="status ok">CURRENT</span></div>
+<div class="session"><div><b>Safari · iPhone</b><small>Jakarta, Indonesia · Last active 2 hours ago</small></div><button class="btn">Revoke</button></div>
+<div class="session"><div><b>Chrome · Windows</b><small>Bandung, Indonesia · Last active 3 days ago</small></div><button class="btn">Revoke</button></div>
+<div style="margin-top:14px"><button class="btn" style="color:var(--r)">Revoke Other Sessions</button></div>
+</div>
+</div>
+</section>
+</div>
+</div></main></div>
+<script>
+const menus=[...document.querySelectorAll('.menu button')],panes=[...document.querySelectorAll('.pane')];
+menus.forEach(b=>b.onclick=()=>{menus.forEach(x=>x.classList.remove('on'));b.classList.add('on');panes.forEach(x=>x.classList.add('hidden'));document.getElementById(b.dataset.tab).classList.remove('hidden')});
+document.querySelectorAll('.choices').forEach(g=>g.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{g.querySelectorAll('.choice').forEach(x=>x.classList.remove('on'));b.classList.add('on')}));
+document.querySelectorAll('#themes .choice').forEach(b=>b.onclick=()=>{document.querySelectorAll('#themes .choice').forEach(x=>x.classList.remove('on'));b.classList.add('on');if(b.dataset.v!=='system')document.documentElement.dataset.theme=b.dataset.v});
+</script></body></html>

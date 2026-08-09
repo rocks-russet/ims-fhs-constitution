@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>IMS FHS — Contact Explorer Mockup v1</title>
+<style>
+:root{
+  --bg-canvas:#f6f7f9;--bg-surface:#fff;--bg-subtle:#f9fafb;--text-primary:#16181d;--text-secondary:#344054;--text-muted:#667085;
+  --border:#e4e7ec;--accent:#2563eb;--success:#14804a;--success-bg:#ecfdf3;--warning:#b54708;--warning-bg:#fffaeb;
+  --danger:#c4320a;--danger-bg:#fff4ed;--violet:#6941c6;--violet-bg:#f4f3ff;--shadow:0 8px 24px rgba(16,24,40,.10)
+}
+html[data-theme="dark"]{
+  --bg-canvas:#0d1117;--bg-surface:#161b22;--bg-subtle:#0f141a;--text-primary:#f0f3f6;--text-secondary:#c9d1d9;--text-muted:#8b949e;
+  --border:#30363d;--accent:#58a6ff;--success:#3fb950;--success-bg:#12261a;--warning:#d29922;--warning-bg:#2a210f;
+  --danger:#f85149;--danger-bg:#2c1618;--violet:#a371f7;--violet-bg:#211a35;--shadow:0 10px 28px rgba(0,0,0,.34)
+}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg-canvas);color:var(--text-primary)}
+button,input,select{font:inherit}.shell{display:grid;grid-template-columns:230px 1fr;min-height:100vh}.sidebar{background:#101318;color:#d0d5dd;padding:18px 14px;position:sticky;top:0;height:100vh}
+.brand{font-size:14px;font-weight:800;letter-spacing:.08em;padding:8px 10px 18px;color:#fff}.nav a{display:flex;padding:10px 11px;border-radius:9px;color:#aeb5c0;text-decoration:none;font-size:14px;margin:3px 0}.nav a.active,.nav a:hover{background:#1b2028;color:#fff}
+.main{min-width:0}.topbar{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;border-bottom:1px solid var(--border);background:var(--bg-surface);position:sticky;top:0;z-index:40}
+.user{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary)}.avatar{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#111827;color:#fff;font-weight:800}
+.theme-toggle,.btn{border:1px solid var(--border);background:var(--bg-surface);color:var(--text-primary);border-radius:9px;padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer}.btn:hover,.theme-toggle:hover{background:var(--bg-subtle)}.btn.primary{background:var(--text-primary);color:var(--bg-surface);border-color:var(--text-primary)}
+.page{padding:22px 28px}.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:14px}.eyebrow{font-size:12px;color:var(--text-muted);margin-bottom:4px}h1{font-size:24px;margin:0}.sub{font-size:12px;color:var(--text-muted);margin-top:4px}
+.actions{display:flex;gap:8px}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}.metric{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:13px}.metric .k{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted)}.metric .v{font-size:20px;font-weight:850;margin-top:4px}.metric .s{font-size:10px;color:var(--text-muted);margin-top:3px}
+.toolbar{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;position:sticky;top:68px;z-index:30}
+.search{display:flex;align-items:center;gap:8px;min-width:340px;flex:1;background:var(--bg-subtle);border:1px solid var(--border);border-radius:9px;padding:8px 10px}.search input{border:0;outline:0;background:transparent;color:var(--text-primary);width:100%}
+.dropdown{position:relative}.menu{display:none;position:absolute;right:0;top:42px;width:260px;background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:12px;z-index:70}.menu.open{display:block}.menu label{display:flex;align-items:center;gap:8px;padding:6px 4px;font-size:12px}
+.table-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}.table-wrap{overflow:auto;max-height:630px}.tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;min-width:1180px}
+.tbl th{position:sticky;top:0;z-index:2;background:var(--bg-subtle);color:var(--text-muted);text-align:left;font-weight:750;border-bottom:1px solid var(--border);padding:10px;white-space:nowrap;cursor:pointer}.tbl td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle}.tbl tr:hover td{background:var(--bg-subtle)}
+.sortmark{font-size:10px;margin-left:4px;color:var(--text-primary)}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.link{color:var(--accent);font-weight:750;cursor:pointer;text-decoration:none}.link:hover{text-decoration:underline}
+.role{display:inline-flex;border-radius:999px;padding:4px 7px;font-size:10px;font-weight:800;margin-right:4px}.buyer{background:#eff6ff;color:#1d4ed8}.seller{background:var(--violet-bg);color:var(--violet)}
+.market-good{color:var(--success);font-weight:800}.market-bad{color:var(--danger);font-weight:800}
+.footer{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;color:var(--text-muted);font-size:12px}.pager{display:flex;gap:6px}.pager button{border:1px solid var(--border);background:var(--bg-surface);color:var(--text-primary);border-radius:7px;padding:6px 9px;cursor:pointer}
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.32);z-index:90;display:none}.overlay.show{display:block}
+.filter-drawer,.preview-drawer{position:fixed;right:0;top:0;bottom:0;background:var(--bg-surface);border-left:1px solid var(--border);box-shadow:-15px 0 40px rgba(16,24,40,.16);transform:translateX(102%);transition:.2s ease;overflow:auto}
+.filter-drawer{width:min(490px,95vw);z-index:100;display:flex;flex-direction:column}.preview-drawer{width:min(470px,94vw);z-index:110;padding:20px}.filter-drawer.open,.preview-drawer.open{transform:translateX(0)}
+.drawer-head{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start}.drawer-head h2{margin:2px 0 3px;font-size:18px}.drawer-body{padding:18px 20px;overflow:auto;flex:1}.drawer-foot{padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:space-between}
+.filter-section{margin-bottom:20px}.filter-section h3{font-size:12px;margin:0 0 9px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-secondary)}.checkgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.checkitem{display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:9px;padding:9px 10px;font-size:12px;background:var(--bg-surface)}
+.form-label{display:block;font-size:11px;color:var(--text-muted);margin-bottom:5px}.select,.input{width:100%;border:1px solid var(--border);border-radius:9px;background:var(--bg-surface);color:var(--text-primary);padding:9px}
+.preview-drawer h2{margin:8px 0 2px}.kv{display:grid;grid-template-columns:150px 1fr;border-top:1px solid var(--border);margin-top:16px}.kv div{padding:9px;border-bottom:1px solid var(--border);font-size:12px}.kv .k{color:var(--text-muted)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.mini{border:1px solid var(--border);border-radius:10px;padding:11px}.mini .k{font-size:10px;color:var(--text-muted)}.mini .v{font-size:16px;font-weight:800;margin-top:4px}
+.fb-btns{display:flex;gap:6px;flex-wrap:wrap}
+.fb-btn{border:1px solid var(--border);background:var(--bg-surface);color:var(--text-primary);border-radius:8px;padding:6px 8px;font-size:10px;font-weight:750;cursor:pointer;white-space:nowrap}
+.fb-btn:hover{background:var(--bg-subtle)}
+.address-cell{max-width:260px;line-height:1.4}
+.address-main{font-weight:700;font-size:11px}
+.address-sub{font-size:10px;color:var(--text-muted);margin-top:2px}
+.hidden-col{display:none}
+@media(max-width:980px){.shell{grid-template-columns:76px 1fr}.summary{grid-template-columns:repeat(2,1fr)}.brand{font-size:0}.brand:after{content:"IMS";font-size:13px}.nav a{font-size:0;justify-content:center}.nav a:before{content:"•";font-size:18px}}
+@media(max-width:700px){.shell{display:block}.sidebar{display:none}.page{padding:14px}.summary{grid-template-columns:1fr 1fr}.search{min-width:100%}.page-head{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">IMS FHS</div>
+    <nav class="nav"><a href="#">Dashboard</a><a href="#">Purchase</a><a href="#">Inventory</a><a href="#">Sales</a><a href="#">Finance</a><a class="active" href="#">Contacts</a><a href="#">Approvals</a></nav>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div style="font-size:13px;color:var(--text-muted)">Contacts</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="theme-toggle" id="themeToggle">Dark Mode</button>
+        <div class="user"><div class="avatar">AK</div>Albert · SUPER_ADMIN</div>
+      </div>
+    </div>
+
+    <div class="page">
+      <div class="page-head">
+        <div><div class="eyebrow">Contact Explorer</div><h1>Contacts</h1><div class="sub">Buyer and Seller identities, transaction history, and market-behavior analytics.</div></div>
+        <div class="actions"><button class="btn">Export</button><button class="btn primary">+ New Contact</button></div>
+      </div>
+
+      <div class="summary">
+        <div class="metric"><div class="k">Active Contacts</div><div class="v">184</div><div class="s">Normalized identities</div></div>
+        <div class="metric"><div class="k">Buyers</div><div class="v">128</div><div class="s">87 buyer-only</div></div>
+        <div class="metric"><div class="k">Sellers</div><div class="v">73</div><div class="s">32 seller-only</div></div>
+        <div class="metric"><div class="k">Buyer + Seller</div><div class="v">41</div><div class="s">Shared contact identity</div></div>
+      </div>
+
+      <div class="toolbar">
+        <div class="search">⌕ <input id="search" placeholder="Search contact, phone, Facebook, street, village, city, postal code..."/></div>
+        <button class="btn" id="filterBtn">Advanced Filter</button>
+        <div class="dropdown">
+          <button class="btn" id="columnsBtn">Columns ▾</button>
+          <div class="menu" id="columnsMenu">
+            <label><input type="checkbox" data-col="phone" checked/> Phone</label>
+            <label><input type="checkbox" data-col="addresscol" checked/> Primary Address</label>
+            <label><input type="checkbox" data-col="buyanalytics" checked/> Buyer Analytics</label>
+            <label><input type="checkbox" data-col="sellanalytics" checked/> Seller Analytics</label>
+            <label><input type="checkbox" data-col="lastactivity" checked/> Last Activity</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-wrap">
+          <table class="tbl" id="contactTable">
+            <thead>
+              <tr>
+                <th data-sort="contact">Contact ID<span class="sortmark"></span></th>
+                <th data-sort="name">Name<span class="sortmark"></span></th>
+                <th>Role</th>
+                <th class="phone">Phone</th>
+                <th class="addresscol">Primary Address</th>
+                <th class="buyanalytics" data-sort="buyerSpend">Buyer Spend<span class="sortmark"></span></th>
+                <th class="buyanalytics" data-sort="buyerMarket">Buyer vs Market<span class="sortmark"></span></th>
+                <th class="sellanalytics" data-sort="sellerBought">Bought From<span class="sortmark"></span></th>
+                <th class="sellanalytics" data-sort="sellerMarket">Seller vs Market<span class="sortmark"></span></th>
+                <th class="lastactivity" data-sort="last">Last Activity<span class="sortmark"></span></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="footer"><span id="resultCount"></span><div class="pager"><button>←</button><button>1</button><button>2</button><button>→</button></div></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="filter-drawer" id="filterDrawer">
+  <div class="drawer-head"><div><div class="eyebrow">Contact Explorer</div><h2>Advanced Filter</h2></div><button class="btn" id="closeFilter">Close</button></div>
+  <div class="drawer-body">
+    <div class="filter-section">
+      <h3>Role</h3>
+      <div class="checkgrid">
+        <label class="checkitem"><input type="checkbox" name="role" value="BUYER"/> Buyer</label>
+        <label class="checkitem"><input type="checkbox" name="role" value="SELLER"/> Seller</label>
+      </div>
+    </div>
+    <div class="filter-section">
+      <h3>Status</h3>
+      <select class="select" id="statusFilter"><option value="">All Status</option><option>ACTIVE</option><option>INACTIVE</option><option>MERGED</option></select>
+    </div>
+    <div class="filter-section">
+      <h3>Buyer Behavior</h3>
+      <label class="form-label">Buyer vs Market</label>
+      <select class="select" id="buyerMarketFilter">
+        <option value="">Any</option><option value="ABOVE">Usually Above Market</option><option value="NEAR">Near Market</option><option value="BELOW">Usually Below Market</option>
+      </select>
+    </div>
+    <div class="filter-section">
+      <h3>Seller Behavior</h3>
+      <label class="form-label">Seller vs Market</label>
+      <select class="select" id="sellerMarketFilter">
+        <option value="">Any</option><option value="CHEAP">Usually Below Market</option><option value="NEAR">Near Market</option><option value="EXPENSIVE">Usually Above Market</option>
+      </select>
+    </div>
+  </div>
+  <div class="drawer-foot"><button class="btn" id="resetFilters">Reset</button><button class="btn primary" id="applyFilters">Apply Filter</button></div>
+</aside>
+
+<aside class="preview-drawer" id="previewDrawer">
+  <button class="btn" id="closePreview" style="float:right">Close</button>
+  <div class="eyebrow">Contact Preview</div>
+  <h2 id="pName">Rudi TCG</h2>
+  <div class="sub mono" id="pContact">CT-000023</div>
+  <div id="pRoles" style="margin-top:10px"></div>
+
+  <div class="cards">
+    <div class="mini"><div class="k">Buyer Spend</div><div class="v" id="pBuyerSpend">—</div></div>
+    <div class="mini"><div class="k">Buyer vs Market</div><div class="v" id="pBuyerMarket">—</div></div>
+    <div class="mini"><div class="k">Bought From</div><div class="v" id="pSellerBought">—</div></div>
+    <div class="mini"><div class="k">Seller vs Market</div><div class="v" id="pSellerMarket">—</div></div>
+  </div>
+
+  <div class="kv">
+    <div class="k">Phone</div><div id="pPhone"></div>
+    <div class="k">Facebook</div><div><a class="link" id="pFacebook"></a></div>
+    <div class="k">Primary Address</div><div><div id="pAddress" style="font-weight:700"></div><div id="pArea" style="color:var(--text-muted);font-size:10px;margin-top:3px"></div></div>
+    <div class="k">Last Activity</div><div id="pLast"></div>
+    <div class="k">Status</div><div id="pStatus"></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px">
+    <button class="btn" id="openFbProfile">Open FB Profile</button>
+    <button class="btn" id="openMessenger">Open Messenger</button>
+  </div>
+  <button class="btn primary" style="width:100%;margin-top:8px" id="openDetail">Open Contact Detail</button>
+</aside>
+
+<script>
+const rows=[
+{contact:'CT-000023',name:'Rudi TCG',roles:['SELLER'],phone:'0812-1111-2233',facebook:'ruditcg',fbProfile:'https://www.facebook.com/ruditcg',fbMessenger:'https://m.me/ruditcg',address:'Jl. Cempaka Raya No. 12',area:'Bandung, Jawa Barat 40123',buyerSpend:0,buyerMarket:null,sellerBought:38500000,sellerMarket:-12.4,last:'2026-08-09',status:'ACTIVE'},
+{contact:'CT-000024',name:'Adit TCG',roles:['BUYER'],phone:'0813-8888-1122',facebook:'adittcg',fbProfile:'https://www.facebook.com/adittcg',fbMessenger:'https://m.me/adittcg',address:'Jl. Melati Indah Blok B2',area:'Bekasi, Jawa Barat 17145',buyerSpend:34800000,buyerMarket:-8.3,sellerBought:0,sellerMarket:null,last:'2026-08-07',status:'ACTIVE'},
+{contact:'CT-000025',name:'Budi Pratama',roles:['BUYER'],phone:'0812-9900-5511',facebook:'budipratama',fbProfile:'https://www.facebook.com/budipratama',fbMessenger:'https://m.me/budipratama',address:'Jl. Anggrek Selatan No. 8',area:'Jakarta Barat, DKI Jakarta 11530',buyerSpend:42100000,buyerMarket:6.2,sellerBought:0,sellerMarket:null,last:'2026-08-07',status:'ACTIVE'},
+{contact:'CT-000026',name:'CardHub Jakarta',roles:['SELLER'],phone:'0819-2200-7711',facebook:'cardhubjkt',fbProfile:'https://www.facebook.com/cardhubjkt',fbMessenger:'https://m.me/cardhubjkt',address:'Ruko Kelapa Gading Blok C5',area:'Jakarta Utara, DKI Jakarta 14240',buyerSpend:0,buyerMarket:null,sellerBought:82400000,sellerMarket:-4.8,last:'2026-08-09',status:'ACTIVE'},
+{contact:'CT-000027',name:'Anton Collection',roles:['BUYER','SELLER'],phone:'0817-1234-5566',facebook:'antoncollection',fbProfile:'https://www.facebook.com/antoncollection',fbMessenger:'https://m.me/antoncollection',address:'Jl. Melati Raya No. 18, Kebon Jeruk',area:'Jakarta Barat, DKI Jakarta 11530',buyerSpend:12500000,buyerMarket:-3.1,sellerBought:22500000,sellerMarket:3.6,last:'2026-08-08',status:'ACTIVE'},
+{contact:'CT-000028',name:'Kevin OP',roles:['BUYER'],phone:'0812-3333-6677',facebook:'kevinop',fbProfile:'https://www.facebook.com/kevinop',fbMessenger:'https://m.me/kevinop',address:'Perumahan Taman Sari Blok A1',area:'Surabaya, Jawa Timur 60234',buyerSpend:18900000,buyerMarket:2.1,sellerBought:0,sellerMarket:null,last:'2026-08-07',status:'ACTIVE'},
+{contact:'CT-000029',name:'Raymond Store',roles:['SELLER'],phone:'0813-4455-8899',facebook:'raymondstore',fbProfile:'https://www.facebook.com/raymondstore',fbMessenger:'https://m.me/raymondstore',address:'Jl. Diponegoro No. 22',area:'Semarang, Jawa Tengah 50241',buyerSpend:0,buyerMarket:null,sellerBought:57300000,sellerMarket:-18.2,last:'2026-08-08',status:'ACTIVE'}
+];
+
+let query='',sortKey='',sortAsc=true,filters={roles:[],status:'',buyerMarket:'',sellerMarket:''};
+const rupiah=n=>n?('Rp'+n.toLocaleString('id-ID')):'—';
+function roleHtml(rs){return rs.map(r=>`<span class="role ${r==='BUYER'?'buyer':'seller'}">${r}</span>`).join('')}
+function marketHtml(v){if(v==null)return'—';return `<span class="${v<=0?'market-good':'market-bad'}">${v>0?'+':''}${v}%</span>`}
+function bucketBuyer(v){if(v==null)return'';if(v>=5)return'ABOVE';if(v<=-5)return'BELOW';return'NEAR'}
+function bucketSeller(v){if(v==null)return'';if(v<=-5)return'CHEAP';if(v>=5)return'EXPENSIVE';return'NEAR'}
+function filtered(){
+  let a=rows.filter(r=>{
+    if(!(`${r.contact} ${r.name} ${r.phone} ${r.facebook} ${r.address} ${r.area}`.toLowerCase().includes(query)))return false;
+    if(filters.roles.length&&!filters.roles.some(x=>r.roles.includes(x)))return false;
+    if(filters.status&&r.status!==filters.status)return false;
+    if(filters.buyerMarket&&bucketBuyer(r.buyerMarket)!==filters.buyerMarket)return false;
+    if(filters.sellerMarket&&bucketSeller(r.sellerMarket)!==filters.sellerMarket)return false;
+    return true;
+  });
+  if(sortKey)a=[...a].sort((x,y)=>{
+    let A=x[sortKey],B=y[sortKey];if(A==null)A=sortAsc?Infinity:-Infinity;if(B==null)B=sortAsc?Infinity:-Infinity;
+    if(typeof A==='string'){A=A.toLowerCase();B=B.toLowerCase()}return(A>B?1:A<B?-1:0)*(sortAsc?1:-1)
+  });
+  return a;
+}
+function render(){
+  const data=filtered(),tb=document.querySelector('#contactTable tbody');
+  tb.innerHTML=data.map(r=>`<tr>
+    <td><a class="link mono open" data-id="${r.contact}">${r.contact}</a></td>
+    <td><b>${r.name}</b><div style="font-size:10px;color:var(--text-muted)">@${r.facebook}</div></td>
+    <td>${roleHtml(r.roles)}</td>
+    <td class="phone">${r.phone}</td>
+    <td class="addresscol"><div class="address-cell"><div class="address-main">${r.address}</div><div class="address-sub">${r.area}</div></div></td>
+    <td class="buyanalytics">${rupiah(r.buyerSpend)}</td>
+    <td class="buyanalytics">${marketHtml(r.buyerMarket)}</td>
+    <td class="sellanalytics">${rupiah(r.sellerBought)}</td>
+    <td class="sellanalytics">${marketHtml(r.sellerMarket)}</td>
+    <td class="lastactivity">${new Date(r.last+'T00:00:00').toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}</td>
+  </tr>`).join('');
+  resultCount.textContent=`${data.length} contacts`;
+  document.querySelectorAll('.open').forEach(el=>el.onclick=()=>openPreview(el.dataset.id));
+  applyColumns();updateSortMarks();
+}
+function updateSortMarks(){document.querySelectorAll('th[data-sort]').forEach(th=>{const m=th.querySelector('.sortmark');m.textContent=th.dataset.sort===sortKey?(sortAsc?'▲':'▼'):'↕'})}
+document.querySelectorAll('th[data-sort]').forEach(th=>th.onclick=()=>{const k=th.dataset.sort;if(sortKey===k)sortAsc=!sortAsc;else{sortKey=k;sortAsc=true}render()});
+search.oninput=e=>{query=e.target.value.toLowerCase();render()};
+columnsBtn.onclick=()=>columnsMenu.classList.toggle('open');
+document.addEventListener('click',e=>{if(!e.target.closest('.dropdown'))columnsMenu.classList.remove('open')});
+document.querySelectorAll('#columnsMenu input').forEach(c=>c.onchange=applyColumns);
+function applyColumns(){document.querySelectorAll('#columnsMenu input').forEach(c=>document.querySelectorAll('.'+c.dataset.col).forEach(el=>el.classList.toggle('hidden-col',!c.checked)))}
+
+filterBtn.onclick=()=>{syncFilter();filterDrawer.classList.add('open');overlay.classList.add('show')};
+closeFilter.onclick=closeAll;closePreview.onclick=closeAll;overlay.onclick=closeAll;
+function closeAll(){filterDrawer.classList.remove('open');previewDrawer.classList.remove('open');overlay.classList.remove('show')}
+function syncFilter(){
+ document.querySelectorAll('input[name=role]').forEach(x=>x.checked=filters.roles.includes(x.value));
+ statusFilter.value=filters.status;buyerMarketFilter.value=filters.buyerMarket;sellerMarketFilter.value=filters.sellerMarket;
+}
+applyFilters.onclick=()=>{filters.roles=[...document.querySelectorAll('input[name=role]:checked')].map(x=>x.value);filters.status=statusFilter.value;filters.buyerMarket=buyerMarketFilter.value;filters.sellerMarket=sellerMarketFilter.value;closeAll();render()};
+resetFilters.onclick=()=>{filters={roles:[],status:'',buyerMarket:'',sellerMarket:''};syncFilter();render()};
+
+function openPreview(id){
+ const r=rows.find(x=>x.contact===id);if(!r)return;
+ pName.textContent=r.name;pContact.textContent=r.contact;pRoles.innerHTML=roleHtml(r.roles);pBuyerSpend.textContent=rupiah(r.buyerSpend);
+ pBuyerMarket.innerHTML=marketHtml(r.buyerMarket);pSellerBought.textContent=rupiah(r.sellerBought);pSellerMarket.innerHTML=marketHtml(r.sellerMarket);
+ pPhone.textContent=r.phone;pFacebook.textContent='@'+r.facebook;pAddress.textContent=r.address;pArea.textContent=r.area;pLast.textContent=new Date(r.last+'T00:00:00').toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});pStatus.textContent=r.status;
+ previewDrawer.classList.add('open');overlay.classList.add('show');
+ openFbProfile.onclick=()=>window.open(r.fbProfile,'_blank','noopener');
+ openMessenger.onclick=()=>window.open(r.fbMessenger,'_blank','noopener');
+ openDetail.onclick=()=>alert('Mockup interaction: open Contact Detail '+r.contact);
+}
+themeToggle.onclick=()=>{const h=document.documentElement,d=h.dataset.theme==='dark';h.dataset.theme=d?'light':'dark';themeToggle.textContent=d?'Dark Mode':'Light Mode'};
+render();
+</script>
+</body>
+</html>

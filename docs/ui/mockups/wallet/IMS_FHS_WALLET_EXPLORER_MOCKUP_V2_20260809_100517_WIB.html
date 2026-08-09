@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IMS FHS — Wallet Explorer Mockup v1</title>
+<style>
+:root{--bg:#f6f7f9;--s:#fff;--sub:#f9fafb;--t:#16181d;--t2:#344054;--m:#667085;--b:#e4e7ec;--a:#2563eb;--g:#14804a;--gb:#ecfdf3;--r:#c4320a;--rb:#fff4ed;--w:#b54708;--wb:#fffaeb;--v:#6941c6;--vb:#f4f3ff;--shadow:0 8px 24px rgba(16,24,40,.10)}
+html[data-theme=dark]{--bg:#0d1117;--s:#161b22;--sub:#0f141a;--t:#f0f3f6;--t2:#c9d1d9;--m:#8b949e;--b:#30363d;--a:#58a6ff;--g:#3fb950;--gb:#12261a;--r:#f85149;--rb:#2c1618;--w:#d29922;--wb:#2a210f;--v:#a371f7;--vb:#211a35;--shadow:0 10px 28px rgba(0,0,0,.34)}
+*{box-sizing:border-box}body{margin:0;font:13px Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--t)}button,input,select{font:inherit}
+.shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh}.side{background:#101318;padding:20px 14px;color:#aaa;position:sticky;top:0;height:100vh}.brand{color:#fff;font-weight:900;padding:0 10px 18px}.nav a{display:block;padding:10px;border-radius:8px;color:#aeb5c0;text-decoration:none}.nav a.on,.nav a:hover{background:#1b2028;color:#fff}
+.main{min-width:0}.top{height:58px;background:var(--s);border-bottom:1px solid var(--b);display:flex;justify-content:space-between;align-items:center;padding:0 25px;position:sticky;top:0;z-index:30}.page{padding:24px 28px}.muted{color:var(--m);font-size:11px}.head{display:flex;justify-content:space-between;gap:16px;margin-bottom:14px}h1{margin:0;font-size:25px}.actions{display:flex;gap:8px}.btn{border:1px solid var(--b);background:var(--s);color:var(--t);padding:8px 11px;border-radius:8px;font-size:12px;font-weight:750;cursor:pointer}.btn:hover{background:var(--sub)}.btn.primary{background:var(--t);color:var(--s);border-color:var(--t)}
+.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-bottom:14px}.metric{background:var(--s);border:1px solid var(--b);border-radius:11px;padding:12px}.metric small{color:var(--m);font-size:9px;text-transform:uppercase}.metric b{display:block;font-size:18px;margin-top:4px}.good{color:var(--g)}.bad{color:var(--r)}.warn{color:var(--w)}
+.wallets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.wallet-btn{border:1px solid var(--b);background:var(--s);color:var(--t);border-radius:10px;padding:9px 12px;font-size:11px;font-weight:800;cursor:pointer}.wallet-btn.on{background:var(--t);color:var(--s);border-color:var(--t)}
+.toolbar{background:var(--s);border:1px solid var(--b);border-radius:11px;padding:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;position:sticky;top:68px;z-index:20;margin-bottom:12px}.search{display:flex;align-items:center;gap:8px;flex:1;min-width:320px;background:var(--sub);border:1px solid var(--b);border-radius:8px;padding:8px 10px}.search input{border:0;outline:0;background:transparent;color:var(--t);width:100%}
+.tablebox{background:var(--s);border:1px solid var(--b);border-radius:11px;overflow:hidden}.wrap{overflow:auto;max-height:620px}.tbl{width:100%;border-collapse:collapse;min-width:1200px}.tbl th,.tbl td{padding:9px;border-bottom:1px solid var(--b);text-align:left;font-size:11px}.tbl th{background:var(--sub);color:var(--m);position:sticky;top:0;cursor:pointer}.tbl tr:hover td{background:var(--sub)}.right{text-align:right!important;font-variant-numeric:tabular-nums}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.link{color:var(--a);font-weight:750;cursor:pointer}.pill{display:inline-flex;padding:4px 7px;border-radius:99px;font-size:9px;font-weight:850}.profit{background:var(--gb);color:var(--g)}.capital{background:var(--vb);color:var(--v)}.withdrawal{background:var(--rb);color:var(--r)}.reimburse{background:var(--wb);color:var(--w)}.transfer{background:#eff6ff;color:var(--a)}.pending{background:var(--wb);color:var(--w)}.approved{background:var(--gb);color:var(--g)}
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.32);z-index:80;display:none}.overlay.show{display:block}.drawer{position:fixed;right:0;top:0;bottom:0;width:min(470px,95vw);background:var(--s);border-left:1px solid var(--b);box-shadow:-15px 0 40px rgba(0,0,0,.18);z-index:90;transform:translateX(102%);transition:.2s;padding:20px;overflow:auto}.drawer.open{transform:translateX(0)}.kv{display:grid;grid-template-columns:150px 1fr;border-top:1px solid var(--b);margin-top:14px}.kv div{padding:8px;border-bottom:1px solid var(--b);font-size:11px}.kv div:nth-child(odd){color:var(--m)}.cards{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}.mini{border:1px solid var(--b);border-radius:9px;padding:10px}.mini small{font-size:9px;color:var(--m)}.mini b{display:block;font-size:15px;margin-top:3px}
+.footer{display:flex;justify-content:space-between;padding:10px 12px;color:var(--m);font-size:11px}
+@media(max-width:1100px){.metrics{grid-template-columns:repeat(3,1fr)}}@media(max-width:720px){.shell{display:block}.side{display:none}.page{padding:14px}.metrics{grid-template-columns:1fr 1fr}.search{min-width:100%}.head{flex-direction:column}}
+</style></head>
+<body>
+<div class="shell">
+<aside class="side"><div class="brand">IMS FHS</div><div class="nav"><a>Dashboard</a><a>Purchase</a><a>Inventory</a><a>Sales</a><a class="on">Finance</a><a>Contacts</a><a>Approvals</a></div></aside>
+<main class="main">
+<div class="top"><span class="muted">Wallet Explorer</span><div style="display:flex;gap:10px;align-items:center"><button class="btn" id="theme">Dark Mode</button><span class="muted">AK · SUPER_ADMIN</span></div></div>
+<div class="page">
+<div class="head"><div><div class="muted">Finance / Wallet</div><h1>Wallet</h1><div class="muted">Balances, postings, withdrawals, reimbursements, transfers, and immutable financial history.</div></div><div class="actions"><button class="btn">Export</button><button class="btn">Internal Transfer</button><button class="btn primary">Request Withdrawal</button></div></div>
+
+<div class="metrics">
+<div class="metric"><small>Total Balance</small><b>Rp28.74m</b></div>
+<div class="metric"><small>AK Wallet</small><b>Rp12.48m</b></div>
+<div class="metric"><small>FHS Wallet</small><b>Rp9.15m</b></div>
+<div class="metric"><small>Pending Withdrawal</small><b class="warn">Rp2.25m</b></div>
+<div class="metric"><small>Today Net Movement</small><b class="good">+Rp1.18m</b></div>
+</div>
+
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+<div class="wallets" style="margin-bottom:0">
+<button class="wallet-btn on" data-wallet="ALL">All Wallets</button>
+<button class="wallet-btn" data-wallet="AK">AK</button>
+<button class="wallet-btn" data-wallet="AH">AH</button>
+<button class="wallet-btn" data-wallet="RCS">RCS</button>
+<button class="wallet-btn" data-wallet="FHS">FHS</button>
+</div>
+<button class="btn primary" id="openWalletBtn" style="display:none">Open Wallet</button>
+</div>
+
+<div class="toolbar">
+<div class="search">⌕ <input id="search" placeholder="Search posting ID, order, purchase, withdrawal, reference..."></div>
+<select id="typeFilter" class="btn"><option value="">All Types</option><option>PROFIT</option><option>CAPITAL</option><option>WITHDRAWAL</option><option>REIMBURSEMENT</option><option>TRANSFER</option></select>
+<select id="statusFilter" class="btn"><option value="">All Status</option><option>POSTED</option><option>PENDING_APPROVAL</option><option>APPROVED</option><option>REVERSED</option></select>
+</div>
+
+<div class="tablebox"><div class="wrap"><table class="tbl"><thead><tr>
+<th data-sort="date">Date ↕</th><th data-sort="posting">Posting ID ↕</th><th>Wallet</th><th>Type</th><th>Source / Relation</th><th>Description</th><th class="right" data-sort="amount">Amount ↕</th><th class="right">Balance After</th><th>Status</th>
+</tr></thead><tbody id="body"></tbody></table></div><div class="footer"><span id="count"></span><span>Page 1 of 1</span></div></div>
+</div></main></div>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer">
+<button class="btn" id="close" style="float:right">Close</button>
+<div class="muted">Financial Posting</div><h2 id="dPosting" class="mono"></h2>
+<div id="dType"></div>
+<div class="cards">
+<div class="mini"><small>Amount</small><b id="dAmount"></b></div>
+<div class="mini"><small>Balance After</small><b id="dBalance"></b></div>
+</div>
+<div class="kv">
+<div>Wallet</div><div id="dWallet"></div>
+<div>Source</div><div id="dSource" class="link"></div>
+<div>Description</div><div id="dDesc"></div>
+<div>Status</div><div id="dStatus"></div>
+<div>Actor</div><div id="dActor"></div>
+<div>Created</div><div id="dDate"></div>
+</div>
+<button class="btn primary" style="width:100%;margin-top:16px" id="openDetail">Open Posting Detail</button>
+</aside>
+
+<script>
+const rows=[
+{date:'2026-08-09 07:31',posting:'WPOST-000201',wallet:'AK',type:'PROFIT',source:'ORD-20260808-000119',desc:'Realized profit from completed order',amount:420000,balance:12480000,status:'POSTED',actor:'SYSTEM'},
+{date:'2026-08-09 07:05',posting:'WPOST-000200',wallet:'AH',type:'PROFIT',source:'ORD-20260808-000119',desc:'AH profit share from completed order',amount:47000,balance:3920000,status:'POSTED',actor:'SYSTEM'},
+{date:'2026-08-08 20:14',posting:'WPOST-000199',wallet:'FHS',type:'CAPITAL',source:'CAP-20260808-000004',desc:'Capital contribution attribution',amount:3000000,balance:9150000,status:'POSTED',actor:'AK'},
+{date:'2026-08-08 18:42',posting:'WD-20260808-000011',wallet:'AK',type:'WITHDRAWAL',source:'WD-20260808-000011',desc:'Withdrawal request awaiting AK approval',amount:-2250000,balance:12060000,status:'PENDING_APPROVAL',actor:'AH'},
+{date:'2026-08-08 17:33',posting:'WPOST-000198',wallet:'AH',type:'REIMBURSEMENT',source:'ORD-20260807-000104',desc:'Actual shipping reimbursement to handler',amount:38000,balance:3873000,status:'POSTED',actor:'SYSTEM'},
+{date:'2026-08-08 13:10',posting:'WPOST-000197',wallet:'FHS',type:'TRANSFER',source:'TRF-20260808-000003',desc:'FHS internal bucket transfer',amount:-1000000,balance:6150000,status:'APPROVED',actor:'AK'},
+{date:'2026-08-07 22:04',posting:'WPOST-000196',wallet:'RCS',type:'PROFIT',source:'ORD-20260807-000099',desc:'RCS profit distribution',amount:315000,balance:3190000,status:'POSTED',actor:'SYSTEM'},
+{date:'2026-08-07 21:58',posting:'WPOST-000195',wallet:'AK',type:'PROFIT',source:'ORD-20260807-000099',desc:'AK profit distribution',amount:870000,balance:14310000,status:'POSTED',actor:'SYSTEM'}
+];
+let wallet='ALL',sortKey='',asc=true;
+const rp=n=>(n<0?'-':'')+'Rp'+Math.abs(n).toLocaleString('id-ID');
+const cls=t=>({PROFIT:'profit',CAPITAL:'capital',WITHDRAWAL:'withdrawal',REIMBURSEMENT:'reimburse',TRANSFER:'transfer'})[t]||'';
+function render(){
+ const q=search.value.toLowerCase(),type=typeFilter.value,status=statusFilter.value;
+ let data=rows.filter(r=>(wallet==='ALL'||r.wallet===wallet)&&(!type||r.type===type)&&(!status||r.status===status)&&(`${r.posting} ${r.source} ${r.desc}`.toLowerCase().includes(q)));
+ if(sortKey)data=[...data].sort((a,b)=>((a[sortKey]>b[sortKey])?1:(a[sortKey]<b[sortKey]?-1:0))*(asc?1:-1));
+ body.innerHTML=data.map(r=>`<tr>
+<td>${r.date}</td><td class="link mono open" data-id="${r.posting}">${r.posting}</td><td>${r.wallet}</td><td><span class="pill ${cls(r.type)}">${r.type}</span></td>
+<td class="link">${r.source}</td><td>${r.desc}</td><td class="right ${r.amount>=0?'good':'bad'}"><b>${rp(r.amount)}</b></td><td class="right">${rp(r.balance)}</td><td><span class="pill ${r.status==='PENDING_APPROVAL'?'pending':'approved'}">${r.status}</span></td>
+</tr>`).join('');
+ count.textContent=data.length+' financial records';
+ document.querySelectorAll('.open').forEach(x=>x.onclick=()=>openDrawer(x.dataset.id));
+}
+document.querySelectorAll('.wallet-btn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.wallet-btn').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  wallet=b.dataset.wallet;
+  if(wallet==='ALL'){
+    openWalletBtn.style.display='none';
+  }else{
+    openWalletBtn.style.display='inline-flex';
+    openWalletBtn.textContent='Open '+wallet+' Wallet';
+  }
+  render();
+});
+openWalletBtn.onclick=()=>alert('Mockup interaction: open '+wallet+' Wallet Detail. Production route is authorization-checked server-side.');
+search.oninput=render;typeFilter.onchange=render;statusFilter.onchange=render;
+document.querySelectorAll('th[data-sort]').forEach(th=>th.onclick=()=>{let k=th.dataset.sort;if(sortKey===k)asc=!asc;else{sortKey=k;asc=true}render()});
+function openDrawer(id){let r=rows.find(x=>x.posting===id);dPosting.textContent=r.posting;dType.innerHTML=`<span class="pill ${cls(r.type)}">${r.type}</span>`;dAmount.textContent=rp(r.amount);dBalance.textContent=rp(r.balance);dWallet.textContent=r.wallet;dSource.textContent=r.source;dDesc.textContent=r.desc;dStatus.textContent=r.status;dActor.textContent=r.actor;dDate.textContent=r.date;drawer.classList.add('open');overlay.classList.add('show')}
+function closeDrawer(){drawer.classList.remove('open');overlay.classList.remove('show')}close.onclick=closeDrawer;overlay.onclick=closeDrawer;openDetail.onclick=()=>alert('Mockup interaction: open Financial Posting Detail for '+dPosting.textContent);
+theme.onclick=()=>{let h=document.documentElement,d=h.dataset.theme==='dark';h.dataset.theme=d?'light':'dark';theme.textContent=d?'Dark Mode':'Light Mode'};
+render();
+</script></body></html>

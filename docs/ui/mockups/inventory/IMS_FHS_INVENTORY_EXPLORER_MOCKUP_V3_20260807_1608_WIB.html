@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>IMS FHS — Inventory Explorer Mockup v2</title>
+<style>
+:root{
+  --bg:#f6f7f9;--surface:#fff;--surface2:#f9fafb;--text:#16181d;--muted:#667085;--line:#e4e7ec;
+  --blue:#2563eb;--bluebg:#eff6ff;--green:#14804a;--greenbg:#ecfdf3;--amber:#b54708;--amberbg:#fffaeb;
+  --red:#c4320a;--redbg:#fff4ed;--radius:12px;--shadow:0 8px 24px rgba(16,24,40,.10)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+button,input,select{font:inherit}.shell{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+.sidebar{background:#101318;color:#d0d5dd;padding:18px 14px;position:sticky;top:0;height:100vh}
+.brand{font-size:14px;font-weight:800;letter-spacing:.08em;padding:8px 10px 18px;color:#fff}
+.nav a{display:flex;padding:10px 11px;border-radius:9px;color:#aeb5c0;text-decoration:none;font-size:14px;margin:3px 0}
+.nav a.active,.nav a:hover{background:#1b2028;color:#fff}
+.main{min-width:0}
+.topbar{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.92);position:sticky;top:0;z-index:40;backdrop-filter:blur(10px)}
+.avatar{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#111827;color:#fff;font-weight:800}
+.user{display:flex;align-items:center;gap:8px;font-size:13px;color:#344054}
+.page{padding:22px 28px}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:14px}
+.eyebrow{font-size:12px;color:var(--muted);margin-bottom:4px}
+h1{font-size:24px;margin:0;letter-spacing:-.02em}
+.sub{font-size:12px;color:var(--muted);margin-top:4px}
+.actions{display:flex;gap:8px}
+.btn{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer}
+.btn:hover{background:#f8fafc}.btn.primary{background:#111827;color:#fff;border-color:#111827}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.metric{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px}
+.metric .k{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.metric .v{font-size:20px;font-weight:850;margin-top:4px}.gain{color:var(--green)}
+.toolbar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;position:sticky;top:68px;z-index:30;box-shadow:0 1px 2px rgba(16,24,40,.03)}
+.search{display:flex;align-items:center;gap:8px;min-width:340px;flex:1;background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:8px 10px}
+.search input{border:0;outline:0;background:transparent;width:100%}
+.viewtoggle{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.viewtoggle button{border:0;background:#fff;padding:8px 10px;cursor:pointer}.viewtoggle button.active{background:#111827;color:#fff}
+.dropdown{position:relative}.menu{display:none;position:absolute;right:0;top:42px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:12px;z-index:70}
+.menu.open{display:block}.columns-menu{width:260px}.sort-menu{width:310px}
+.menu h4{font-size:12px;margin:0 0 8px}.menu label{display:flex;align-items:center;gap:8px;padding:6px 4px;font-size:12px}
+.menu .sep{height:1px;background:var(--line);margin:8px 0}
+.active-filter-count{display:none;min-width:18px;height:18px;padding:0 5px;align-items:center;justify-content:center;background:#111827;color:#fff;border-radius:999px;font-size:10px;margin-left:4px}
+.active-filter-count.show{display:inline-flex}
+.table-card{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.table-wrap{overflow:auto;max-height:620px}
+.tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;min-width:1120px}
+.tbl th{position:sticky;top:0;z-index:2;background:#f8fafc;color:#667085;text-align:left;font-weight:750;border-bottom:1px solid var(--line);padding:10px;white-space:nowrap;cursor:pointer}
+.tbl th .sortmark{font-size:10px;margin-left:4px;color:#111827}
+.tbl td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.tbl tr:hover td{background:#fafcff}.tbl .money{text-align:right;font-variant-numeric:tabular-nums}.tbl th.money{text-align:right}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.link{color:var(--blue);font-weight:750;cursor:pointer;text-decoration:none}.link:hover{text-decoration:underline}
+.thumb{width:38px;height:52px;border-radius:6px;background:linear-gradient(145deg,#0f172a,#2563eb,#dbeafe);border:2px solid #111827}
+.status{display:inline-flex;border-radius:999px;padding:4px 7px;font-size:10px;font-weight:800}
+.available{background:var(--greenbg);color:var(--green)}.listed{background:#eef4ff;color:#3538cd}.reserved{background:var(--amberbg);color:var(--amber)}.sold{background:#f2f4f7;color:#475467}
+.footer{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;color:var(--muted);font-size:12px}
+.pager{display:flex;gap:6px}.pager button{border:1px solid var(--line);background:#fff;border-radius:7px;padding:6px 9px;cursor:pointer}
+.grid{display:none;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}.grid.open{display:grid}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;cursor:pointer}.card:hover{box-shadow:var(--shadow);transform:translateY(-1px)}
+.card-art{aspect-ratio:5/7;border-radius:9px;background:linear-gradient(150deg,#111827,#2563eb,#dbeafe);border:3px solid #111827;margin-bottom:10px;position:relative}
+.card-art:after{content:attr(data-name);position:absolute;bottom:14px;left:12px;color:#fff;font-weight:900;font-size:20px}
+.card-title{font-weight:800}.card-meta{font-size:11px;color:var(--muted);margin-top:3px}
+.card-row{display:flex;justify-content:space-between;gap:8px;margin-top:8px;font-size:12px}.card-row b{font-variant-numeric:tabular-nums}
+.hidden-col{display:none}
+
+/* Advanced filter drawer */
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.32);z-index:90;display:none}.overlay.show{display:block}
+.filter-drawer{position:fixed;right:0;top:0;bottom:0;width:min(470px,95vw);background:#fff;border-left:1px solid var(--line);box-shadow:-15px 0 40px rgba(16,24,40,.16);z-index:100;transform:translateX(102%);transition:.2s ease;display:flex;flex-direction:column}
+.filter-drawer.open{transform:translateX(0)}
+.drawer-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start}
+.drawer-head h2{margin:2px 0 3px;font-size:18px}.drawer-body{padding:18px 20px;overflow:auto;flex:1}.drawer-foot{padding:14px 20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:8px}
+.filter-section{margin-bottom:20px}.filter-section h3{font-size:12px;margin:0 0 9px;text-transform:uppercase;letter-spacing:.05em;color:#475467}
+.checkgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.checkitem{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:9px;padding:9px 10px;font-size:12px;background:#fff}
+.range-row{display:grid;grid-template-columns:1fr 18px 1fr;gap:8px;align-items:center}
+.money-input{border:1px solid var(--line);background:#f8fafc;border-radius:9px;padding:9px 10px;width:100%;outline:none}
+.money-input:focus{border-color:#94a3b8;background:#fff}
+.hint{font-size:11px;color:var(--muted);margin-top:6px}
+.active-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.filter-chip{display:inline-flex;align-items:center;gap:6px;background:#eef4ff;color:#3538cd;border:1px solid #d9e2ff;border-radius:999px;padding:6px 9px;font-size:11px;font-weight:700}
+.filter-chip button{border:0;background:transparent;cursor:pointer;color:inherit;padding:0}
+
+/* Preview drawer */
+.preview-drawer{position:fixed;right:0;top:0;bottom:0;width:min(460px,94vw);background:#fff;border-left:1px solid var(--line);box-shadow:-15px 0 40px rgba(16,24,40,.14);z-index:110;transform:translateX(102%);transition:.2s ease;padding:20px}
+.preview-drawer.open{transform:translateX(0)}
+.preview-drawer h2{margin:7px 0 2px}.preview-drawer .mini-art{width:120px;aspect-ratio:5/7;background:linear-gradient(150deg,#111827,#2563eb,#dbeafe);border:4px solid #111827;border-radius:10px;margin-top:15px}
+.preview-drawer .kv{display:grid;grid-template-columns:140px 1fr;border-top:1px solid var(--line);margin-top:16px}.preview-drawer .kv div{padding:9px;border-bottom:1px solid var(--line);font-size:12px}.preview-drawer .kv .k{color:var(--muted)}
+
+.form-label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px}
+.select{width:100%;border:1px solid var(--line);border-radius:9px;background:#fff;padding:9px}
+.sort-row{display:grid;grid-template-columns:1fr 120px;gap:8px}
+@media(max-width:980px){.shell{grid-template-columns:76px 1fr}.brand{font-size:0}.brand:after{content:"IMS";font-size:13px}.nav a{justify-content:center;font-size:0}.nav a:before{content:"•";font-size:18px}.summary{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.shell{display:block}.sidebar{display:none}.page{padding:14px}.summary{grid-template-columns:1fr 1fr}.toolbar{top:58px}.search{min-width:100%}.page-head{flex-direction:column}.actions{width:100%}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">IMS FHS</div>
+    <nav class="nav">
+      <a href="#">Dashboard</a><a href="#">Purchase</a><a class="active" href="#">Inventory</a><a href="#">Sales</a><a href="#">Finance</a><a href="#">Contacts</a><a href="#">Approvals</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div style="font-size:13px;color:var(--muted)">Inventory</div>
+      <div class="user"><div class="avatar">AK</div>Albert · SUPER_ADMIN</div>
+    </div>
+
+    <div class="page">
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">Inventory Explorer</div>
+          <h1>Inventory</h1>
+          <div class="sub">Cards, products, bulk lots, and packing supplies in one explorer.</div>
+        </div>
+        <div class="actions"><button class="btn">Export</button><button class="btn primary">+ Add Inventory</button></div>
+      </div>
+
+      <div class="summary">
+        <div class="metric"><div class="k">Inventory Cost</div><div class="v">Rp190.4m</div></div>
+        <div class="metric"><div class="k">Market Value</div><div class="v">Rp248.1m</div></div>
+        <div class="metric"><div class="k">Unrealized</div><div class="v gain">+Rp57.7m</div></div>
+        <div class="metric"><div class="k">Active Inventory</div><div class="v">1,284</div></div>
+      </div>
+
+      <div class="toolbar">
+        <div class="search">⌕ <input id="search" placeholder="Search inventory ID, card, product, bulk label..."/></div>
+
+        <button class="btn" id="filterBtn">Advanced Filter <span class="active-filter-count" id="filterCount">0</span></button>
+
+        <div class="dropdown">
+          <button class="btn" id="columnsBtn">Columns ▾</button>
+          <div class="menu columns-menu" id="columnsMenu">
+            <h4>Visible columns</h4>
+            <label><input type="checkbox" data-col="owner" checked/> Owner</label>
+            <label><input type="checkbox" data-col="holder" checked/> Holder</label>
+            <label><input type="checkbox" data-col="storage" checked/> Storage</label>
+            <label><input type="checkbox" data-col="cost" checked/> Final Cost</label>
+            <label><input type="checkbox" data-col="market" checked/> Market</label>
+            <label><input type="checkbox" data-col="gain" checked/> Gain/Loss</label>
+            <div class="sep"></div>
+            <small style="color:var(--muted)">Counter removed from default explorer columns.</small>
+          </div>
+        </div>
+
+        <div class="viewtoggle"><button id="listBtn" class="active">List</button><button id="gridBtn">Grid</button></div>
+      </div>
+
+      <div class="active-filters" id="activeFilters"></div>
+
+      <div id="listView" class="table-card">
+        <div class="table-wrap">
+          <table class="tbl" id="inventoryTable">
+            <thead><tr>
+              <th></th>
+              <th data-sort="inv">Inventory<span class="sortmark"></span></th>
+              <th data-sort="name">Card / Product<span class="sortmark"></span></th>
+              <th class="owner" data-sort="owner">Owner<span class="sortmark"></span></th>
+              <th class="holder">Holder</th>
+              <th class="storage">Storage</th>
+              <th class="money cost" data-sort="cost">Final Cost<span class="sortmark"></span></th>
+              <th class="money market" data-sort="market">Market<span class="sortmark"></span></th>
+              <th class="money gain">Gain/Loss</th>
+              <th data-sort="status">Status<span class="sortmark"></span></th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="footer">
+          <span id="resultCount">12 results</span>
+          <div class="pager"><button>←</button><button>1</button><button>2</button><button>3</button><button>→</button></div>
+        </div>
+      </div>
+
+      <div id="gridView" class="grid"></div>
+    </div>
+  </main>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<!-- Advanced Filter -->
+<aside class="filter-drawer" id="filterDrawer">
+  <div class="drawer-head">
+    <div><div class="eyebrow">Inventory Explorer</div><h2>Advanced Filter</h2><div class="sub">Mirrors the advanced-filter behavior of IMS FHS v1, adapted for v2.</div></div>
+    <button class="btn" id="closeFilter">Close</button>
+  </div>
+
+  <div class="drawer-body">
+    <div class="filter-section">
+      <h3>Inventory</h3>
+      <label class="form-label">Owner</label>
+      <div class="checkgrid">
+        <label class="checkitem"><input type="checkbox" name="owner" value="AK"/> AK</label>
+        <label class="checkitem"><input type="checkbox" name="owner" value="AH"/> AH</label>
+        <label class="checkitem"><input type="checkbox" name="owner" value="RCS"/> RCS</label>
+        <label class="checkitem"><input type="checkbox" name="owner" value="FHS"/> FHS</label>
+      </div>
+
+      <label class="form-label" style="margin-top:12px">Status</label>
+      <div class="checkgrid">
+        <label class="checkitem"><input type="checkbox" name="status" value="AVAILABLE"/> Available</label>
+        <label class="checkitem"><input type="checkbox" name="status" value="LISTED"/> Listed</label>
+        <label class="checkitem"><input type="checkbox" name="status" value="RESERVED"/> Reserved</label>
+        <label class="checkitem"><input type="checkbox" name="status" value="SOLD"/> Sold</label>
+      </div>
+
+      <label class="form-label" style="margin-top:12px">Inventory Type</label>
+      <select class="select" id="typeFilter">
+        <option value="">All Types</option>
+        <option value="CARD">Card</option>
+        <option value="PRODUCT">Product</option>
+        <option value="BULK">Bulk Card Lot</option>
+      </select>
+    </div>
+
+    <div class="filter-section">
+      <h3>Card Filters</h3>
+
+      <label class="form-label">Card Number</label>
+      <input class="money-input" id="cardNumberFilter" type="text" placeholder="OP01-001, EB03-053"/>
+
+      <label class="form-label" style="margin-top:10px">Set Code</label>
+      <select class="select" id="setFilter">
+        <option value="">All Set Codes</option>
+        <option value="OP01">OP01</option>
+        <option value="OP05">OP05</option>
+        <option value="OP06">OP06</option>
+        <option value="OP07">OP07</option>
+      </select>
+
+      <label class="form-label" style="margin-top:10px">Rarity</label>
+      <select class="select" id="rarityFilter">
+        <option value="">All Rarities</option>
+        <option value="Rare">Rare</option>
+        <option value="SR">SR</option>
+        <option value="SEC">SEC</option>
+      </select>
+
+      <label class="form-label" style="margin-top:10px">Language</label>
+      <select class="select" id="languageFilter">
+        <option value="">All Languages</option>
+        <option value="EN">English</option>
+        <option value="JP">Japanese</option>
+      </select>
+    </div>
+
+    <div class="filter-section">
+      <h3>Buy / Final Cost Range</h3>
+      <div class="range-row">
+        <input class="money-input" id="costMin" type="number" min="0" placeholder="Min Rp"/>
+        <div style="text-align:center;color:var(--muted)">–</div>
+        <input class="money-input" id="costMax" type="number" min="0" placeholder="Max Rp"/>
+      </div>
+      <div class="hint">Authoritative inventory final cost.</div>
+    </div>
+
+    <div class="filter-section">
+      <h3>Current Market Price Range</h3>
+      <div class="range-row">
+        <input class="money-input" id="marketMin" type="number" min="0" placeholder="Min Rp"/>
+        <div style="text-align:center;color:var(--muted)">–</div>
+        <input class="money-input" id="marketMax" type="number" min="0" placeholder="Max Rp"/>
+      </div>
+      <div class="hint">Latest valid market observation. Unvalued inventory is excluded while this filter is active.</div>
+    </div>
+  </div>
+
+  <div class="drawer-foot">
+    <button class="btn" id="resetFilters">Reset All</button>
+    <button class="btn primary" id="applyFilters">Apply Filter</button>
+  </div>
+</aside>
+
+<!-- Inventory Preview -->
+<aside class="preview-drawer" id="previewDrawer">
+  <button class="btn" id="closePreview" style="float:right">Close</button>
+  <div class="eyebrow">Inventory Preview</div>
+  <h2 id="dName">Nami</h2>
+  <div class="sub mono" id="dInv">INV-000001245</div>
+  <div class="mini-art"></div>
+  <div class="kv">
+    <div class="k">Owner</div><div id="dOwner">AK</div>
+    <div class="k">Holder</div><div id="dHolder">AH</div>
+    <div class="k">Storage</div><div id="dStorage">Box A-12</div>
+    <div class="k">Final Cost</div><div id="dCost">Rp1.700.000</div>
+    <div class="k">Market</div><div id="dMarket">Rp2.350.000</div>
+    <div class="k">Status</div><div id="dStatus">AVAILABLE</div>
+  </div>
+  <button class="btn primary" style="width:100%;margin-top:16px" id="openDetail">Open Full Inventory Detail</button>
+</aside>
+
+<script>
+const rows=[
+{inv:'INV-000001245',name:'Nami',meta:'OP01-016 · EN · Rare',type:'CARD',cardNumber:'OP01-016',set:'OP01',rarity:'Rare',language:'EN',owner:'AK',holder:'AH',storage:'Box A-12',cost:1700000,market:2350000,status:'AVAILABLE'},
+{inv:'INV-000001388',name:'Nami',meta:'OP01-016 · EN · Rare',type:'CARD',cardNumber:'OP01-016',set:'OP01',rarity:'Rare',language:'EN',owner:'AK',holder:'AK',storage:'Cabinet 2',cost:1550000,market:2350000,status:'AVAILABLE'},
+{inv:'INV-000001421',name:'Nami',meta:'OP01-016 · EN · Rare',type:'CARD',cardNumber:'OP01-016',set:'OP01',rarity:'Rare',language:'EN',owner:'AK',holder:'AH',storage:'Box B-01',cost:1620000,market:2350000,status:'LISTED'},
+{inv:'INV-000001622',name:'Nami',meta:'OP01-016 · EN · Rare',type:'CARD',cardNumber:'OP01-016',set:'OP01',rarity:'Rare',language:'EN',owner:'AK',holder:'AK',storage:'Cabinet 1',cost:1580000,market:2350000,status:'RESERVED'},
+{inv:'INV-000001744',name:'Monkey.D.Luffy',meta:'OP05-119 · JP · SEC',type:'CARD',cardNumber:'OP05-119',set:'OP05',rarity:'SEC',language:'JP',owner:'FHS',holder:'AH',storage:'Box A-04',cost:4800000,market:6100000,status:'AVAILABLE'},
+{inv:'INV-000001801',name:'Boa Hancock',meta:'OP07-051 · EN · SR',type:'CARD',cardNumber:'OP07-051',set:'OP07',rarity:'SR',language:'EN',owner:'RCS',holder:'RCS',storage:'Cabinet R1',cost:420000,market:510000,status:'AVAILABLE'},
+{inv:'INV-000001903',name:'Sanji',meta:'OP06-119 · JP · SEC',type:'CARD',cardNumber:'OP06-119',set:'OP06',rarity:'SEC',language:'JP',owner:'AH',holder:'AH',storage:'Box C-02',cost:900000,market:1050000,status:'LISTED'},
+{inv:'INV-000002010',name:'Zoro',meta:'OP01-025 · EN · SR',type:'CARD',cardNumber:'OP01-025',set:'OP01',rarity:'SR',language:'EN',owner:'AK',holder:'AH',storage:'Box D-11',cost:260000,market:330000,status:'AVAILABLE'},
+{inv:'INV-000002081',name:'Gear 5 Official Playmat',meta:'PLAYMAT · Official',type:'PRODUCT',cardNumber:'',set:'',rarity:'',language:'',owner:'FHS',holder:'AK',storage:'Shelf P2',cost:450000,market:625000,status:'AVAILABLE'},
+{inv:'INV-000002122',name:'Official Sleeve Gear 5',meta:'SLEEVE · 70 Pack',type:'PRODUCT',cardNumber:'',set:'',rarity:'',language:'',owner:'FHS',holder:'AH',storage:'Shelf S1',cost:140000,market:195000,status:'AVAILABLE'},
+{inv:'INV-000002199',name:'Bulk RED OP11',meta:'BULK CARD LOT · Qty 327',type:'BULK',cardNumber:'',set:'OP11',rarity:'',language:'',owner:'AK',holder:'AH',storage:'Bulk Box 3',cost:245000,market:null,status:'AVAILABLE'},
+{inv:'INV-000002245',name:'Deckbox Official Nami',meta:'DECKBOX · Official',type:'PRODUCT',cardNumber:'',set:'',rarity:'',language:'',owner:'AH',holder:'AH',storage:'Shelf D4',cost:320000,market:390000,status:'SOLD'}
+];
+
+let query='';
+let sortKey='', sortAsc=true;
+let filters={owners:[],statuses:[],type:'',cardNumber:'',set:'',rarity:'',language:'',costMin:null,costMax:null,marketMin:null,marketMax:null};
+
+const rupiah=n=>n==null?'—':'Rp'+n.toLocaleString('id-ID');
+const gain=r=>r.market==null?null:r.market-r.cost;
+const badge=s=>`<span class="status ${s.toLowerCase()}">${s}</span>`;
+
+function getFiltered(){
+  let a=rows.filter(r=>{
+    if(!(`${r.inv} ${r.name} ${r.meta}`.toLowerCase().includes(query))) return false;
+    if(filters.owners.length && !filters.owners.includes(r.owner)) return false;
+    if(filters.statuses.length && !filters.statuses.includes(r.status)) return false;
+    if(filters.type && r.type!==filters.type) return false;
+    if(filters.cardNumber && !(r.cardNumber||'').toLowerCase().includes(filters.cardNumber.toLowerCase())) return false;
+    if(filters.set && r.set!==filters.set) return false;
+    if(filters.rarity && r.rarity!==filters.rarity) return false;
+    if(filters.language && r.language!==filters.language) return false;
+    if(filters.costMin!=null && r.cost<filters.costMin) return false;
+    if(filters.costMax!=null && r.cost>filters.costMax) return false;
+    if(filters.marketMin!=null && (r.market==null || r.market<filters.marketMin)) return false;
+    if(filters.marketMax!=null && (r.market==null || r.market>filters.marketMax)) return false;
+    return true;
+  });
+
+  if(sortKey){
+    a=[...a].sort((x,y)=>{
+      let A=x[sortKey],B=y[sortKey];
+      if(A==null) A=sortAsc?Infinity:-Infinity;
+      if(B==null) B=sortAsc?Infinity:-Infinity;
+      if(typeof A==='string'){A=A.toLowerCase();B=B.toLowerCase()}
+      return (A>B?1:A<B?-1:0)*(sortAsc?1:-1);
+    });
+  }
+  return a;
+}
+
+function render(){
+  const data=getFiltered();
+  const tb=document.querySelector('#inventoryTable tbody');
+  const gv=document.getElementById('gridView');
+
+  tb.innerHTML=data.map(r=>`<tr>
+    <td><div class="thumb"></div></td>
+    <td><a class="link mono open" data-id="${r.inv}">${r.inv}</a></td>
+    <td><b>${r.name}</b><div style="color:var(--muted);font-size:10px;margin-top:2px">${r.meta}</div></td>
+    <td class="owner">${r.owner}</td>
+    <td class="holder">${r.holder}</td>
+    <td class="storage">${r.storage}</td>
+    <td class="money cost">${rupiah(r.cost)}</td>
+    <td class="money market">${rupiah(r.market)}</td>
+    <td class="money gain">${gain(r)==null?'—':`<span class="${gain(r)>=0?'gain':''}">${gain(r)>=0?'+':''}${rupiah(gain(r))}</span>`}</td>
+    <td>${badge(r.status)}</td>
+  </tr>`).join('');
+
+  gv.innerHTML=data.map(r=>`<div class="card open" data-id="${r.inv}">
+    <div class="card-art" data-name="${r.name}"></div>
+    <div class="card-title">${r.name}</div>
+    <div class="card-meta">${r.inv} · ${r.meta}</div>
+    <div class="card-row"><span>Owner</span><b>${r.owner}</b></div>
+    <div class="card-row"><span>Cost</span><b>${rupiah(r.cost)}</b></div>
+    <div class="card-row"><span>Market</span><b>${rupiah(r.market)}</b></div>
+    <div class="card-row"><span>Status</span>${badge(r.status)}</div>
+  </div>`).join('');
+
+  document.getElementById('resultCount').textContent=`${data.length} results`;
+  document.querySelectorAll('.open').forEach(el=>el.addEventListener('click',()=>openPreview(el.dataset.id)));
+  applyColumns();
+  updateSortMarks();
+  renderActiveFilters();
+}
+
+function updateSortMarks(){
+  document.querySelectorAll('th[data-sort]').forEach(th=>{
+    const mark=th.querySelector('.sortmark');
+    if(mark) mark.textContent=th.dataset.sort===sortKey ? (sortAsc?'▲':'▼') : '↕';
+  });
+}
+
+function applyColumns(){
+  document.querySelectorAll('#columnsMenu input').forEach(c=>{
+    document.querySelectorAll('.'+c.dataset.col).forEach(el=>el.classList.toggle('hidden-col',!c.checked));
+  });
+}
+
+function openPreview(id){
+  const r=rows.find(x=>x.inv===id); if(!r)return;
+  dName.textContent=r.name;dInv.textContent=r.inv;dOwner.textContent=r.owner;dHolder.textContent=r.holder;dStorage.textContent=r.storage;
+  dCost.textContent=rupiah(r.cost);dMarket.textContent=rupiah(r.market);dStatus.textContent=r.status;
+  previewDrawer.classList.add('open');overlay.classList.add('show');
+  openDetail.onclick=()=>alert('Mockup interaction: open Inventory Detail '+r.inv);
+}
+function closeAll(){
+  filterDrawer.classList.remove('open');previewDrawer.classList.remove('open');overlay.classList.remove('show');
+}
+
+function openFilter(){
+  syncFilterControls();
+  filterDrawer.classList.add('open');overlay.classList.add('show');
+}
+function syncFilterControls(){
+  document.querySelectorAll('input[name="owner"]').forEach(x=>x.checked=filters.owners.includes(x.value));
+  document.querySelectorAll('input[name="status"]').forEach(x=>x.checked=filters.statuses.includes(x.value));
+  typeFilter.value=filters.type || '';
+  cardNumberFilter.value=filters.cardNumber || '';
+  setFilter.value=filters.set || '';
+  rarityFilter.value=filters.rarity || '';
+  languageFilter.value=filters.language || '';
+  costMin.value=filters.costMin ?? ''; costMax.value=filters.costMax ?? '';
+  marketMin.value=filters.marketMin ?? ''; marketMax.value=filters.marketMax ?? '';
+}
+function readNumber(el){return el.value===''?null:Number(el.value)}
+function renderActiveFilters(){
+  const parts=[];
+  filters.owners.forEach(v=>parts.push({type:'owner',value:v,label:'Owner: '+v}));
+  filters.statuses.forEach(v=>parts.push({type:'status',value:v,label:'Status: '+v}));
+  if(filters.type) parts.push({type:'type',label:'Type: '+filters.type});
+  if(filters.cardNumber) parts.push({type:'cardNumber',label:'Card: '+filters.cardNumber});
+  if(filters.set) parts.push({type:'set',label:'Set: '+filters.set});
+  if(filters.rarity) parts.push({type:'rarity',label:'Rarity: '+filters.rarity});
+  if(filters.language) parts.push({type:'language',label:'Language: '+filters.language});
+  if(filters.costMin!=null||filters.costMax!=null) parts.push({type:'cost',label:`Cost: ${filters.costMin==null?'0':rupiah(filters.costMin)} – ${filters.costMax==null?'∞':rupiah(filters.costMax)}`});
+  if(filters.marketMin!=null||filters.marketMax!=null) parts.push({type:'market',label:`Market: ${filters.marketMin==null?'0':rupiah(filters.marketMin)} – ${filters.marketMax==null?'∞':rupiah(filters.marketMax)}`});
+  activeFilters.innerHTML=parts.map((p,i)=>`<span class="filter-chip">${p.label}<button data-remove="${i}">×</button></span>`).join('');
+  filterCount.textContent=parts.length;
+  filterCount.classList.toggle('show',parts.length>0);
+  document.querySelectorAll('[data-remove]').forEach((b,i)=>b.onclick=()=>{
+    const p=parts[Number(b.dataset.remove)];
+    if(p.type==='owner') filters.owners=filters.owners.filter(x=>x!==p.value);
+    if(p.type==='status') filters.statuses=filters.statuses.filter(x=>x!==p.value);
+    if(p.type==='type') filters.type='';
+    if(p.type==='cardNumber') filters.cardNumber='';
+    if(p.type==='set') filters.set='';
+    if(p.type==='rarity') filters.rarity='';
+    if(p.type==='language') filters.language='';
+    if(p.type==='cost'){filters.costMin=null;filters.costMax=null}
+    if(p.type==='market'){filters.marketMin=null;filters.marketMax=null}
+    render();
+  });
+}
+
+/* Search */
+search.addEventListener('input',e=>{query=e.target.value.toLowerCase();render()});
+
+/* Advanced Filter */
+filterBtn.onclick=openFilter;
+closeFilter.onclick=closeAll;
+applyFilters.onclick=()=>{
+  filters.owners=[...document.querySelectorAll('input[name="owner"]:checked')].map(x=>x.value);
+  filters.statuses=[...document.querySelectorAll('input[name="status"]:checked')].map(x=>x.value);
+  filters.type=typeFilter.value;
+  filters.cardNumber=cardNumberFilter.value.trim();
+  filters.set=setFilter.value;
+  filters.rarity=rarityFilter.value;
+  filters.language=languageFilter.value;
+  filters.costMin=readNumber(costMin);filters.costMax=readNumber(costMax);
+  filters.marketMin=readNumber(marketMin);filters.marketMax=readNumber(marketMax);
+  closeAll();render();
+};
+resetFilters.onclick=()=>{
+  filters={owners:[],statuses:[],type:'',cardNumber:'',set:'',rarity:'',language:'',costMin:null,costMax:null,marketMin:null,marketMax:null};
+  syncFilterControls();render();
+};
+
+/* Header sorting */
+document.querySelectorAll('th[data-sort]').forEach(th=>th.onclick=()=>{
+  const key=th.dataset.sort;
+  if(sortKey===key) sortAsc=!sortAsc; else {sortKey=key;sortAsc=true}
+  render();
+});
+
+/* Column Chooser */
+columnsBtn.onclick=()=>columnsMenu.classList.toggle('open');
+document.querySelectorAll('#columnsMenu input').forEach(c=>c.onchange=applyColumns);
+
+/* Close dropdown if click elsewhere */
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.dropdown')){
+    columnsMenu.classList.remove('open');
+  }
+});
+
+/* Views */
+listBtn.onclick=()=>{listBtn.classList.add('active');gridBtn.classList.remove('active');listView.style.display='block';gridView.classList.remove('open')};
+gridBtn.onclick=()=>{gridBtn.classList.add('active');listBtn.classList.remove('active');listView.style.display='none';gridView.classList.add('open')};
+
+/* Preview */
+closePreview.onclick=closeAll;
+overlay.onclick=closeAll;
+
+render();
+</script>
+</body>
+</html>
