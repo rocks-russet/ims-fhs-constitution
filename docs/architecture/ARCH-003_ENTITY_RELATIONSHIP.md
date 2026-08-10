@@ -5,7 +5,8 @@
 - Contact 1..N SalesOrder (as Buyer)
 - Purchase 1..N PurchaseItem
 - PurchaseItem 1..N Inventory
-- Inventory N..1 ProductDefinition/CardDefinition
+- CardDefinition 1..N CardPrinting/ProductDefinition
+- Inventory N..1 ProductDefinition/CardPrinting
 - Inventory 1..N InventoryHistory
 - Inventory 0..N InventoryTransformationLink
 - SalesOrder N..M Inventory through OrderItem
@@ -22,3 +23,7 @@
 
 ## Referential Rule
 Stable IDs remain immutable. Historical transaction snapshots survive changes to mutable master data.
+
+
+## Revision Note — 2026-08-10 11:54:25 WIB
+Card catalog identity now explicitly models one base CardDefinition with one or more collectible CardPrinting/ProductDefinition records. Inventory references the collectible printing, not Card Number alone.
