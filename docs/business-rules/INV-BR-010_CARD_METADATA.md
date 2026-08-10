@@ -4,7 +4,7 @@
 INV-BR-010
 
 ## Version
-1.1.0
+1.2.0
 
 ## Status
 Accepted
@@ -17,8 +17,8 @@ Define searchable and auditable card metadata while distinguishing base card ide
 1. Serialized Card inventory references the authoritative collectible printing/Product Definition and remains associated with its base Card Definition.
 2. Card Number identifies the base/gameplay card and is not sufficient as unique collectible printing identity.
 3. Supported searchable base metadata includes card number, name, card type, color, cost, power, counter, traits/subtypes, effect/trigger data, and other approved game metadata.
-4. Supported collectible printing metadata includes release/set, language, rarity, variant class, foil state, foil treatment, art treatment, edition/distribution tags, physical markers, artwork identity, condition, grade, and grading data where applicable.
-5. Rarity, variant, foil state/treatment, art treatment, edition/distribution, and physical markers are separate concepts and must not be collapsed into one overloaded field.
+4. Supported collectible printing metadata includes release/set, language, rarity, variant class, artwork identity/version, foil state, foil treatment, surface treatment, art treatment, edition/distribution tags, physical markers, condition, grade, and grading data where applicable.
+5. Rarity, variant, artwork identity/version, foil state, foil treatment, surface treatment, art treatment, edition/distribution, and physical markers are separate concepts and must not be collapsed into one overloaded field.
 6. Card metadata must support Inventory Explorer dynamic columns and filtering.
 7. Language is mandatory where market-provider selection or collectible identity depends on it.
 8. Card metadata must remain traceable to source/provenance and allow governed manual correction.
@@ -40,3 +40,5 @@ Define searchable and auditable card metadata while distinguishing base card ide
 ## Revision History
 - 1.0.0 — Initial Inventory v1 Feature Map baseline.
 - 1.1.0 — 2026-08-10 11:54:25 WIB — Separated base card and printing metadata; added extensible printing dimensions, UNKNOWN state, and provenance/correction requirements.
+
+- 1.2.0 — 2026-08-10 13:54:03 WIB — Added Artwork Version/Identity and Surface Treatment as distinct collectible metadata dimensions.

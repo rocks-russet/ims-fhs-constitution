@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.2.0 Part 4 — Card Artwork & Physical Treatment Governance
+
+Added/updated:
+- Artwork Identity separated from human-facing Artwork Version.
+- Art Treatment remains independent from artwork identity.
+- Foil State, Foil Treatment, and Surface Treatment are separate dimensions.
+- Surface Treatment supports UNKNOWN / Smooth / Textured / Embossed / Engraved baseline vocabulary.
+- Reprint artwork changes do not automatically imply Alternate Art.
+- Release-aware assisted lookup may suggest artwork provenance but must not guess unverified physical treatment.
+- Added INV-BR-065 Card Printing Physical Treatments.
+
 ## v0.2.0 Part 3 — Card Catalog Identity & Assisted Data Governance
 
 Added/updated:
