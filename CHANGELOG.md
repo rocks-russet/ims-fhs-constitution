@@ -1,3 +1,10 @@
+## v0.2.x — Navigation & Appearance Foundation (2026-08-11)
+
+- Promoted Canonical Card Catalog to top-level `Catalog` navigation.
+- Kept External Catalog under Administration as provider/import tooling.
+- Standardized clickable hierarchical breadcrumbs.
+- Activated per-user Theme (`SYSTEM`/`LIGHT`/`DARK`), Density (`COMPACT`/`COMFORTABLE`/`LARGE`), and controlled Accent (`BLUE`/`EMERALD`/`ORANGE`) preferences.
+
 # Changelog
 
 ## v0.2.0 Part 4 — Card Artwork & Physical Treatment Governance

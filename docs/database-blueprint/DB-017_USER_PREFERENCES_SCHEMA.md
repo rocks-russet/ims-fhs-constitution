@@ -12,7 +12,7 @@ Preferences are not authorization or business truth.
 | id | uuid | PK |
 | user_id | uuid | FK `system_users.id`, UNIQUE, NOT NULL |
 | theme_mode | varchar | `LIGHT`, `DARK`, `SYSTEM`; default `SYSTEM` |
-| density_mode | varchar | `COMFORTABLE`, `COMPACT`; default `COMFORTABLE` |
+| density_mode | varchar | `COMPACT`, `COMFORTABLE`, `LARGE`; default `COMFORTABLE` |
 | table_font_size | varchar | `NORMAL`, `SMALL`; default `NORMAL` |
 | accent_color | varchar | baseline `BLUE`, `EMERALD`, `ORANGE`; default `BLUE` |
 | radius_mode | varchar | `COMFORT`, `SHARP`; default `COMFORT` |

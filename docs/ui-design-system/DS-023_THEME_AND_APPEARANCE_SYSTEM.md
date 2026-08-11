@@ -109,16 +109,22 @@ Card/product images must retain their actual image colors and must not receive d
 ## Density
 Supported density modes:
 
-- `COMFORTABLE`
 - `COMPACT`
+- `COMFORTABLE` (default)
+- `LARGE`
 
-Density affects layout/presentation such as:
+Density affects the application presentation globally, including:
 
 - table row height
 - vertical spacing
 - toolbar spacing
 - form control height
 - card internal spacing
+- general text scale
+- catalog/card thumbnail sizing and grid density
+- detail-screen image allocation where layout allows
+
+`LARGE` prioritizes readability; `COMPACT` prioritizes information density.
 
 Density must never hide required business information.
 
