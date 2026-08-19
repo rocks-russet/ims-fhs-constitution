@@ -1,12 +1,31 @@
 # API-006 — Sales API
 
-## Sales Sessions / Claim Cart
+## Sales Sessions / Inventory Pool / Claim Cart
 
 - `POST /api/v1/sales/sessions`
 - `GET /api/v1/sales/sessions/{id}`
+- `POST /api/v1/sales/sessions/{id}/inventory`
+- `DELETE /api/v1/sales/sessions/{id}/inventory/{sessionInventoryId}`
+- `POST /api/v1/sales/sessions/{id}/inventory/bulk-add`
+- `POST /api/v1/sales/sessions/{id}/inventory/bulk-remove`
+- `POST /api/v1/sales/sessions/{id}/assign`
 - `POST /api/v1/sales/sessions/{id}/claim-carts`
 - `POST /api/v1/sales/claim-carts/{id}/items`
 - `DELETE /api/v1/sales/claim-carts/{id}/items/{itemId}`
+
+Sales Session is optional. Standalone Sales APIs MUST NOT require a Sales Session reference.
+
+Sales Session Inventory Pool membership is listing context only and MUST NOT create an Inventory reservation.
+
+Inventory may be listed in multiple channels concurrently. Reservation availability is global across channels.
+
+Claim/winner assignment:
+- identifies Buyer Contact;
+- creates or reuses the appropriate active Claim Cart for that Buyer within the Sales Session;
+- creates the Inventory reservation atomically;
+- supports serialized Inventory and explicit quantity for quantity-bearing Inventory;
+- rejects a serialized Inventory item already reserved elsewhere;
+- rejects quantity that exceeds global `availableToSell`.
 
 Claim Cart items may reference serialized Inventory or quantity-bearing Inventory.
 
@@ -16,20 +35,24 @@ For `BULK_CARD_LOT`, item creation carries:
 - sale unit/line price;
 - relevant commercial snapshots.
 
-Adding the Bulk item establishes quantity reservation but does not create a derived Inventory record.
+Adding the Bulk item to a Claim Cart establishes quantity reservation but does not create a derived Inventory record.
 
 ## Inventory Reservation
 
 Sales owns reservation lifecycle while Inventory remains authoritative for physical quantity and acquisition cost.
 
-For Bulk:
-- `availableToSell = physicalQuantity - activeReservedQuantity`;
-- reservation MUST be concurrency-safe;
+For serialized Inventory:
+- multiple listing references may coexist;
+- only one active reservation may exist globally.
+
+For quantity-bearing Inventory:
+- `availableToSell = physicalQuantity - aggregateActiveReservedQuantity`;
+- reservation MUST be concurrency-safe across all Sales channels;
 - reservation MUST NOT permanently reduce physical quantity;
 - reservation MUST NOT permanently reduce acquisition cost;
-- reservation MUST NOT create a derived Bulk Inventory merely because selected quantity is partial.
+- Bulk reservation MUST NOT create a derived Bulk Inventory merely because selected quantity is partial.
 
-Reservation records remain linked to source Inventory and Claim Cart/Order context.
+Reservation records remain linked to source Inventory and Buyer/Claim Cart/Order context, plus originating channel/session context when applicable.
 
 Removing an eligible Claim Cart item releases its reservation.
 
