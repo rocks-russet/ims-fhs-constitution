@@ -1,68 +1,54 @@
-# INV-BR-066 — Bulk Sale Allocation
+# INV-BR-066 — Bulk Sales Reservation and Completion Finalization
 
-## Feature Origin
+## Status
 
-IMS FHS v2 Inventory/Sales workflow decision — partial sale from a Bulk Card Lot must preserve stable Inventory identity, quantity/cost conservation, and auditable parent-child lineage without exposing a manual split workflow to the Sales operator.
+SUPERSEDES the previous pre-reservation Bulk Sale Allocation transformation behavior.
 
 ## Purpose
 
-Bulk Sale Allocation is an Inventory-domain operation used when Sales needs less than the full remaining quantity of a BULK_CARD_LOT.
-
-The operation isolates the quantity being sold into a derived BULK_CARD_LOT Inventory record before that quantity enters the Sales lifecycle.
+Define how Sales may reserve partial or full quantity from a `BULK_CARD_LOT` without prematurely transforming Inventory, and how Inventory permanently consumes the sold quantity only when the Order reaches `COMPLETED`.
 
 ## Rules
 
-1. Bulk Sale Allocation applies only to a source Inventory whose authoritative inventory type is `BULK_CARD_LOT`.
-2. The requested allocation quantity must be greater than zero and strictly less than the source Bulk Lot's remaining physical-card quantity.
-3. If the requested sale quantity equals the source Bulk Lot's entire remaining quantity, IMS uses the source Inventory directly and must not create a redundant allocation child.
-4. Bulk Sale Allocation is initiated by the Sales workflow when the operator chooses a partial quantity from a Bulk Lot.
-5. The Sales UI may present this as a simple `Sell from Bulk` or equivalent quantity action. The operator is not required to perform a separate generic Split workflow.
-6. The authoritative allocation operation is executed by the Inventory domain before the derived quantity is reserved or attached to the Sales transaction.
-7. A successful allocation creates exactly one new Inventory record with a new stable `inventoryId`.
-8. The created Inventory remains type `BULK_CARD_LOT`; Bulk Sale Allocation must not create `SERIALIZED_CARD` records.
-9. The created child quantity equals the requested sale quantity.
-10. The source Bulk Lot's remaining quantity is reduced by exactly the allocated quantity.
-11. The allocated acquisition cost is derived from the source Bulk Lot's weighted-average remaining cost immediately before allocation.
-12. The ordinary allocation cost formula is:
-    `allocatedCost = sourceAverageRemainingCost × allocatedQuantity`,
-    subject to the system's deterministic currency-rounding policy.
-13. Manual cost-basis override is not permitted for ordinary Bulk Sale Allocation.
-14. The source Bulk Lot's total remaining cost is reduced by the exact authoritative allocated cost.
-15. The child Bulk Lot's total remaining cost equals the authoritative allocated cost.
-16. The source Bulk Lot's average remaining cost is re-derived from its post-allocation remaining quantity and remaining cost.
-17. Allocation must preserve exact quantity conservation:
-    `sourceQtyBefore = sourceQtyAfter + childQty`.
-18. Allocation must preserve cost conservation:
-    `sourceCostBefore = sourceCostAfter + childCost`,
-    subject only to deterministic currency rounding.
-19. Bulk Sale Allocation must execute atomically. Failure must leave the source Bulk Lot unchanged and must not leave a partial/orphan child Inventory.
-20. The child Inventory records `parentInventoryId` referencing the source Bulk Inventory.
-21. The transformation event records the source Inventory, child Inventory, allocated quantity, allocated cost, actor, timestamp, and originating Sales context when available.
-22. Parent-child lineage follows INV-BR-020 and is immutable after successful allocation.
-23. The child inherits the source Bulk Lot's canonical Bulk Card Product Definition reference.
-24. The child inherits the source owner and the applicable immutable ownership/distribution snapshot. Allocation must not silently change economic ownership.
-25. The child inherits relevant Bulk instance metadata such as bulk label, grouping metadata, language, holder, storage, and upstream acquisition provenance unless a field is explicitly governed as non-inheritable.
-26. The child preserves navigation to the original Purchase Item/acquisition provenance through lineage; allocation must not fabricate a new Purchase.
-27. The child is a first-class Inventory record and can be referenced by Sales, Inventory Detail, audit, history, and integrity tooling using its own `inventoryId`.
-28. After allocation, the Sales workflow reserves/uses the child Inventory, not an arbitrary quantity slice of the parent Inventory.
-29. The parent Inventory must not simultaneously represent the physical quantity assigned to the child.
-30. If the associated sale is cancelled before completion, normal Sales cancellation/restoration rules apply to the child Inventory. The child returns to the appropriate available state and remains independent.
-31. Cancellation must not automatically merge the child back into the parent Bulk Lot.
-32. Any future explicit merge operation requires its own Constitution-approved rule and must preserve full quantity, cost, and lineage history.
-33. Bulk Sale Allocation is distinct from generic Product Split and from Bulk → Serialized extraction.
-34. Bulk Sale Allocation must be visible in Inventory history/audit as a system-recognizable transformation event even when the Sales UI abstracts the operation from the operator.
-35. Concurrency control must prevent two simultaneous allocations from consuming the same source quantity or causing negative quantity/cost.
-36. Validation and commit behavior must follow the platform's atomicity, idempotency, interaction-locking, and integrity rules.
+1. Ordinary Bulk Sales selection is initiated from the Sales workflow.
+2. The Sales line references the source `BULK_CARD_LOT` Inventory ID plus explicit requested quantity.
+3. Requested quantity must be a positive whole number.
+4. Sales validates requested quantity against `availableToSell`.
+5. `availableToSell = physicalQuantity - activeReservedQuantity`.
+6. Reservation MUST be concurrency-safe and MUST prevent aggregate active reservations from exceeding physical quantity.
+7. Creating a reservation MUST NOT create a derived Bulk Inventory ID.
+8. Creating a reservation MUST NOT permanently reduce source physical quantity.
+9. Creating a reservation MUST NOT permanently reduce source remaining acquisition cost.
+10. Creating a reservation MUST NOT change economic ownership.
+11. The reservation stores source Inventory identity, reserved quantity, Sales context, actor/time, and status.
+12. A provisional weighted-average cost snapshot may be stored for visibility, but it is not realized COGS.
+13. Claim Cart to Order reservation transfer MUST be atomic and MUST NOT duplicate reserved quantity.
+14. Removing an eligible Claim Cart item releases its active reservation.
+15. Cancelling an eligible Order before completion releases its active reservations.
+16. Release of a reservation does not require merge-back because no permanent Inventory split occurred.
+17. Order `COMPLETED` is the authoritative permanent depletion boundary for Bulk Sales.
+18. Completion MUST revalidate that the Order owns an active reservation for the quantity being finalized.
+19. Completion MUST consume exactly the reserved/finalized quantity from the source Bulk Inventory.
+20. Completion MUST allocate acquisition cost using the source weighted-average remaining-cost rule.
+21. Ordinary Bulk Sales do not allow manual cost-basis override.
+22. Source remaining physical quantity and remaining acquisition cost are reduced atomically at completion.
+23. Finalized COGS is supplied to Sales/Finance only after successful Inventory consumption.
+24. Reservation finalization and Inventory consumption MUST be idempotent.
+25. A reservation MUST NOT be finalized twice.
+26. Completion MUST record immutable Sales-to-Inventory consumption provenance.
+27. Full currently-available Bulk quantity follows the same reservation-first lifecycle.
+28. When completion depletes the source to zero, all remaining acquisition cost is consumed to avoid rounding residue.
+29. Inventory Detail may expose active reservations and completed consumption for audit, but ordinary Bulk Sales allocation controls belong in Sales.
+30. Bulk Sales reservation/finalization is distinct from Bulk → Serialized extraction and generic Product Split.
+31. A deliberate manual transformation into separately AVAILABLE Bulk Lots requires a separate governed Inventory transformation and is not ordinary Sales behavior.
 
 ## Invariants
 
-- A partial Bulk sale never references an unmaterialized quantity slice as if it were an independent Inventory item.
-- Every partial-sale allocation has one stable child `inventoryId`.
-- Parent quantity + child quantity conservation is reconstructable.
-- Parent cost + child cost conservation is reconstructable.
-- Economic ownership is unchanged by allocation.
-- Allocation never fabricates serialized card identity.
-- Parent and child remain traceable to the original acquisition.
-- Cancellation never silently destroys lineage by merging the child back.
-- No allocation may create negative quantity, negative remaining cost, duplicate physical quantity, or orphan lineage.
-- Sales consumes the allocated child Inventory; Inventory remains authoritative for the transformation.
+- `activeReservedQuantity <= physicalQuantity`.
+- `availableToSell = physicalQuantity - activeReservedQuantity`.
+- Reservation does not permanently alter physical quantity or acquisition cost.
+- Cancellation before completion releases reservation without merge-back.
+- Completion consumes quantity/cost at most once.
+- Finalized COGS equals canonical cost allocated to actually consumed quantity.
+- Concurrent operations cannot oversell the same Bulk Lot.
+- Historical reservation and consumption provenance remains reconstructable.

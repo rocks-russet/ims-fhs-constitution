@@ -1,54 +1,119 @@
-# INV-DEC-005 — Bulk Sale Allocation
+# INV-DEC-005 — Bulk Sales Reservation and Completion Finalization
 
 ## Status
 
-ACCEPTED
+ACCEPTED — SUPERSEDES the previous Bulk Sale Allocation decision.
 
 ## Context
 
 IMS FHS supports low-value cards as `BULK_CARD_LOT` Inventory with physical quantity and aggregate acquisition cost.
 
-A partial sale from Bulk creates a modeling problem if Sales simply consumes a quantity number from the source Inventory: the sold portion has no independent stable Inventory identity, parent-child provenance becomes weaker, and later cancellation/audit/history behavior becomes harder to reconstruct.
+A Sales operator may sell only part of a Bulk Card Lot. Creating a derived Bulk Inventory immediately when Sales merely selects a partial quantity turns reversible Sales intent into a permanent Inventory transformation too early.
 
-A generic manual Product Split is also not appropriate as the normal Sales UX because selling part of a Bulk Card Lot should remain a simple operator action.
+Sales selection and reservation are not physical Inventory transformations. Until an Order is completed, the selected quantity can still be released by cancellation or another valid Sales reversal.
 
 ## Decision
 
-IMS FHS adopts **Bulk Sale Allocation** as a dedicated backend Inventory transformation for partial Bulk sales.
+IMS FHS adopts **Sales-owned Bulk quantity reservation with Inventory-owned completion finalization**.
 
-When Sales requests less than the entire remaining quantity of a `BULK_CARD_LOT`:
+### 1. Selection happens in Sales
 
-1. Inventory creates one derived `BULK_CARD_LOT` with a new `inventoryId`.
-2. The derived Inventory receives the requested quantity and weighted-average allocated acquisition cost.
-3. The source Bulk Lot is reduced by the same quantity and cost.
-4. Parent-child lineage is recorded permanently.
-5. Sales reserves and sells the derived Inventory.
-6. The operator does not need to execute a separate manual Split workflow.
+Bulk quantity selection is performed from the Sales workflow, not from Inventory Detail.
 
-When Sales requests the entire remaining quantity, the source Bulk Inventory is used directly and no redundant child is created.
+The operator selects a `BULK_CARD_LOT` and the quantity required by the Claim Cart / Sales line.
 
-If the sale is cancelled, the allocated child remains an independent Inventory record and returns through normal Sales cancellation/restoration behavior. It is not automatically merged back into the parent.
+### 2. Reservation does not split Inventory
 
-Bulk Sale Allocation is not Bulk → Serialized extraction and is not generic Product Split.
+Before Order completion, selecting or reserving Bulk quantity:
 
-## Rationale
+- MUST NOT create a derived Inventory ID solely for the reserved portion;
+- MUST NOT permanently reduce source physical quantity;
+- MUST NOT permanently reduce source acquisition cost;
+- MUST create an auditable Sales/Inventory reservation linked to the source Inventory and Sales context.
 
-This model:
+Availability is quantity-aware:
 
-- preserves stable Inventory identity for the exact quantity entering Sales;
-- keeps Inventory as the authoritative physical/cost source of truth;
-- provides explicit and immutable lineage;
-- conserves quantity and acquisition cost;
-- supports clean Sales cancellation behavior;
-- avoids fabricating individual card identities;
-- keeps the Sales operator workflow simple;
-- allows future audit, analytics, and reconciliation to reconstruct the transaction precisely.
+`availableToSell = physicalQuantity - activeReservedQuantity`
+
+The system MUST prevent aggregate active reservations from exceeding physical quantity.
+
+### 3. Reservation carries provisional cost information
+
+The reserved Sales quantity may carry a provisional weighted-average acquisition-cost snapshot for operator visibility and pre-completion calculations.
+
+The provisional snapshot is not permanent Inventory depletion and is not realized COGS.
+
+### 4. Checkout transfers reservation atomically
+
+Claim Cart reservation may be transferred into the resulting Order during checkout.
+
+The transfer MUST be atomic and MUST NOT temporarily duplicate reserved quantity.
+
+### 5. Completion is the permanent boundary
+
+When the Order reaches `COMPLETED`, Inventory finalization occurs atomically.
+
+For each reserved Bulk quantity, IMS:
+
+1. validates the active reservation owned by the Order;
+2. consumes the finalized quantity from the source `BULK_CARD_LOT`;
+3. allocates acquisition cost using the canonical weighted-average remaining-cost rule;
+4. reduces source remaining quantity and remaining acquisition cost;
+5. records immutable Sales-to-Inventory consumption provenance;
+6. closes the corresponding reservation;
+7. supplies finalized COGS to Sales/Finance completion processing.
+
+A partial Bulk sale does not require creation of an AVAILABLE derived Bulk Inventory merely to represent the sold portion.
+
+### 6. Cancellation releases reservation
+
+If Sales/Order is cancelled before completion:
+
+- the active reservation is released;
+- source physical quantity and acquisition cost remain unchanged;
+- no merge-back is required because no premature Inventory split occurred.
+
+### 7. Full remaining quantity follows the same lifecycle
+
+Selecting the full currently available Bulk quantity still creates/owns a Sales reservation first.
+
+Permanent source depletion occurs only at `COMPLETED`.
+
+### 8. Domain ownership
+
+- Sales owns selection, Claim Cart/Order linkage, and reservation lifecycle.
+- Inventory owns authoritative physical quantity, cost, availability validation, and completion-time depletion.
+- Finance consumes finalized COGS/profit effects after successful completion.
+- Inventory Detail may expose reservation and consumption history, but is not the operator entry point for ordinary Bulk Sales selection.
+
+### 9. Separation from Inventory transformations
+
+Bulk Sales reservation/finalization is distinct from:
+
+- Bulk → Serialized Card extraction;
+- generic Product Split;
+- deliberate manual transformation of one Bulk Lot into independently AVAILABLE Bulk Lots.
+
+Those operations may create new Inventory identities because they represent actual Inventory transformations. A Sales reservation does not.
+
+## Invariants
+
+1. `activeReservedQuantity <= physicalQuantity`.
+2. `availableToSell = physicalQuantity - activeReservedQuantity`.
+3. Reservation creation cannot permanently mutate physical quantity or acquisition cost.
+4. Cancellation before completion cannot require Inventory merge-back.
+5. Completion is idempotent.
+6. Completion cannot consume more quantity than the Order owns through active reservation.
+7. Quantity and acquisition-cost conservation must hold after completion.
+8. Finalized COGS must correspond to quantity actually consumed.
+9. A reservation cannot be finalized twice.
+10. Concurrent Sales operations must not oversell the same Bulk Lot.
 
 ## Consequences
 
-- Inventory requires an atomic Bulk Sale Allocation service/operation.
-- Sales partial-Bulk selection depends on that Inventory operation before reservation.
-- Inventory Detail and history must expose parent/child allocation lineage.
-- Data model/API implementation must support transformation event identity and `parentInventoryId`/child lineage.
-- Integrity checks must validate quantity conservation, cost conservation, and orphan/cyclic lineage.
-- No automatic merge-back is performed after Sales cancellation.
+- The previous pre-reservation derived-Bulk allocation model is superseded.
+- Partial Bulk selection UI belongs in Sales.
+- Sales requires quantity-aware Inventory reservations.
+- Inventory requires atomic completion-time Bulk depletion.
+- Order completion must coordinate reservation finalization, Inventory consumption, and Finance effects idempotently.
+- Any legacy `bulk-sale-allocation` implementation that permanently splits Inventory before completion is non-canonical and must be refactored before use by Sales.
