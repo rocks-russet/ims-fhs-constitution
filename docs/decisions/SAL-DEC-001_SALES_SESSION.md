@@ -20,4 +20,12 @@ When an Inventory item or eligible Bulk quantity is claimed/won/assigned to a Bu
 
 Serialized Card and Product Inventory may have only one active reservation globally across all channels. Bulk Card may have multiple quantity reservations only up to global available-to-sell quantity.
 
+Sales Session deletion is a soft-delete/void operation, not a destructive historical delete.
+
+Delete Sales Session is blocked once the Session has Claim Cart, reservation, or Order lineage that must remain attached to the Session.
+
+Session deletion never releases an active reservation.
+
+For an eligible Session without dependent transactional lineage, deletion deactivates that Session's remaining Inventory Pool listings and recalculates Inventory availability from remaining global listing and reservation state.
+
 A buyer may participate in multiple Sales Sessions.

@@ -4,6 +4,7 @@
 
 - `POST /api/v1/sales/sessions`
 - `GET /api/v1/sales/sessions/{id}`
+- `DELETE /api/v1/sales/sessions/{id}`
 - `POST /api/v1/sales/sessions/{id}/inventory`
 - `DELETE /api/v1/sales/sessions/{id}/inventory/{sessionInventoryId}`
 - `POST /api/v1/sales/sessions/{id}/inventory/bulk-add`
@@ -18,6 +19,23 @@ Sales Session is optional. Standalone Sales APIs MUST NOT require a Sales Sessio
 Sales Session Inventory Pool membership is listing context only and MUST NOT create an Inventory reservation.
 
 Inventory may be listed in multiple channels concurrently. Reservation availability is global across channels.
+
+### DELETE `/api/v1/sales/sessions/{id}`
+
+Performs a soft-delete/void of an eligible Sales Session.
+
+Deletion MUST be rejected when the Session has Claim Cart, reservation, or Order lineage that would be orphaned or detached by the operation.
+
+Deletion MUST NOT release Inventory reservations.
+
+For an eligible Session with no dependent transactional lineage, deletion:
+- marks the Session as deleted/voided without destroying historical evidence;
+- deactivates all remaining unassigned Inventory Pool listing rows belonging to that Session;
+- preserves listing rows from every other Session/channel;
+- recalculates Inventory availability from remaining global listing and reservation state;
+- returns Inventory to `AVAILABLE` only when there is no remaining active listing and no active reservation;
+- keeps Inventory `LISTED` when at least one other active listing remains;
+- never clears reservation state.
 
 Sales quantity semantics:
 - `SERIALIZED_CARD`: whole Inventory ID only; quantity MUST be `1`;
