@@ -10,8 +10,14 @@ An OPEN Sales Session may contain an Inventory Pool before any Buyer is known. I
 
 Inventory may be listed in multiple Sales channels simultaneously.
 
-When an item or eligible quantity is claimed/won/assigned to a Buyer, IMS creates or reuses the Buyer's appropriate active Claim Cart within that Sales Session and creates the reservation atomically.
+`SERIALIZED_CARD` and `PRODUCT` Inventory are listed, assigned, and reserved as whole Inventory IDs with Sales quantity exactly `1`.
 
-Serialized Inventory may have only one active reservation globally across all channels. Quantity-bearing Inventory may have multiple reservations only up to global available-to-sell quantity.
+A normal Product's physical contents or pack size do not permit partial Product sale in Sales. Smaller Product commercial units must first be produced through canonical Inventory Split/Transformation and receive their own Inventory IDs.
+
+`BULK_CARD_LOT` is the only normal Sales inventory type that permits explicit partial quantity listing, claim/winner assignment, and reservation from one source Inventory ID.
+
+When an Inventory item or eligible Bulk quantity is claimed/won/assigned to a Buyer, IMS creates or reuses the Buyer's appropriate active Claim Cart within that Sales Session and creates the reservation atomically.
+
+Serialized Card and Product Inventory may have only one active reservation globally across all channels. Bulk Card may have multiple quantity reservations only up to global available-to-sell quantity.
 
 A buyer may participate in multiple Sales Sessions.
