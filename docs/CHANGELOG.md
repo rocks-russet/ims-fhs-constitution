@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.2.x — Packing Supply Suggestion Engine (2026-08-21)
+
+Added/updated:
+- Expanded Packing Job, Supplies Template, Supplies Consumption, and Packing Completion rules.
+- Added advisory Packing Supply Suggestion with Suggested vs Actual separation.
+- Added operator Supply override governance.
+- Added data-driven Packing Template Rule Engine.
+- Baseline rule types: PER_ITEM, PER_MATCHING_ITEM, PER_ORDER, QUANTITY_THRESHOLD, COMBINATION.
+- Added learned Template Candidate workflow from finalized operator usage/history.
+- Learned candidates require human approval and can never auto-activate.
+- Packing Supply consumption occurs only from confirmed Actual Usage.
+- Packing Completion and tracked Supply consumption are atomic and idempotent.
+- No matching Template is a valid outcome and never blocks manual packing.
+- Added SAL-DEC-004 Packing Supply Suggestion Engine.
+- Added SAL-BR-049 through SAL-BR-052.
+- Expanded Sales API Packing contract.
+
 ## v0.2.0 Part 4 — Card Artwork & Physical Treatment Governance
 
 Added/updated:

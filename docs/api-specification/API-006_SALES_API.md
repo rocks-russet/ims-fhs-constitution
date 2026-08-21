@@ -127,9 +127,61 @@ Permission: `PAYMENT_CONFIRM`.
 
 ## Packing
 
-- `POST /api/v1/orders/{orderNumber}/packing/start`
-- `GET /api/v1/orders/{orderNumber}/packing/supplies-suggestion`
-- `POST /api/v1/orders/{orderNumber}/packing/complete`
+### POST `/api/v1/orders/{orderNumber}/packing/start`
+
+Creates or activates the Order Packing Job and moves eligible Order `PAID → PACKING`.
+
+### GET `/api/v1/orders/{orderNumber}/packing`
+
+Returns Packing Job, Order item composition, current suggestion snapshot, pending Actual Usage draft, and final usage when completed.
+
+### GET `/api/v1/orders/{orderNumber}/packing/supplies-suggestion`
+
+Evaluates ACTIVE Packing Template Rules and returns zero or more advisory Suggested Supply lines.
+
+The response MUST preserve:
+- template/rule provenance;
+- computed quantity;
+- human-readable reason;
+- evaluation/snapshot identity.
+
+Calling suggestion MUST NOT consume Inventory.
+
+### POST `/api/v1/orders/{orderNumber}/packing/supplies-suggestion/recalculate`
+
+Creates a new suggestion snapshot after eligible Order/packing context changes. Previous suggestion evidence remains reconstructable.
+
+### PUT `/api/v1/orders/{orderNumber}/packing/actual-supplies`
+
+Saves the operator's pending Actual Supply Usage draft.
+
+The operator may add, remove, replace, or change quantities independently of Suggested Supplies.
+
+### POST `/api/v1/orders/{orderNumber}/packing/templates/{templateId}/apply`
+
+Optionally applies an eligible Template as the operator-selected starting recommendation. Applying a Template is advisory and MUST NOT consume Inventory.
+
+### POST `/api/v1/orders/{orderNumber}/packing/complete`
+
+Finalizes Actual Supply Usage, applies tracked Packing Supply consumption, records audit/cross-domain lineage, and completes the Packing Job atomically.
+
+Packing Completion MUST be idempotent.
+
+If tracked consumption would make Packing Supply Inventory negative, completion MUST fail without partial consumption.
+
+No matching suggestion/template MUST NOT block manual Packing Completion.
+
+### Packing Template Administration
+
+Exact administration routes may be implemented under canonical Sales/Admin APIs, but the API contract MUST support:
+- list/read Template versions;
+- create DRAFT Template/Rule versions;
+- activate an approved version;
+- deactivate/supersede a version;
+- list learned Template Candidates;
+- approve/reject a learned Template Candidate.
+
+Learned candidates MUST NOT become ACTIVE automatically.
 
 ## Shipment
 
